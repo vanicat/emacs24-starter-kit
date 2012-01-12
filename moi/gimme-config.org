@@ -1,0 +1,10 @@
+#+TITLE: Configuring GIMME
+
+* autoloads
+  #+BEGIN_SRC emacs-lisp
+    (autoload 'gimme "gimme" "Launch GIMME" t)
+  #+END_SRC
+* some config
+  #+BEGIN_SRC emacs-lisp
+    (setq gimme-playlist-name "weighted_shuffle_playlist")
+  #+END_SRC

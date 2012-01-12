@@ -1,0 +1,285 @@
+* Configurations de org-mode
+** Les fichiers de l'agenda
+   #+begin_src emacs-lisp
+     (setq org-agenda-files-cours
+           (list "~/org/cours.org"
+                 "~/travail/cours/premiere/2011-2012 S/1S.org"
+                 "~/travail/cours/snd/mps/mps.org"
+                 "~/travail/cours/snd/2011 201/seconde1.org"
+                 "~/travail/cours/premiere/2011-2012 STG/1STG.org"))
+
+     (setq org-agenda-files
+           (list* "~/org/prgm.org"
+                  "~/org/notes.org"
+                  "~/org/mononoke.org"
+                  "~/org/personel.org"
+                  "~/org/aniversaire.org"
+                  org-agenda-files-cours))
+
+     (defun org-export-icalendar-cours ()
+       (interactive)
+       (let ((org-combined-agenda-icalendar-file "~/org/cours.ics"))
+         (apply 'org-export-icalendar t org-agenda-files-cours)))
+   #+end_src
+** Utilisons des dates européennes
+#+begin_src emacs-lisp
+  (setq calendar-date-style 'european)
+#+end_src
+** remember with org-mode/contrib/lisp/
+    :PROPERTIES:
+    :ID:       548e4ba3-f6b2-4ff8-849e-6c764be375e7
+    :END:
+#+begin_src emacs-lisp
+  (setq org-default-notes-file "/home/moi/org/notes.org")
+  (global-set-key "\C-cr" 'org-capture)
+  (global-set-key "\C-ca" 'org-agenda)
+  (global-set-key "\C-cl" 'org-store-link)
+#+end_src
+
+** Voyage dans le temps dans l'agenda
+    :PROPERTIES:
+    :ID:       21c708ba-8ed1-41df-bff9-e24264136ae1
+    :END:
+#+begin_src emacs-lisp
+  (eval-after-load 'org-agenda
+    '(progn
+      (define-key org-agenda-mode-map (kbd "M-<right>") 'org-agenda-later)
+      (define-key org-agenda-mode-map (kbd "M-<left>") 'org-agenda-earlier)))
+#+end_src
+
+** Pour latex
+    :PROPERTIES:
+    :ID:       56511aef-f5ce-446e-9ca2-d2089bba2938
+    :END:
+#+begin_src emacs-lisp
+  (setq org-export-latex-inputenc-alist '(("utf8" . "utf8x")))
+#+end_src
+*** Des théoremes latex et html
+    :PROPERTIES:
+    :ID:       15ebdea3-f289-46ed-a8a3-8ca1b1c1091b
+    :END:
+#+begin_src emacs-lisp
+  (eval-after-load 'org-exp-blocks
+    '(progn
+      (defun org-export-blocks-format-theorem (body &rest headers)
+        "Format theorem BODY as a theorem and return it formatted for export.
+  Currently, this only does something for HTML export, for all
+  other backends, it converts the comment into an EXAMPLE segment."
+        (let ((theorem-style (if headers (car headers) "theorem"))
+              (title (if (cdr headers) (mapconcat 'identity (cdr headers) " "))))
+          (cond
+            (htmlp ;; We are exporting to HTML
+             (concat "#+BEGIN_HTML\n"
+                     "<div class=\"org-"
+                     theorem-style
+                     "\">\n"
+                     "<b>" (upcase-initials theorem-style) "</b>"
+                     (if (and title (> (length title) 0)) (concat ": " title "</br>\n") "</br>\n")
+                     "<p>\n"
+                     "#+END_HTML\n"
+                     body
+                     (if (string-match "\n$" body) "" "\n")
+                     "#+BEGIN_HTML\n"
+                     "</p>\n"
+                     "</div>\n"
+                     "#+END_HTML\n"))
+            (latexp ;;we are exporting to latex
+             (concat "#+BEGIN_LATEX\n"
+                     "\\begin{" theorem-style "}"
+                     (if (and title (> (length title) 0)) (concat "[" title "]\n") "\n")
+                     "#+END_LATEX\n"
+                     body
+
+                     (if (string-match "\n$" body) "" "\n")
+                     "#+BEGIN_LATEX\n"
+                     "\\end{" theorem-style "}\n"
+                     "#+END_LATEX\n"))
+            (t ;; This is not HTML nor latex, so just export the body
+             (concat "\n"
+                     (upcase-initials theorem-style)
+                     (if title (concat ": " title "\n\n") "\n\n")
+                     body
+                     (if (string-match "\n\\'" body) "\n\n" "\n"))))))
+
+      (org-export-blocks-add-block '(theorem org-export-blocks-format-theorem t))))
+#+end_src
+
+** Pour l'agenda: la fête des mères et quelques autres fêtes.
+    :PROPERTIES:
+    :ID:       a1777554-e0a1-4a33-8e55-3e8e9620580e
+    :END:
+#+begin_src emacs-lisp
+  (defun holiday-fete-des-mere ()
+    (if (let ((displayed-month 05))
+          (equal (holiday-easter-etc 49 "") (holiday-float 5 0 -1 "")))
+        (holiday-float 6 0 1 "fête des mères")
+        (holiday-float 5 0 -1 "fête des mères")))
+
+  (setq holiday-bahai-holidays ())
+
+  (defun jd:org-current-time ()
+   "Return current-time if date is today."
+   (when (equal date (calendar-current-date))
+     (format-time-string "%H:%M Current time" (current-time))))
+#+end_src
+** Exporting org-diary-class
+    :PROPERTIES:
+    :ID:       e82ed7a3-5fd7-4c62-9cef-041b114d2f14
+    :END:
+#+begin_src emacs-lisp
+  (require 'ical-for-org)
+#+end_src
+** org babel
+    :PROPERTIES:
+    :ID:       2c687ffb-3e38-4586-82de-903e0a9e9cf4
+    :END:
+#+begin_src emacs-lisp
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((R . t)
+     (ditaa . t)
+     (dot . t)
+     (emacs-lisp . t)
+     (gnuplot . t)
+     (haskell . nil)
+     (latex . t)
+     (ledger . t)         ;this is the important one for this tutorial
+     (ocaml . nil)
+     (octave . t)
+     (python . t)
+     (ruby . t)
+     (screen . nil)
+     (sh . t)
+     (sql . nil)
+     (sqlite . t)))
+#+end_src
+** mouvement dans org
+    :PROPERTIES:
+    :ID:       0a0e33df-e9f4-43c1-aee5-c9de88fe665c
+    :END:
+#+begin_src emacs-lisp
+  (defadvice org-beginning-of-line (around org-beginning-of-line-home-end)
+    (let* ((keys (recent-keys))
+           (len (length keys))
+           (key1 (if (> len 0) (elt keys (- len 1)) nil))
+           (key2 (if (> len 1) (elt keys (- len 2)) nil))
+           (key3 (if (> len 2) (elt keys (- len 3)) nil))
+           (key-equal-1 (equal key1 key2))
+           (key-equal-2 (and key-equal-1 (equal key2 key3))))
+      (cond (key-equal-2 (goto-char (point-min)))
+            (key-equal-1 (push-mark home-end-marker)
+                         (move-to-window-line 0))
+            (t (setq home-end-marker (copy-marker (point)))
+               ad-do-it))))
+
+  (ad-activate 'org-beginning-of-line)
+
+  (defadvice org-end-of-line (around org-end-of-line-home-end)
+    (let* ((keys (recent-keys))
+           (len (length keys))
+           (key1 (if (> len 0) (elt keys (- len 1)) nil))
+           (key2 (if (> len 1) (elt keys (- len 2)) nil))
+           (key3 (if (> len 2) (elt keys (- len 3)) nil))
+           (key-equal-1 (equal key1 key2))
+           (key-equal-2 (and key-equal-1 (equal key2 key3))))
+      (cond (key-equal-2 (goto-char (point-max)))
+            (key-equal-1 (push-mark home-end-marker)
+                         (move-to-window-line -1)
+                         ad-do-it)
+            (t (setq home-end-marker (copy-marker (point)))
+               ad-do-it))))
+
+  (ad-activate 'org-end-of-line)
+#+end_src
+** Rentrer des notes
+    :PROPERTIES:
+    :ID:       d61e5a2f-3778-4ac2-8830-c987fa4d3c69
+    :END:
+#+begin_src emacs-lisp
+  (defun note-for-org ()
+    (interactive)
+    (while t
+      (goto-char (org-table-begin))
+      (org-table-recalculate)
+      (isearch-forward)
+      (end-of-line)
+      (org-table-beginning-of-field 0)
+      (let* ((col (org-table-current-column))
+             (line (org-table-current-line))
+             (old (org-table-get line col))
+             (new (read-string "Note:" old)))
+        (org-table-put line col new))))
+#+end_src
+** org-mobile
+    :PROPERTIES:
+    :ID:       b9a1d2b5-5823-4f6e-a8b5-33ebfb942917
+    :END:
+#+begin_src emacs-lisp
+  (setq org-mobile-directory "~/org-mobile")
+  (add-hook 'org-mobile-pre-pull-hook
+            (lambda ()
+              (shell-command "cd ~/org-mobile; make pull")))
+  (add-hook 'org-mobile-post-push-hook
+            (lambda ()
+              (shell-command "cd ~/org-mobile; make push")))
+
+  (defun rv-org-mobile-push ()
+    (interactive)
+    (let (org-agenda-start-on-weekday
+          (string-to-number (format-time-string "%w")))
+      (org-mobile-push)))
+
+  (setq org-agenda-custom-commands
+        '(("n" "Next 21 days" agenda "" ((org-agenda-span 21)))))
+#+end_src
+
+** org-contact
+   :PROPERTIES:
+   :ID:       0b614b99-1ec7-47de-bab2-6c9a0e52420f
+   :END:
+#+begin_src emacs-lisp
+  (require 'org-contacts)
+  (setq org-contacts-files '("~/org/contacts.org"))
+#+end_src
+* from custom
+  :PROPERTIES:
+  :ID:       75dfd292-47cb-4284-82d9-fdb440701600
+  :END:
+#+begin_src emacs-lisp
+  (setq org-agenda-include-diary t)
+  (setq org-capture-templates
+        (quote (("n" "note" entry (file+headline "~/org/notes.org" "Notes")
+                     "* \n   %a" :kill-buffer t)
+                ("m" "mailnote" entry (file+headline "~/org/notes.org" "Notes")
+                     "** De : %:from Objets : %:subject\n   %a" :kill-buffer t)
+                ("r" "rendezvous" entry (file+headline "/home/moi/org/personel.org" "Rendez Vous")
+                     "* \n%T" :kill-buffer t)
+                ("k" "kill-ring" entry (file+headline "~/org/notes.org" "Notes")
+                     "* \n%c" :kill-buffer t)
+                ("c" "contact" entry (file+headline "~/org/contacts.org" "Divers")
+                     "**  \n   :PROPERTIES:\n   :EMAIL:\n   :END:\n" :kill-buffer t)
+                ("i" "messageid" entry (file+headline "~/org/notes.org" "Notes")
+                     "* %:subject\n  :PROPERTIES:\n  :SUBMITER: %:from\n  :END:\n  <%:message-id>\n  %:body"
+                     :kill-buffer t))))
+  (setq org-combined-agenda-icalendar-file "~/org/org.ics")
+  (setq org-enforce-todo-checkbox-dependencies t)
+  (setq org-enforce-todo-dependencies t)
+  (setq org-export-with-toc nil)
+  (setq org-hide-leading-stars t)
+  (setq org-icalendar-date-time-format ";TZID=%Z:%Y%m%dT%H%M%S")
+  (setq org-icalendar-include-todo t)
+  (setq org-icalendar-store-UID t)
+  (setq org-icalendar-timezone "Europe/Paris")
+  (setq org-icalendar-use-deadline '(event-if-not-todo event-if-todo))
+  (setq org-icalendar-use-scheduled '(event-if-not-todo event-if-todo))
+  (setq org-modules '(org-bbdb org-bibtex org-gnus org-id org-info org-jsinfo org-irc org-wl org-w3m))
+  (setq org-refile-targets (quote ((org-agenda-files :level . 1))))
+  (setq org-return-follows-link t)
+  (setq org-time-stamp-custom-formats '("<%a %d/%m/%y>" . "<%a %d/%m/%y %H:%M>"))
+  (setq org-todo-keywords '((sequence "TODO" "NEXT(n)" "WAIT(w!)" "PROGRESS(p)" "|" "ABANDON(a!)" "DONE(d!)")))
+#+end_src
+
+* It's done
+#+begin_src emacs-lisp
+  (provide 'org-config)
+#+end_src

@@ -1,0 +1,98 @@
+* Auto mode
+  :PROPERTIES:
+  :ID:       c93b0251-76a5-4da9-8bd4-adf27e84f200
+  :END:
+  #+begin_src emacs-lisp
+    (add-to-list 'auto-mode-alist '("\\.ledger$" . ledger-mode))
+  #+end_src
+
+* Auto conversion
+  :PROPERTIES:
+  :ID:       23aef8bf-b49a-432c-9e81-6dcbfa0d5fd0
+  :END:
+** TODO balance account différent suivants le signe de la transaction
+   :PROPERTIES:
+   :ID:       54a0075c-66bb-40d3-8d67-f21ca7785558
+   :END:
+
+  #+begin_src emacs-lisp
+    (defvar ledger-read-from-qif-accounts
+      '("Actifs:Banque:BPMC:Courant"
+        "Actifs:Banque:BPMC:Solidarité"
+        "Passifs:Carte de crédit"))
+
+    (defvar ledger-read-from-qif-default-balance-account
+      "Dépenses:Divers")
+
+    (defvar ledger-read-from-qif-auto-assoc
+      '(("RET DAB.*" . "Dépenses:Divers")
+        ("CHEQUE" . "Dépenses:Divers")))
+
+    (defun ledger-read-from-qif (qif-file &optional account)
+      (interactive "fread from: \np")
+      (unless (stringp account)
+        (setq account
+              (completing-read "account: " ledger-read-from-qif-accounts () 'confirm)))
+      (pop-to-buffer "ledger-import")
+      (delete-region (point-min) (point-max))
+      (insert-file qif-file)
+      (goto-char (point-min))
+      (replace-string "" "")
+      (goto-char (point-min))
+      (unless (looking-at "!Type:.*\n")
+        (error "not a qif bank file."))
+      (delete-region (match-beginning 0) (match-end 0))
+      (insert "; -*-ledger-*-\n")
+      (while (not (eobp))
+        (cond
+          ((looking-at "^D\\([0-9]\\{2\\}\\)/\\([0-9]\\{2\\}\\)/\\([0-9]\\{4\\}\\)\n")
+           (replace-match "\\3/\\2/\\1"))
+          ((looking-at "^D\\([0-9]\\{2\\}\\)/\\([0-9]\\{2\\}\\)/\\([0-9]\\{2\\}\\)\n")
+           (replace-match "20\\3/\\2/\\1"))
+          (t
+           (error "strange file")))
+        (let (balance-account
+              (li ledger-read-from-qif-auto-assoc)
+              note amount num payee)
+          (while (not (looking-at "\\^\n"))
+            (cond
+              ((looking-at "T\\(-?[0-9]*\\(\\.[0-9]*\\)?\\)\n")
+               (setq amount (match-string 1)))
+              ((looking-at "N\\([^\n]*\\)\n")
+               (setq num (match-string 1)))
+              ((looking-at "P\\([^\n]*\\)\n")
+               (setq payee (match-string 1)))
+              ((looking-at "M\\([^\n]*\\)\n")
+               (setq note (match-string 1)))
+              (t
+               (error "strange file")))
+            (delete-region (match-beginning 0) (match-end 0)))
+          (delete-region (match-beginning 0) (match-end 0))
+          (when num
+            (insert " (")
+            (insert num)
+            (insert ")"))
+          (when payee
+            (insert " ")
+            (insert payee))
+          (insert "\n")
+          (insert "    ")
+          (insert account)
+          (insert "                            € ")
+          (insert amount)
+          (when (and note (not (string= note "")))
+            (insert "  ; ")
+            (insert note))
+          (insert "\n")
+          (while (and li (not (or (string-match (caar li) payee)
+                                  (string-match (caar li) note))))
+            (setq li (cdr li)))
+          (if li
+              (setq balance-account (cdar li))
+              (setq balance-account ledger-read-from-qif-default-balance-account))
+          (insert "    ")
+          (insert balance-account)
+          (insert "\n")
+          (insert "\n")))
+      (ledger-mode))
+  #+end_src

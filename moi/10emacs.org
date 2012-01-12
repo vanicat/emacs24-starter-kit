@@ -1,0 +1,720 @@
+#+TITLE: Mon joli fichier .emacs
+#+OPTIONS: toc:nil num:nil ^:nil
+
+* le load path
+  :PROPERTIES:
+  :ID:       0875263f-9b86-4115-9380-221aa25af6e3
+  :END:
+#+begin_src emacs-lisp
+  (defun add-load-path (dir)
+    (interactive "D")
+    (push dir load-path))
+#+end_src
+
+* Chromium a besoin de edit-server
+   :PROPERTIES:
+   :ID:       89bfd095-c7f5-455b-b726-40d3bb011102
+   :END:
+#+begin_src emacs-lisp
+  (require 'edit-server)
+  (setq edit-server-new-frame nil)
+
+  (condition-case nil
+      (edit-server-start)
+    (error nil))
+#+end_src
+* Really launch the server
+#+begin_src emacs-lisp
+  (let ((delete-by-moving-to-trash nil))
+    (server-force-delete)
+    (server-start))
+#+end_src
+
+* Lisons nos fichiers infos
+  :PROPERTIES:
+  :ID:       8863eaa9-3ef6-472c-8e1f-9f58b2cd7af9
+  :END:
+#+begin_src emacs-lisp
+  (setq Info-directory-list (list* "~/info"
+                                   Info-default-directory-list))
+#+end_src
+
+* Gestions des espaces
+  :PROPERTIES:
+  :ID:       31b77c03-0413-4005-a450-19e44c99ac5f
+  :END:
+Doit être au début sinon, problème avec le before-save-hook
+#+begin_src emacs-lisp
+  (require 'ethan-wspace)
+#+end_src
+
+* Le desktop
+#+begin_src emacs-lisp
+  (setq desktop-save ())
+#+end_src
+* face, font et font-lock, look&feel
+  :PROPERTIES:
+  :ID:       2a7d9bc0-0d8d-47d8-b412-0759e4defe75
+  :END:
+  d'abord une règle pour la taille de l'affichage
+012345678901234567890123456789012345678901234567890123456789012345678901234567890
+          1         2         3         4         5         6         7         8
+#+begin_src emacs-lisp
+  (defvar mydefault-font-height
+    (cond
+      ((string= system-name "maison.at.home")
+       200)
+      ((string= system-name "toubib.at.home")
+       180)
+      (t 120)))
+
+  (set-face-attribute 'default nil :background "black")
+  (set-face-attribute 'default nil :foreground "gray90")
+  (set-face-attribute 'default nil :height mydefault-font-height)
+  (set-face-attribute 'default nil :foundry "bitstream")
+  (set-face-attribute 'default nil :family "Bitstream Vera Sans Mono")
+
+  (setq visible-bell 't)
+
+  (require 'font-lock)
+  (global-font-lock-mode t)
+  (setq font-lock-maximum-decoration t)
+  (show-paren-mode 1)
+
+  (setq frame-title-format '(multiple-frames "%b"
+                             ("" user-login-name "@" invocation-name "@" system-name)))
+#+end_src
+
+* raccourcies globaux
+  :PROPERTIES:
+  :ID:       b26b3373-e1ff-4a6e-a226-c63e195a9ceb
+  :END:
+#+begin_src emacs-lisp
+  (define-key input-decode-map (kbd "C-à") [?\C-c])
+
+  (global-set-key [SunFA_Circum] 'nop)
+  (global-set-key [SunFA_Diaeresis] 'nop)
+
+  ;;      Pave fleches du haut
+  (global-set-key [S-home] 'beginning-of-buffer)
+  (global-set-key [S-end] 'end-of-buffer)
+  (global-set-key [C-home] 'mark-whole-buffer)
+  ;(global-set-key [prior] 'scroll-down)
+  ;(global-set-key [next] 'scroll-up)
+  (global-set-key [?\C-v] 'yank)
+  (global-set-key [?\C-c ?b] 'bury-buffer)
+
+
+  ;;      Diverses F*
+
+  (global-set-key [f3] 'speedbar-get-focus)
+
+  (global-set-key [f4] 'woman)
+  (global-set-key [S-f4] 'indent-region)
+
+  (global-set-key [f5] 'ispell-word)
+  (global-set-key [S-f5] 'ispell-region)
+
+  (global-set-key "\M-c" 'compile)        ; ESC-c fait une compilation
+  (global-set-key "\M-n" 'next-error)     ; ESC-n montre les differentes erreurs
+
+  (global-set-key [delete] 'delete-char)
+
+  ;; Souris
+
+  (global-set-key [S-mouse-2] 'mouse-set-point-and-find-tag)
+
+  (global-set-key "\M-!" 'my-shell-command)
+
+  (define-key key-translation-map "\C-x8i" "∞")
+  (define-key key-translation-map "\C-x8l" "λ")
+  (define-key key-translation-map "\C-x8s" "√")
+  (define-key key-translation-map "\C-x8t" "↦")
+  (define-key key-translation-map "\C-x8^n" "ⁿ")
+  (define-key key-translation-map "\C-x8I" "∩")
+  (define-key key-translation-map "\C-x8U" "∪")
+#+end_src
+
+** lagn
+   :PROPERTIES:
+   :ID:       8c9ce6d5-bc15-410d-9667-2eb61bf410a7
+   :END:
+#+begin_src emacs-lisp
+  (global-set-key [XF86AudioPlay] 'lagn-toggle)
+  (global-set-key [XF86Back] 'lagn-prev)
+  (global-set-key [XF86Forward] 'lagn-next)
+  (global-set-key [XF86AudioPrev] 'lagn-prev)
+  (global-set-key [XF86AudioNext] 'lagn-next)
+#+end_src
+
+* Petites configs
+** dabbrev
+#+begin_src emacs-lisp
+  (eval-after-load 'dabbrev
+    '(let ((fst (member 'try-expand-dabbrev hippie-expand-try-functions-list)))
+      (setcar fst 'try-expand-dabbrev-visible)
+      (setcdr fst (cons 'try-expand-dabbrev-all-buffers (cdr fst)))))
+#+end_src
+
+** ido
+#+begin_src emacs-lisp
+  (setq ido-use-filename-at-point nil)
+
+  (setq ido-file-extensions-order
+        '(".org" ".gpg" ".el" t ".png" ".jpg" ".gif"
+          ".pdf" ".dvi" ".log" ".aux" ".snm"))
+
+  (setq ido-show-dot-for-dired t)
+  (setq ido-enable-dot-prefix t)
+  ;; (setq ido-auto-merge-work-directories-length -1)
+  (setq ido-auto-merge-delay-time 1.4)
+#+end_src
+
+** auto-compression
+   :PROPERTIES:
+   :ID:       bb4b8b20-1119-46e9-ac76-60ac3864c744
+   :END:
+#+begin_src emacs-lisp
+  (require 'jka-compr)
+
+  (auto-compression-mode 't)
+#+end_src
+
+** abbrev
+   :PROPERTIES:
+   :ID:       ccd2c801-ece6-4c92-b14b-e7bbd9d91b35
+   :END:
+#+begin_src emacs-lisp
+  (quietly-read-abbrev-file)
+#+end_src
+
+** Langue
+   :PROPERTIES:
+   :ID:       4749f1fb-abc3-4861-99d5-963307ceeeeb
+   :END:
+#+begin_src emacs-lisp
+  (set-language-environment "utf-8")
+  (set-selection-coding-system 'utf-8)
+#+end_src
+
+** recentf
+   :PROPERTIES:
+   :ID:       1ca0d627-4494-459a-9a03-a62aabd1d62f
+   :END:
+#+begin_src emacs-lisp
+  (recentf-mode 1)
+#+end_src
+
+** Fichiers texte
+   :PROPERTIES:
+   :ID:       164173cc-e748-400d-aa06-940edde96add
+   :END:
+#+begin_src emacs-lisp
+  (push '("vimperator-.*.tmp" . text-mode) auto-mode-alist)
+#+end_src
+
+** fonctions utiles
+*** Disable des fonctions enquiquinante
+    :PROPERTIES:
+    :ID:       fb3cff40-1a64-4e1e-9c8f-aa46fbeb6ce5
+    :END:
+#+begin_src emacs-lisp
+  (put 'gnus-group-check-bogus-groups 'disabled t)
+#+end_src
+
+*** Enlève des "disabled"
+  :PROPERTIES:
+  :ID:       90cc2e7c-333b-407f-a060-c8d721dd6f90
+  :END:
+#+begin_src emacs-lisp
+  (put 'narrow-to-region 'disabled nil)
+  (put 'narrow-to-page 'disabled nil)
+  (put 'eval-expression 'disabled nil)
+  (put 'downcase-region 'disabled nil)
+  (put 'upcase-region 'disabled nil)
+#+end_src
+
+*** try-complete fonction
+    :PROPERTIES:
+    :ID:       89894fca-1f8b-414c-9767-707b8510af10
+    :END:
+    ça sert encore ?
+#+begin_src emacs-lisp
+  (defun try-complete-abbrev (old)
+    (if (expand-abbrev)
+        t nil))
+
+  (defun try-complete-tag (old)
+    (condition-case nil
+        (if (complete-tag) t nil)
+      (error nil)))
+
+  (defun try-flyspell-auto-correct-word (old)
+    (if flyspell-mode
+        (progn
+          (flyspell-auto-correct-word)
+          (and
+           (consp flyspell-auto-correct-region)
+           (not (string= flyspell-auto-correct-word
+                         (car flyspell-auto-correct-ring)))))
+        ()))
+#+end_src
+
+*** yank-pop
+    :PROPERTIES:
+    :ID:       b782841a-4141-40ef-a973-f9e91cdb10bd
+    :END:
+#+begin_src emacs-lisp
+  (defadvice yank-pop (around kill-ring-browse-maybe (arg))
+    "If last action was not a yank, run `browse-kill-ring' instead."
+    (if (not (eq last-command 'yank))
+        (browse-kill-ring)
+        ad-do-it))
+
+  (ad-activate 'yank-pop)
+#+end_src
+
+*** Quelques autres
+    :PROPERTIES:
+    :ID:       6923c5de-ce77-4c41-b54b-a27bf21b6c78
+    :END:
+#+begin_src emacs-lisp
+  (defun nop () (interactive))
+
+  (defun run-a-out ()
+    "Run a a.out in the current window."
+    (interactive)
+    (start-process "a.out" "a.out" "a.out"))
+
+  (defun set-word-wrap () (interactive) (setq word-wrap t))
+
+  (defun add-flyspell-to-hippie-expand ()
+    (make-local-variable 'hippie-expand-try-functions-list)
+    (setq hippie-expand-try-functions-list
+          (append hippie-expand-try-functions-list '(try-flyspell-auto-correct-word))))
+
+  (add-hook 'text-mode-hook 'turn-on-flyspell)
+  (add-hook 'text-mode-hook 'text-mode-hook-identify)
+  (add-hook 'text-mode-hook 'set-word-wrap)
+  (add-hook 'text-mode-hook 'add-flyspell-to-hippie-expand)
+
+  (defun mouse-set-point-and-find-tag (event)
+    "Set the point to the position of the mouse and invoke find-tag on the word at the
+  point.  This should be bound to a mouse click event type."
+    (interactive "e")
+    (mouse-set-point event)
+    (find-tag (thing-at-point 'word)))
+
+  (defun auto-fill-mode-on () (auto-fill-mode 1))
+  (defun longlines-mode-on () (longlines-mode 1))
+
+  (require 'browse-url)
+
+  (defalias 'report-debian-bug 'debian-bug)
+
+  (defun my-shell-command (command)
+    (interactive (list (read-from-minibuffer "Shell command: "
+                                             nil nil nil 'shell-command-history)))
+    (shell-command command (generate-new-buffer "*Async Shell*")))
+#+end_src
+
+* Qui suis-je
+  :PROPERTIES:
+  :ID:       823c7df7-e19e-4906-9937-4047451411d6
+  :END:
+#+begin_src emacs-lisp
+  (setq debian-changelog-mailing-address "vanicat@debian.org")
+  (setq debian-changelog-full-name "Rémi Vanicat")
+
+  (setq user-mail-address "remi.vanicat@gmail.com")
+  (setq user-full-name "Rémi Vanicat")
+  (setq debian-bug-use-From-address "vanicat@debian.org")
+
+  (setq pgg-gpg-user-id "Rémi Vanicat <vanicat@debian.org>")
+  (setq pgg-encrypt-for-me "Rémi Vanicat <vanicat@debian.org>")
+#+end_src
+
+* ISPELL
+  :PROPERTIES:
+  :ID:       ebf5cf4a-9f07-44a7-8854-e21c5bd07fd3
+  :END:
+#+begin_src emacs-lisp
+  (setq ispell-program-name "aspell")
+
+  (require 'ispell)
+  (setq ispell-highlight-face 'underline)
+
+  (ispell-change-dictionary "francais-lrg" 't)
+
+  (autoload 'guess-lang-buffer "guess-lang" "" 't)
+  (autoload 'guess-lang-message "guess-lang" "" 't)
+
+  (defun ispell-guess-dictionary ()
+    (interactive)
+    (ispell-change-dictionary (guess-lang-buffer)))
+
+  (add-hook 'text-mode-hook #'ispell-guess-dictionary)
+#+end_src
+
+* Folding
+  :PROPERTIES:
+  :ID:       d3cb66bf-c960-4804-9495-14fcc2faca6c
+  :END:
+#+begin_src emacs-lisp
+  (setq folding-mode-prefix-key "\C-c.")
+
+  (require 'folding)
+  (folding-add-to-marks-list 'lua-mode "-- {{{" "-- }}}")
+  (folding-mode-add-find-file-hook)
+#+end_src
+* Tramp
+#+begin_src emacs-lisp
+  (eval-after-load 'tramp
+    '(progn
+       (add-to-list 'tramp-default-proxies-alist
+                    '(nil "\\`root\\'" "/ssh:%h:"))
+       (add-to-list 'tramp-default-proxies-alist
+                    '((regexp-quote (system-name)) nil nil))))
+#+end_src
+* configurations des modes
+** vcs
+*** git/magit
+   :PROPERTIES:
+   :ID:       2945a736-1523-4cd8-8b7c-a58fed61f7f8
+   :END:
+#+begin_src emacs-lisp
+  (autoload 'git-status "git" "" t)
+  (autoload 'git-blame-mode "git-blame"
+  (autoload 'magit-status "magit" "" t)
+    "Minor mode for incremental blame for Git." t)
+#+end_src
+*** vc
+#+begin_src emacs-lisp
+  (eval-after-load "vc-hooks"
+    '(define-key vc-prefix-map "=" 'ediff-revision))
+  (add-to-list 'vc-handled-backends 'GIT)
+#+end_src
+*** mo-git-blame
+    :PROPERTIES:
+    :ID:       26718e97-db3d-40b2-bc2b-6842a6289d42
+    :END:
+#+begin_src emacs-lisp
+  (autoload 'mo-git-blame-file "mo-git-blame" nil t)
+  (autoload 'mo-git-blame-current "mo-git-blame" nil t)
+
+;  (global-set-key [?\C-c ?g ?c] 'mo-git-blame-current)
+;  (global-set-key [?\C-c ?g ?f] 'mo-git-blame-file)
+#+end_src
+
+** config rails
+   :PROPERTIES:
+   :ID:       ad85a2b9-dd75-4a44-a45a-fadcbbd71a26
+   :END:
+#+begin_src emacs-lisp
+  (modify-coding-system-alist 'file "\\..?rb$" 'utf-8)
+  (modify-coding-system-alist 'file "\\.rhtml$" 'utf-8)
+
+  (autoload 'rhtml-mode "rhtml-mode" "" t)
+
+  (require 'rinari)
+  (eval-after-load 'ruby-mode
+    '(require 'ruby-electric))
+
+  (autoload 'autotest "autotest" "rez" t)
+
+  (defun ruby-electric-return (arg)
+    (interactive "P")
+    (self-insert-command (prefix-numeric-value arg))
+    (if (ruby-electric-space-can-be-expanded-p)
+        (save-excursion
+          (ruby-indent-line t)
+          (newline)
+          (ruby-insert-end))))
+
+  (unless (require 'nxml-mode () t)
+    (package-install 'nxml-mode)
+    (require 'nxml-mode))
+
+  ;; (yas/load-directory "~/.myconfig/emacs.d/yasnippets/yasnippets-ruby/")
+  ;; (yas/load-directory "~/.myconfig/emacs.d/yasnippets/yasnippets-rails/")
+
+  (folding-add-to-marks-list 'ruby-mode "# {{{" "# }}}")
+
+  (push '(".*\\.html.erb" . rhtml-mode) auto-mode-alist)
+#+end_src
+
+** configurations C,java...
+   :PROPERTIES:
+   :ID:       e8033fd5-649b-4a66-b70d-a0caeac259a6
+   :END:
+#+begin_src emacs-lisp
+  (setq c-brace-offset -2)
+  (setq c-auto-newline 't)
+  (add-hook 'c-mode-hook (lambda () (c-toggle-auto-hungry-state 1)))
+  (add-hook 'c-mode-hook (lambda () (set 'dabbrev-case-fold-search ())))
+
+  (defun java-compile () (interactive)
+    (compile (concat "javac " (buffer-name))))
+
+  (add-hook 'java-mode-hook 'my-java-mode-hook)
+  (defun my-java-mode-hook ()
+    (cond (window-system
+  ;         (require 'andersl-java-font-lock)
+           (turn-on-font-lock)))
+    (c-toggle-auto-hungry-state 1)
+    (set 'dabbrev-case-fold-search ())
+    (local-set-key "\M-j" 'java-compile))
+#+end_src
+
+*** Edition des fichiers xmms2
+#+begin_src emacs-lisp
+  (defun xmms2-c-mode ()
+    "C mode with adjusted defaults for use with the xmms2."
+    (interactive)
+    (c-mode)
+    (c-set-style "K&R")
+    (setq tab-width 4)
+    (setq indent-tabs-mode t)
+    (setq c-basic-offset 4)
+
+    ; Align closing paren with opening paren
+    (c-set-offset 'arglist-close 'c-lineup-arglist-intro-after-paren)
+
+    (add-hook 'c-special-indent-hook 'smart-tab-indent-hook))
+
+  (defun get-nonempty-context ()
+    (let ((curr-context (car (c-guess-basic-syntax))))
+      (if (or (eq (car curr-context) 'arglist-intro)
+              (eq (car curr-context) 'arglist-cont)
+              (eq (car curr-context) 'arglist-cont-nonempty)
+              (eq (car curr-context) 'arglist-close))
+          curr-context
+        nil)))
+
+  (defun smart-tab-indent-hook ()
+    "Fixes indentation to pad with spaces in arglists."
+    (let ((nonempty-ctx (get-nonempty-context)))
+      (if nonempty-ctx
+          (let ((tabbed-columns (+ (point-at-bol)
+                                   (/ (c-langelem-col nonempty-ctx t)
+                                      tab-width)))
+                (orig-column (current-column)))
+            (tabify (point-at-bol) tabbed-columns)
+            (untabify tabbed-columns (point-at-eol))
+            ; editing tabs screws the pointer position
+            (move-to-column orig-column)))))
+
+  (setq auto-mode-alist
+        (cons '(".*xmms2.*/.*\\.[ch]$" . xmms2-c-mode)
+              auto-mode-alist))
+#+end_src
+
+** Configurations ocaml
+   :PROPERTIES:
+   :ID:       5f5cb5fa-b5de-4cf5-9935-d09e45937efa
+   :END:
+#+begin_src emacs-lisp
+  (setq tuareg-with-indent 0)
+  (setq tuareg-function-indent 0)
+  (setq tuareg-in-indent 0)
+
+  ;(autoload 'tuareg-imenu-set-imenu "tuareg-imenu" "Configuration of imenu for tuareg" t)
+
+  ;(add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
+
+  (setq completion-ignored-extensions
+        (cons ".cmi" (cons ".cmo" completion-ignored-extensions)))
+#+end_src
+
+** Configuration lisp
+   :PROPERTIES:
+   :ID:       fedf760a-0745-44ab-9f2a-a632120f3e19
+   :END:
+#+begin_src emacs-lisp
+  (setq lisp-indent-function 'common-lisp-indent-function)
+
+  (setq inferior-lisp-program "sbcl --noinform")
+
+  ;; (setq slime-net-coding-system 'utf-8-unix)
+  ;; ;; load slime:
+  ;; (setq load-path (cons "/home/moi/.clc/packages/clbuild/source/slime" load-path))
+  ;; (setq load-path (cons "/home/moi/.clc/packages/clbuild/source/slime/contrib" load-path))
+  ;; (setq slime-backend "/home/moi/.clc/packages/clbuild/.swank-loader.lisp")
+  ;; ;(setq inhibit-splash-screen t)
+  ;; (load "/home/moi/.clc/packages/clbuild/source/slime/slime")
+  ;; (setq inferior-lisp-program "/home/moi/.clc/packages/clbuild/clbuild preloaded")
+  ;; (setq slime-use-autodoc-mode nil)
+  ;; (slime-setup '(slime-fancy slime-tramp slime-asdf))
+  ;; (setq slime-complete-symbol*-fancy t)
+  ;; (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
+
+  ;; (put 'with-accessors 'common-lisp-indent-function 2)
+#+end_src
+
+** lagn
+   :PROPERTIES:
+   :ID:       aa7e5923-38d6-494a-ab8f-52e41869db6b
+   :END:
+#+begin_src emacs-lisp
+  (autoload 'lagn-list "lagn" "" t)
+  (autoload 'lagn-search "lagn" "" t)
+  (autoload 'lagn-toggle "lagn" "" t)
+  (autoload 'lagn-prev "lagn" "" t)
+  (autoload 'lagn-next "lagn" "" t)
+#+end_src
+
+** erc
+   :PROPERTIES:
+   :ID:       de65504b-346b-4109-aacd-1b8d9dd3e641
+   :END:
+#+begin_src emacs-lisp
+  (defun erc-freenode ()
+    (interactive)
+    (erc :server "irc.freenode.net" :full-name "Rémi Vanicat"
+         :nick "__DL__"))
+
+  (defun erc-debian ()
+    (interactive)
+    (erc :server "irc.debian.org" :full-name "Rémi Vanicat"
+         :nick "__DL__"))
+
+  (defun erc-otaku ()
+    (interactive)
+    (erc :server "irc.otaku-irc.fr" :full-name "darkl" :nick "darkl"))
+#+end_src
+
+** google-maps
+   :PROPERTIES:
+   :ID:       41053174-198d-4fff-a97f-0b640d5a1792
+   :END:
+#+begin_src emacs-lisp
+  (autoload 'google-maps "google-maps" "" t)
+#+end_src
+
+** bbdb
+   :PROPERTIES:
+   :ID:       41053174-198d-4fff-a97f-0b640d5a8732
+   :END:
+#+begin_src emacs-lisp
+  ; (bbdb-initialize)
+#+end_src
+** apt-util
+
+#+begin_src emacs-lisp
+    (eval-after-load 'apt-utils
+      '(progn
+        (require 'thingatpt)
+
+        (defun apt-utils-choose-package ()
+          "Choose a Debian package name."
+          (let ((package
+                 (and (eq major-mode 'apt-utils-mode)
+                      (cadr (member 'apt-package
+                                    (text-properties-at (point))))))
+                (PC-word-delimiters "-"))
+            (when (not (stringp package))
+              (setq package (word-at-point)))
+            (completing-read (if package
+                                 (format "Choose Debian package (%s): " package)
+                                 "Choose Debian package: ")
+                             'apt-utils-choose-package-completion
+                             nil t package)))
+
+        (defun apt-utils-add-package-links ()
+          "Add hyperlinks to related Debian packages."
+          (let ((keywords '("Conflicts" "Depends" "Enhances" "Package"
+                            "Pre-Depends" "Provides" "Recommends" "Replaces"
+                            "Suggests"))
+                match)
+            (if (hash-table-p apt-utils-current-links)
+                (clrhash apt-utils-current-links)
+                (setq apt-utils-current-links (make-hash-table :test 'equal)))
+            (goto-char (point-min))
+            (while (re-search-forward "^\\([^ \n:]+\\):\\( \\|$\\)"
+                                      (point-max) t)
+              (setq match (match-string 1))
+              (add-text-properties (if (looking-at "$")
+                                       (point) ;; Conffiles (also see below)
+                                       (1- (point)))
+                                   (save-excursion
+                                     (beginning-of-line)
+                                     (point))
+                                   `(,apt-utils-face-property apt-utils-field-keyword-face))
+              (cond
+                ((member match keywords)
+                 ;; Remove newline characters in field
+                 (let ((end (apt-field-end-position)))
+                   (subst-char-in-region (point) end ?\n ?\  )
+                   (canonically-space-region (point) end))
+                 ;; Find packages
+                 (let ((packages (apt-utils-current-field-packages))
+                       (inhibit-read-only t)
+                       face
+                       length length-no-version
+                       package)
+                   (while packages
+                     (setq package (car packages))
+                     (setq length (length package))
+                     ;; Remove version info (in parenthesis), and whitespace
+                     (setq package (apt-utils-replace-regexp-in-string
+                                    "\\((.*)\\|\\s-+\\)" "" package))
+                     (setq length-no-version (length package))
+                     ;; Package type
+                     (cond
+                       ((equal (apt-utils-package-type package t) 'normal)
+                        (setq face 'apt-utils-normal-package-face))
+                       ((equal (apt-utils-package-type package t) 'virtual)
+                        (setq face 'apt-utils-virtual-package-face))
+                       (t
+                        (setq face 'apt-utils-broken-face)
+                        (setq package 'broken)))
+                     ;; Store package links
+                     (apt-utils-current-links-add-package package)
+                     ;; Add text properties
+                     (add-text-properties (point) (+ (point) length-no-version)
+                                          `(,apt-utils-face-property ,face
+                                                                     mouse-face highlight
+                                                                     apt-package ,package))
+                     ;; Version?
+                     (when (> length length-no-version)
+                       (add-text-properties (+ (point) length-no-version 1)
+                                            (+ (point) length)
+                                            `(,apt-utils-face-property apt-utils-version-face)))
+                     ;; Fill package names
+                     (when (and apt-utils-fill-packages
+                                (> (current-column) (+ 2 (length match)))
+                                (> (+ (current-column) length) fill-column))
+                       (when (equal (char-before) ?\ )
+                         (delete-char -1))          ; trailing whitespace
+                       (insert "\n" (make-string (+ 2 (length match)) ? )))
+                     (forward-char length)
+                     (when (and (equal match "Package")
+                                apt-utils-display-installed-status)
+                       (apt-utils-insert-installed-info package))
+                     (skip-chars-forward ", |\n")
+                     (setq packages (cdr packages)))))
+                ((string-match-p "Description\\(-..\\)?" match)
+                 (add-text-properties (point)
+                                      (save-excursion
+                                        (or
+                                         (re-search-forward "^[^ ]" (point-max) t)
+                                         (point-max)))
+                                      `(,apt-utils-face-property apt-utils-description-face)))
+                ;; Conffiles doesn't have trailing space
+                ((looking-at "$")
+                 nil)
+                (t
+                 (add-text-properties (1- (point))
+                                      (save-excursion
+                                        (end-of-line)
+                                        (point))
+                                      `(,apt-utils-face-property apt-utils-field-contents-face)))))))))
+#+end_src
+
+* inconnus:
+  :PROPERTIES:
+  :ID:       55d5e2b7-e3df-4fc9-8334-bb2f911b4fc2
+  :END:
+#+begin_src emacs-lisp
+  (setq gnus-local-domain ())
+#+end_src

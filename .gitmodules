@@ -1,0 +1,3 @@
+[submodule "src/magit"]
+	path = src/magit
+	url = git://github.com/magit/magit.git

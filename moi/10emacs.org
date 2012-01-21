@@ -351,7 +351,10 @@ Doit être au début sinon, problème avec le before-save-hook
 
   (defun ispell-guess-dictionary ()
     (interactive)
-    (ispell-change-dictionary (guess-lang-buffer)))
+    (let ((dict (guess-lang-buffer)))
+      (if dict
+          (ispell-change-dictionary dict)
+          (call-interactively 'ispell-change-dictionary))))
 
   (add-hook 'text-mode-hook #'ispell-guess-dictionary)
 #+end_src

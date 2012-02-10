@@ -90,6 +90,8 @@ Doit être au début sinon, problème avec le before-save-hook
   :ID:       b26b3373-e1ff-4a6e-a226-c63e195a9ceb
   :END:
 #+begin_src emacs-lisp
+  (global-set-key [?\C-x ?g] 'magit-status)
+
   (define-key input-decode-map (kbd "C-à") [?\C-c])
 
   (global-set-key [SunFA_Circum] 'nop)
@@ -133,6 +135,7 @@ Doit être au début sinon, problème avec le before-save-hook
   (define-key key-translation-map "\C-x8^n" "ⁿ")
   (define-key key-translation-map "\C-x8I" "∩")
   (define-key key-translation-map "\C-x8U" "∪")
+
 #+end_src
 
 ** lagn

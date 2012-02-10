@@ -400,13 +400,27 @@
   #+end_src
 
 * offlineimaprc.py
-#+begin_src python :tangle ~/.offlineimap.py
-  #!/usr/bin/python
-  import re, os
+  #+begin_src python :tangle ~/.offlineimap.py
+    #!/usr/bin/python
+    import re, os
 
-  def get_authinfo_password(machine, login, port):
-      s = "machine %s login %s password ([^ ]*)\n" % (machine, login)
-      p = re.compile(s)
-      authinfo = os.popen("gpg --use-agent -q --no-tty -d ~/.authinfo.gpg").read()
-      return p.search(authinfo).group(1)
+    def get_authinfo_password(machine, login, port):
+        s = "machine %s login %s password ([^ ]*)\n" % (machine, login)
+        p = re.compile(s)
+        authinfo = os.popen("gpg --use-agent -q --no-tty -d ~/.authinfo.gpg").read()
+        return p.search(authinfo).group(1)
+
+    atend = [ '[Gmail].Tous les messages', '[Gmail].Important', '[Gmail].Corbeille' ]
+
+    def mycmp(x, y):
+        for suffix in atend:
+            xsw = x.endswith(suffix)
+            ysw = y.endswith(suffix)
+            if xsw and ysw:
+                return cmp(x, y)
+            elif xsw:
+                return 1
+            elif ysw:
+                return -1
+        return cmp(x, y)
   #+end_src

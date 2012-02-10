@@ -14,13 +14,14 @@
                   "~/org/mononoke.org"
                   "~/org/personel.org"
                   "~/org/aniversaire.org"
+                  "~/org/contacts.org"
                   org-agenda-files-cours))
 
      (defun org-export-icalendar-cours ()
        (interactive)
        (let ((org-combined-agenda-icalendar-file "~/org/cours.ics"))
          (apply 'org-export-icalendar t org-agenda-files-cours)))
-   #+end_src
+        #+end_src
 ** Utilisons des dates européennes
 #+begin_src emacs-lisp
   (setq calendar-date-style 'european)

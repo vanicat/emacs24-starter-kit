@@ -306,16 +306,16 @@
   (setq gnus-summary-line-format "%U%R%z%(%[%4L: %-20,20f%]%)%B %s\n"
         ;; C'est le %B qui est important ici, et il n'est géré qu'avec ognus.
         gnus-summary-same-subject "")
-
+  
   (setq gnus-summary-make-false-root 'empty)
-
+  
   (if 't                                  ; •
       (setq gnus-sum-thread-tree-false-root "·"
-            gnus-sum-thread-tree-root "──» "
-            gnus-sum-thread-tree-single-indent "──» "
-            gnus-sum-thread-tree-leaf-with-other "├──» "
-            gnus-sum-thread-tree-vertical "│"
-            gnus-sum-thread-tree-single-leaf "└──» "
+            gnus-sum-thread-tree-root "––» "
+            gnus-sum-thread-tree-single-indent "––» "
+            gnus-sum-thread-tree-leaf-with-other "┣––» "
+            gnus-sum-thread-tree-vertical "┃"
+            gnus-sum-thread-tree-single-leaf "┗––» "
             gnus-sum-thread-tree-indent " ")
       (setq gnus-sum-thread-tree-root "> "
             gnus-sum-thread-tree-single-indent "> "
@@ -323,6 +323,7 @@
             gnus-sum-thread-tree-indent " "
             gnus-sum-thread-tree-leaf-with-other "+-> "
             gnus-sum-thread-tree-single-leaf "\\-> "))
+  
 #+end_src
 ** Word wrapping
 #+begin_src emacs-lisp

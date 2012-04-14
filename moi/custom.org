@@ -24,7 +24,6 @@
                                           ; (setq hippie-expand-try-functions-list (quote (try-complete-tag try-complete-abbrev try-complete-file-name try-expand-dabbrev try-flyspell-auto-correct-word)))
   (setq holiday-general-holidays (quote ((holiday-fixed 2 14 "Saint Valentin") (holiday-fixed 3 17 "St. Patrick") (holiday-fixed 4 1 "April Fools' Day") (holiday-float 6 0 3 "Father's Day") (holiday-fixed 10 31 "Halloween"))))
   (setq holiday-other-holidays (quote ((holiday-fixed 1 1 "Jour de l'An -- Ferié") (holiday-easter-etc 1 "Lundi de paque -- Ferié") (holiday-easter-etc 50 "Lundi de Pentecôte -- Ferié") (holiday-fete-des-mere) (holiday-fixed 5 1 "Fête du Travail (May Day!) -- Ferié") (holiday-fixed 5 8 "Victoire, 1945 -- Ferié") (holiday-float 5 4 3 "Ascension -- Ferié") (holiday-fixed 7 14 "Fête Nationale -- Ferié") (holiday-fixed 8 15 "Assomption -- Ferié") (holiday-fixed 11 1 "Toussaint -- Ferié") (holiday-fixed 11 11 "Armistice, 1918 -- Ferié") (holiday-fixed 12 25 "Noël -- Ferié") (holiday-fixed 6 21 "Fête de la musique"))))
-  (setq home-end-enable t)
   (setq icomplete-mode t)
   (setq indent-region-mode t)
   (setq indicate-buffer-boundaries (quote left))

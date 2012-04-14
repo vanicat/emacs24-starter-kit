@@ -160,6 +160,12 @@ Penser à reclasser les deux add-hook
   (global-set-key [XF86AudioNext] 'lagn-next)
 #+end_src
 
+** Home-end
+   #+begin_src emacs-lisp
+     (setq home-end-enable t)
+     (global-set-key [home] 'home-end-home)
+     (global-set-key [end] 'home-end-end)
+   #+end_src
 * Petites configs
 ** dabbrev
 #+begin_src emacs-lisp

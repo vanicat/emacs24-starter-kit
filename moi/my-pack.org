@@ -1,0 +1,10 @@
+* load my package
+  #+begin_src emacs-lisp
+     (defvar my-starter-kit-packages
+      (list 'rinari  'ruby-electric)
+      "Libraries that should be installed.")
+
+    (dolist (package my-starter-kit-packages)
+      (unless (package-installed-p package)
+        (package-install package)))
+  #+end_src

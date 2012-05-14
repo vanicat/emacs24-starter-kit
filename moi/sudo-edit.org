@@ -3,7 +3,10 @@
   (defun sudo-edit (&optional arg)
     (interactive "P")
     (if arg
-        (find-file (concat "/sudo:root@localhost:" (ido-read-file-name "File: ")))
-        (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
-
+        (find-file (concat "/sudo::" (ido-read-file-name "File: ")))
+        (let ((file-name (or dired-directory buffer-file-name)))
+          (if (tramp-tramp-file-p file-name)
+              (with-parsed-tramp-file-name file-name file
+                (find-alternate-file (concat "/sudo:" file-host ":" file-localname)))
+              (find-alternate-file (concat "/sudo::" file-name))))))
 #+end_src

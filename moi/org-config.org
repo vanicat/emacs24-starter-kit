@@ -105,6 +105,26 @@
       (org-export-blocks-add-block '(theorem org-export-blocks-format-theorem t))))
 #+end_src
 
+*** Une classe
+    #+name: org-latex-class
+    #+begin_src emacs-lisp
+      (eval-after-load 'org-latex
+        '(add-to-list 'org-export-latex-classes
+                      '("ledger"
+                        "\\documentclass[a4paper]{article}
+                         \\usepackage{myhead}
+                         \\usepackage{hyperref}
+                         \\header{Les comptes}
+                         [NO-DEFAULT-PACKAGES]
+                         [PACKAGES]
+                         [EXTRA]"
+                        ("\\section{%s}" . "\\section*{%s}")
+                        ("\\subsection{%s}" . "\\subsection*{%s}")
+                        ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                        ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                        ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+    #+end_src
+
 ** Pour l'agenda: la fête des mères et quelques autres fêtes.
     :PROPERTIES:
     :ID:       a1777554-e0a1-4a33-8e55-3e8e9620580e

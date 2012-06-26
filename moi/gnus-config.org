@@ -22,6 +22,8 @@
               (nndraft ""))
             '((nnml "")
               (nndraft "")
+              (nnimap "laposte"
+               (nnimap-address "imap.laposte.net"))
               (nnimap "localhost"
                (nnimap-stream shell)
                (nnir-search-engine imap)))))

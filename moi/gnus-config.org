@@ -2,16 +2,15 @@
 ** Normal access group
 #+begin_src emacs-lisp
   (setq nntp-connection-timeout 120)
-
+  
   (setq gnus-select-method
         (if (string= system-name "corbeau")
             '(nnspool ""
               (nnspool-spool-directory "/var/spool/news/articles/")
               (nnspool-nov-directory "/var/spool/news/overview")
               (nnspool-lib-dir "/var/lib/news"))
-            '(nnimap "localhost"
-              (nnimap-stream shell)
-              (nnir-search-engine imap))))
+            '(nnimap "gmail"
+                 (nnimap-address "imap.gmail.com"))))
   
   ;  (setq imap-shell-program "/usr/sbin/dovecot --exec-mail imap")
   (setq imap-shell-program "/usr/lib/dovecot/imap")
@@ -24,9 +23,12 @@
               (nndraft "")
               (nnimap "laposte"
                (nnimap-address "imap.laposte.net"))
+              (nnimap "gmail"
+               (nnimap-address "imap.gmail.com"))
               (nnimap "localhost"
                (nnimap-stream shell)
                (nnir-search-engine imap)))))
+  
 #+end_src
 
 ** Refer to article

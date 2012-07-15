@@ -24,11 +24,10 @@
               (nnimap "laposte"
                (nnimap-address "imap.laposte.net"))
               (nnimap "gmail"
-               (nnimap-address "imap.gmail.com"))
-              (nnimap "localhost"
-               (nnimap-stream shell)
-               (nnir-search-engine imap)))))
-  
+               (nnimap-address "imap.gmail.com")))))
+  ;; (nnimap "localhost"
+  ;;         (nnimap-stream shell)
+  ;;         (nnir-search-engine imap))
 #+end_src
 
 ** Refer to article

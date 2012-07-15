@@ -597,12 +597,12 @@ Penser à reclasser les deux add-hook
   (defun erc-freenode ()
     (interactive)
     (erc :server "irc.freenode.net" :full-name "Rémi Vanicat"
-         :nick "__DL__"))
+         :nick "__DL__" :full-name "Rémi Vanicat"))
 
   (defun erc-debian ()
     (interactive)
-    (erc :server "irc.debian.org" :full-name "Rémi Vanicat"
-         :nick "__DL__"))
+    (erc :server "irc.oftc.net" :full-name "Rémi Vanicat"
+         :nick "__DL__" :full-name "Rémi Vanicat"))
 
   (defun erc-otaku ()
     (interactive)

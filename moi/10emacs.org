@@ -11,6 +11,10 @@
     (push dir load-path))
 #+end_src
 
+* gérons le dépassement de capacité
+#+begin_src emacs-lisp
+  (setq max-lisp-eval-depth 3000)
+#+end_src
 * Chromium a besoin de edit-server
    :PROPERTIES:
    :ID:       89bfd095-c7f5-455b-b726-40d3bb011102

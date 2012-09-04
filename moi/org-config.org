@@ -3,10 +3,11 @@
    #+begin_src emacs-lisp
      (setq org-agenda-files-cours
            (list "~/org/cours.org"
-                 "~/travail/cours/premiere/2011-2012 S/1S.org"
-                 "~/travail/cours/snd/mps/mps.org"
-                 "~/travail/cours/snd/2011 201/seconde1.org"
-                 "~/travail/cours/premiere/2011-2012 STG/1STG.org"))
+                 "~/travail/cours/P_SSI/P_SSI.org"
+                 "~/travail/cours/TESX/TESX.org"
+                 "~/travail/cours/SpeTES/SpeTES.org"
+                 "~/travail/cours/SpeTS/SpeTS.org"
+                 "~/travail/cours/TSTG/TSTG.org"))
 
      (setq org-agenda-files
            (list* "~/org/prgm.org"

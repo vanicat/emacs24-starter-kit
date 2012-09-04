@@ -1,6 +1,6 @@
 ;;; @(#) guess-lang.el --- Automagically guess what is the language of a buffer
 
-;;; @(#) $Id: guess-lang.el,v 1.1 2001/10/17 17:27:38 benj Exp $
+;;; @(#) $Id: guess-lang.el,v 1.1.1.1 2002/07/01 17:04:37 benj Exp $
 
 ;; This file is *NOT* part of GNU Emacs.
 
@@ -13,7 +13,7 @@
 ;; LCD Archive Entry:
 ;; guess-lang|Benjamin Drieu|bdrieu@april.org|
 ;; Automagically guess what is the language of a buffer|
-;; 22-Apr-2001|$Revision: 1.1 $|~/misc/guess-lang.el|
+;; 22-Apr-2001|$Revision: 1.1.1.1 $|~/misc/guess-lang.el|
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -37,9 +37,8 @@
 ;; This works basically by counting occurrences of common words in
 ;; every language that is known and comparing respective numbers.
 ;; Languages currently supported are english, french, german, danish,
-;; polish, spanish, esperanto and somewhat russian (based on loosely
-;; collected words from various .po files ... does anybody want to
-;; help ?).
+;; polish, spanish and somewhat russian (based on loosely collected
+;; words from various .po files ... does anybody want to help ?).
 
 ;; guess-lang.el is based on an idea from Pascal Courtois
 ;; <Pascal.Courtois@nouvo.com> but evolved a lot.
@@ -58,9 +57,10 @@
 ;; 	       (ispell-message)))
 
 ;; You may try to use the following with "experimental" versions of
-;; ispell (add-hook 'ispell-generic-hook 'guess-lang-set-ispell-dictionnary)
+;; ispell (add-hook 'ispell-hook 'guess-lang-set-ispell-dictionnary)
 
 ;; To do:
+;; - add support for aliases again
 ;; - notify when no dictionnary can be loaded
 ;; - explain how to make new frequency tables of keywords.
 ;; - speed up execution
@@ -68,11 +68,60 @@
 ;; - in case of huge buffers, use a better algorithm to check only
 ;;   relevant parts
 
+;; History:
+
+;; $Log: guess-lang.el,v $
+;; Revision 1.1.1.1  2002/07/01 17:04:37  benj
+;; - version initiale
+;;
+;; Revision 1.10  2001/10/17 17:26:54  benj
+;; - in guess-lang-set-ispell-dictionnary, set the dictionnary only if a
+;;   language can be found
+;;
+;; Revision 1.9  2001/06/13 20:02:09  benj
+;; - bugfixes
+;;
+;; Revision 1.8  2001/06/13 19:38:13  benj
+;; - added support for separate dictionnaries loaded on demand
+;; - these are stored in one of th directories specified by the new
+;;   configuration variable `guess-lang-dictionnaries-path'
+;;
+;; Revision 1.7  2001/06/06 12:20:06  drieu
+;; - added support for swedish thanks to Knut Wannheden
+;;
+;; Revision 1.6  2001/06/05 23:59:54  benj
+;; - added narrowing to save computation time in case of huge buffers
+;;
+;; Revision 1.5  2001/06/04 22:38:48  benj
+;; - added hooks for guess-lang functions
+;; - updated examples in header
+;;
+;; Revision 1.4  2001/06/04 22:34:01  benj
+;; - added caching capabilities
+;; - added experimental support for experimental ``ispell hooks''
+;; - did some cleanup in frequency lists
+;; - fixed some docstrings
+;; - added support for Polish thanks to Michel Luczak
+;;
+;; Revision 1.3  2001/05/18 22:40:19  benj
+;; - added support for various charsets
+;; - changed a bit dictionnaries structure
+;; - added _experimental_ support for russian
+;;
+;; Revision 1.2  2001/05/13 17:28:27  drieu
+;; - added support for Danish thanks to Ole Laursen
+;; - added better German frequencies thanks to Jesper Harder
+;; - replaced all ``ratio'' occurences by ``frequencies''
+;;
+;; Revision 1.1  2001/04/24 20:18:11  drieu
+;; Initial revision
+;;
+
 ;;; Variables:
 
 (defvar guess-lang-version
   (progn
-    (let ((revision "$Revision: 1.1 $"))
+    (let ((revision "$Revision: 1.1.1.1 $"))
       (string-match "\\([0-9\\.]*\\) *\\$$" revision)
       (match-string 1 revision)))
   "Version number.")
@@ -83,9 +132,8 @@
   :group 'convenience)
 
 (defcustom guess-lang-languages-to-guess
-  '("french" "english")
-  "Languages to guess.  Their names should be the same as Ispell
-dictionnaries you have."
+  '("francais" "american" "deutsch" "spanish" "italiano" "danish" "polish" "swedish")
+  "Languages to guess.  Their names should be the same as Ispell dictionnaries you have."
   :type 'list
   :group 'guess-lang)
 
@@ -104,102 +152,15 @@ state-of-the-art Intels at this time."
   :type 'number
   :group 'guess-lang)
 
+(defcustom guess-lang-dictionnaries-path 
+  "/usr/share/guess-lang/dict"
+  "List of directories where guess-lang-dictionnaries are installed.
+After looking at this list, `guess-lang' examines $HOME/.guess-lang/.
+You can optionally use a string to specify directories a la $PATH."
+  :group 'guess-lang)
+
 (defvar guess-lang-cached-buffers nil
   "Hold the list of cached buffer where language is already known.")
-
-(defvar guess-lang-french-dictionnary
-  '(;; This is iso8859-1 representation for a word
-    "a-zA-Z\270\300-\326\300-\366\370-\377"
-    
-    ("de" . 0.038982874)
-    ("la" . 0.026053034)
-    ("et" . 0.015805825)
-    ("le" . 0.015539979)
-    ("les" . 0.015394974)
-    ("des" . 0.013244028)
-    ("a" . 0.012881505)
-    ("en" . 0.011238087)
-    ("un" . 0.008821295)
-    ("est" . 0.008821295)
-    ("il" . 0.008047921)
-    ("que" . 0.007757904)
-    ("du" . 0.007709569)
-    ("une" . 0.006936195)
-    ("dans" . 0.006356168)
-    ("qui" . 0.005921146)
-    ("pour" . 0.005510288)
-    ("au" . 0.005147772)
-    ("pas" . 0.004857755)
-    ("s" . 0.004567738)
-    ("sur" . 0.004471068)
-    ("ne" . 0.004422733)
-    ("par" . 0.004205222)
-    ("ce" . 0.003987711)
-    ("plus" . 0.003939376)
-    ("se" . 0.003818535)
-    ("ont" . 0.003141831)
-    ("on" . 0.002948491)
-    ("ou" . 0.002900149)
-    ("sont" . 0.002851814)
-    ("nous" . 0.002755144)
-    ("mais" . 0.002634303)
-    ("aux" . 0.002489298)
-    ("e" . 0.002416792)
-    ("me" . 0.002392628)
-    ("ils" . 0.002344286)
-    ("avec" . 0.002295951)
-    ("son" . 0.002150946)
-    ("je" . 0.002102611)
-    ("y" . 0.00207844)
-    ("cette" . 0.002005941)))
-
-(defvar guess-lang-english-dictionnary
-  '(;; This is iso8859-1 representation for a word
-    "a-zA-Z\270\300-\326\300-\366\370-\377"
-
-    ("the" . 0.049920353)
-    ("of" . 0.022687168)
-    ("to" . 0.019041785)
-    ("in" . 0.01741208)
-    ("and" . 0.015953924)
-    ("a" . 0.015053304)
-    ("is" . 0.010635954)
-    ("that" . 0.00896336)
-    ("s" . 0.006733244)
-    ("for" . 0.006261486)
-    ("it" . 0.006089937)
-    ("not" . 0.005661068)
-    ("be" . 0.005618186)
-    ("on" . 0.005017768)
-    ("this" . 0.004631788)
-    ("as" . 0.004588899)
-    ("was" . 0.004503128)
-    ("are" . 0.00441735)
-    ("have" . 0.003945592)
-    ("i" . 0.003859821)
-    ("by" . 0.003816932)
-    ("with" . 0.003816932)
-    ("will" . 0.00377405)
-    ("has" . 0.003473841)
-    ("you" . 0.003388063)
-    ("they" . 0.003302292)
-    ("but" . 0.003216521)
-    ("at" . 0.003173632)
-    ("he" . 0.003044972)
-    ("would" . 0.003002083)
-    ("an" . 0.003002083)
-    ("all" . 0.002959194)
-    ("people" . 0.002873423)
-    ("there" . 0.002873423)
-    ("from" . 0.002701874)
-    ("or" . 0.002616103)
-    ("which" . 0.002573214)
-    ("his" . 0.002487443)
-    ("we" . 0.002487443)
-    ("what" . 0.002358783)
-    ("one" . 0.002273005)
-    ("who" . 0.002230116)
-    ("q" . 0.002015685)))
 
 ;;; Code:
 
@@ -207,7 +168,7 @@ state-of-the-art Intels at this time."
   "Return number of occurences for REGEXP following point."
   (let ((count 0) opoint)
     (save-excursion
-      (while (and (not (eobp))
+     (while (and (not (eobp))
 		 (progn (setq opoint (point))
 			(re-search-forward regexp nil t)))
        (if (= opoint (point))
@@ -215,28 +176,28 @@ state-of-the-art Intels at this time."
 	 (setq count (1+ count))))
      count)))
 
+
 (defun guess-lang-frequency (lang)
   "Compute frequency of occurences of LANG keywords in buffer."
-  (let ((numwords
-         (guess-lang-how-many (guess-lang-language-word-regexp lang)))
+  (let ((numwords (guess-lang-how-many (guess-lang-language-word-regexp lang))) ; TODO: should it be better to compute this _once_ ?
 	(keywords-alist (guess-lang-keyword-list lang)))
     (/ (guess-lang-frequency-1 keywords-alist numwords)
        (float (length keywords-alist)))))
 
+
 (defun guess-lang-language-word-regexp (&optional lang)
   "Return a regexp matching a word.
-Optional argument LANG provides the name of the language which
-you are looking for the regexp of a word."
+Optional argument LANG provides the name of the language which you are looking for the regexp of a word."
   (if (or (null lang)
 	  (null (car (guess-lang-property-list lang))))
       "\\<[a-zA-Z]+\\>"
     (concat "\\<[" (car (guess-lang-property-list lang)) "]+\\>")))
 
+
 (defun guess-lang-frequency-1 (alist numwords)
   "Recursor for `guess-lang-frequency'.
-Argument ALIST is a list of pairs which describe probability of
-keywords.  Argument NUMWORDS is the number of words in the
-buffer, passed as an argument to save time."
+Argument ALIST is a list of pairs which describe probability of keywords.
+Argument NUMWORDS is the number of words in the buffer, passed as an argument to save time."
   (cond
    ((null alist) 0)
    ((let ((occurences (guess-lang-how-many (concat "\\<" (caar alist) "\\>"))))
@@ -244,18 +205,70 @@ buffer, passed as an argument to save time."
        (if (> (/ occurences (float numwords)) (cdar alist))
 	   1 0)
        (guess-lang-frequency-1 (cdr alist) numwords))))))
+	  
 
 (defun guess-lang-keyword-list (lang)
   "Return keyword list for LANG from a dictionnary.
 There may be aliases, see dictionnaries installed on your system for examples."
   (cdr (guess-lang-property-list lang)))
 
+
 (defun guess-lang-property-list (lang)
   "Return property list for LANG from `guess-lang-words'.
 There may be aliases, see `guess-lang-words' for examples."
-  (if (string= lang "english")
-      guess-lang-english-dictionnary
-    guess-lang-french-dictionnary))
+  (let ((dictname (read (concat "guess-lang-" lang "-dictionnary"))))
+    (if (boundp dictname)
+	(eval dictname)
+      (guess-lang-load-dictionnary lang))))
+
+
+(defun guess-lang-load-dictionnary (lang)
+  "Load the LANG dictionnary if found."
+  (let ((filename (guess-lang-find-dictionnary lang (guess-lang-make-path-list))))
+    (if filename 
+	(progn (load filename nil t t)
+	       (eval (read (concat "guess-lang-" lang "-dictionnary")))))))
+
+
+(defun guess-lang-find-dictionnary (lang path)
+  "Find the guess-lang dictionnary for LANG in PATH list of directories."
+  (if path
+      (let ((filename-elc (concat (car path) "/" lang ".elc"))
+	    (filename (concat (car path) "/" lang))
+	    (filename-el (concat (car path) "/" lang ".el")))
+	(cond 
+	 ((file-exists-p filename-elc) filename-elc)
+	 ((file-exists-p filename-el) filename-el)
+	 ((file-exists-p filename) filename)
+	 ((guess-lang-find-dictionnary lang (cdr path)))))))
+   
+
+(defun guess-lang-make-path-list ()
+  "Return a list of directories where to find Guess-lang dictionnaries.
+
+Guess-lang will look at dictionnaries first in
+`guess-lang-dictionnaries-path', then in $HOME/.guess-lang if not
+already in `guess-lang-dictionnaries-path' and then in the current
+directory."
+  (let ((home-dir-path (concat (getenv "HOME") "/.guess-lang"))
+	(current-dir (chop default-directory))
+	(guess-lang-default-directories 
+	  (cond 
+	   ((listp guess-lang-dictionnaries-path) guess-lang-dictionnaries-path)
+	   ((stringp guess-lang-dictionnaries-path) 
+	    (split-string guess-lang-dictionnaries-path ":")))))
+    (append guess-lang-default-directories
+	    (if (not (member home-dir-path guess-lang-default-directories)) 
+		(list home-dir-path))
+	    (if (not (member current-dir guess-lang-default-directories)) 
+		(list current-dir)))))
+
+
+(defun chop (string)
+  "Remove the last character for STRING.
+Pure perlism. ;-)"
+  (substring string 0 -1))
+	  
 
 (defun guess-lang-buffer (&optional lang cached)
   "Guess language for current buffer.
@@ -271,10 +284,12 @@ look at the cache."
 	    (beginning-of-buffer))
 	(guess-lang lang))))
 
+
 (defun guess-lang-buffer-cached (&optional lang)
   "Guess language for current buffer from the cache.
 Optional argument LANG Guess language for current buffer from the cache."
   (guess-lang-buffer lang t))
+
 
 (defun guess-lang-other-buffer (buffer &optional lang cached)
   "Guess language for another BUFFER.
@@ -291,6 +306,7 @@ Optional argument CACHED specifies wheter the search is cached."
 	    (beginning-of-buffer)
 	    (guess-lang (or lang guess-lang-languages-to-guess))))))
 
+
 (defun guess-lang-other-buffer-cached (buffer &optional lang)
   "Guess language for another BUFFER from the cache.
 
@@ -298,7 +314,7 @@ Optional argument LANG  is a list of languages to check for and is
 defaulted to `guess-lang-languages-to-guess'."
   (guess-lang-other-buffer buffer lang t))
 
-;;;###autoload
+
 (defun guess-lang-message (&optional lang cached)
   "Guess language for current buffer, which is a message.
 Optional argument LANG is a list of language to check.
@@ -314,14 +330,15 @@ Optional argument CACHED specifies whether the search performed is cached."
 	(message-goto-body)
 	(guess-lang lang))))
 
+
 (defun guess-lang-add-buffer-to-list (&optional buffer lang)
   "Add BUFFER to the cache and specify its language is LANG.
 BUFFER is defaulted to current buffer."
   (run-hooks 'guess-lang-add-buffer-to-list-hook)
   (add-hook 'kill-buffer-hook 'guess-lang-remove-buffer-from-list nil t)
-  (setq guess-lang-cached-buffers
-        (cons (cons (or buffer (current-buffer))
-                    (or lang (guess-lang-buffer))) guess-lang-cached-buffers)))
+  (setq guess-lang-cached-buffers (cons (cons (or buffer (current-buffer))
+					      (or lang (guess-lang-buffer))) guess-lang-cached-buffers)))
+
 
 (defun guess-lang-remove-buffer-from-list (&optional buffer)
   "Remove BUFFER from the cache."
@@ -329,14 +346,15 @@ BUFFER is defaulted to current buffer."
 	(guess-lang-remove-buffer-from-list-1
 	 (or buffer (current-buffer)) guess-lang-cached-buffers)))
 
+
 (defun guess-lang-remove-buffer-from-list-1 (buffer list)
   "Recursor for `guess-lang-remove-buffer-from-list'.
 Remove BUFFER from the cache, which is LIST for this recursion."
   (cond
    ((null list) nil)
    ((equal (caar list) buffer) (cdr list))
-   (t (cons (car list)
-            (guess-lang-remove-buffer-from-list-1 buffer (cdr list))))))
+   (t (cons (car list) (guess-lang-remove-buffer-from-list-1 buffer (cdr list))))))
+
 
 (defun guess-lang-flush-cache ()
   "Flush the cache from all buffers."
@@ -347,20 +365,18 @@ Remove BUFFER from the cache, which is LIST for this recursion."
 (defun guess-lang (&optional langs)
   "Guess language in current buffer, but only among LANGS."
   (run-hooks 'guess-lang-hook)
+  (message (concat "Guessing language of buffer " (buffer-name (current-buffer)) " ..."))
   (save-excursion
     (save-restriction
-      (princ (concat "Guessing language of buffer "
-                     (buffer-name (current-buffer)) " ... "))
       (if (> (buffer-size) guess-lang-max-buffer-size)
-	  (narrow-to-region
-           (point) (min (point-max) (+ (point) guess-lang-max-buffer-size))))
+	  (narrow-to-region (point) (min (point-max) (+ (point) guess-lang-max-buffer-size))))
       (let ((lang (guess-lang-1 (or langs guess-lang-languages-to-guess))))
-	(let ((numwords
-               (guess-lang-how-many (guess-lang-language-word-regexp lang))))
+	(let ((numwords (guess-lang-how-many (guess-lang-language-word-regexp lang))))
 	  (when (> numwords guess-lang-min-words-to-cache)
 	    (guess-lang-add-buffer-to-list (current-buffer) lang))
-	  (princ (concat "(" lang ")"))
+	  (message nil)
 	  lang)))))
+
 
 ;; This is going to be accelerated since this is not very optimal to
 ;; compute this several times.  In the future, one pass will be made
@@ -379,13 +395,18 @@ THRESHOLD, it won't be returned."
 	  (car langs)
 	(guess-lang-1 (cdr langs) threshold))))))
 
+
 (defun guess-lang-set-ispell-dictionnary (&optional dictionnary)
   "Utility function provided for use with Ispell mode.
 Your version of Ispell may not support it (in fact, this is not _yet_
 included in Ispell distribution).
 
 Set Ispell dictionnary either to DICTIONNARY or to guessed one."
-  (ispell-change-dictionary (guess-lang-buffer-cached)))
+  (let ((language (guess-lang-buffer-cached)))
+    (message language)
+    (if language 
+	(ispell-change-dictionary language))))
+
 
 (provide 'guess-lang)
 (run-hooks 'guess-lang-load-hook)

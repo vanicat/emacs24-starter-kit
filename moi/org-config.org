@@ -15,7 +15,6 @@
                   "~/org/personel.org"
                   "~/org/aniversaire.org"
                   "~/org/contacts.org"
-                  "~/org/appartement.org"
                   org-agenda-files-cours))
 
      (defun org-export-icalendar-cours ()

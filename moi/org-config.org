@@ -284,7 +284,10 @@
       (org-mobile-push)))
 
   (setq org-agenda-custom-commands
-        '(("n" "Next 21 days" agenda "" ((org-agenda-span 21)))))
+        '(("n" "Next 21 days" agenda "" ((org-agenda-span 21)))
+          ("w" "Full week" agenda "" ((org-agenda-span 9)
+                                      (org-agenda-start-on-weekday 6)))))
+
 #+end_src
 
 ** org-contact

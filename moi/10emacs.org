@@ -377,6 +377,10 @@ Penser à reclasser les deux add-hook
   (autoload 'guess-lang-buffer "guess-lang" "" 't)
   (autoload 'guess-lang-message "guess-lang" "" 't)
 
+  (setq guess-lang-dictionnaries-path "~/.emacs.d/src/guess-lang-dictionaries")
+  (setq guess-lang-languages-to-guess '("francais" "american"))
+
+
   (defun ispell-guess-dictionary ()
     (interactive)
     (let ((dict (guess-lang-buffer)))

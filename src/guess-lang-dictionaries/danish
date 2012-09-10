@@ -1,0 +1,55 @@
+;; -*- emacs-lisp -*-
+;; Danish dictionnary for guess-lang
+
+;; Many thanks to Ole Laursen and Jesper Harden for this support
+
+;; These frequencies come from "H. Bergenholtz, Dansk frekvensordbog,
+;; G.E.C. Gad, Copenhagen 1992"
+
+;; Dansk is an alias for Danish
+
+
+(defvar guess-lang-danish-dictionnary
+  '(;; This is iso8859-1 representation for a word
+    "a-zA-Z\270\300-\326\300-\366\370-\377"
+     
+    ("og" . 0.03347)
+    ("i" . 0.02709)
+    ("at" . 0.02410)
+    ("det" . 0.02303)
+    ("en" . 0.01665)
+    ("er" . 0.01657)
+    ("på" . 0.01516)
+    ("til" . 0.01460)
+    ("jeg" . 0.01346)
+    ("med" . 0.01248)
+    ("af" . 0.01240)
+    ("ikke" . 0.01231)
+    ("han" . 0.01226)
+    ("var" . 0.01187)
+    ("der" . 0.01172)
+    ("de" . 0.01172)
+    ("den" . 0.01159)
+    ("for" . 0.01141   )
+    ("som" . 0.00892)
+    ("så" . 0.00829)
+    ("har" . 0.00802)
+    ("hun" . 0.00787)
+    ("et" . 0.00774)
+    ("om" . 0.00716)
+    ("men" . 0.00711)
+    ("sig" . 0.00633)
+    ("havde" . 0.00561)
+    ("vi" . 0.00442)
+    ("kan" . 0.00431)
+    ("fra" . 0.00420)
+    ("ved" . 0.00389)
+    ("du" . 0.00358)
+    ("mig" . 0.00357)
+    ("man" . 0.00339)
+    ("ud" . 0.00326)
+    ("kunne" . 0.00310)
+    ("skal" . 0.00295)
+    ("ham" . 0.00288)
+    ("blev" . 0.00283)
+    ("op" . 0.00275)))

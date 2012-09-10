@@ -1,0 +1,50 @@
+;; -*- emacs-lisp -*-
+;; Russian dictionnary for guess-lang
+
+;; TODO: find *REAL* Russian words, this is just a test.  Any native
+;; Russian speaker, please contact me to contribute.
+
+(defvar guess-lang-russian-dictionnary
+  '(;; This is iso8859-2 representation for a word
+    "a-zA-Z\241\243\245\246\251-\254\256\257\261\263\265\266\271-\274\276-\326\330-\366\370-\376"
+
+    (",AoKNO(B" . 0.03548387)
+    (",AnASTROJKI(B" . 0.03225806)
+    (",AnE(B" . 0.02903226)
+    (",AsPISOK(B" . 0.02580645)
+    (",ANA(B" . 0.02258065)
+    (",AOKNO(B" . 0.01935484)
+    (",AsKRIPTY(B" . 0.01612903)
+    ("nickname" . 0.01612903)
+    (",APRI(B" . 0.01612903)
+    (",ASOOB]ENIE(B" . 0.01290323)
+    (",AmEN@(B" . 0.01290323)
+    (",AOKNA(B" . 0.01290323)
+    (",ASTILX(B" . 0.00967742)
+    ("dcc" . 0.00967742)
+    (",AkNOPKI(B" . 0.00967742)
+    (",AOVIDANIQ(B" . 0.00967742)
+    (",AK(B" . 0.00967742)
+    ("nicknames" . 0.00967742)
+    (",ArAZMER(B" . 0.00967742)
+    (",AzAKLADKA(B" . 0.00967742)
+    (",AoKNA(B" . 0.00967742)
+    (",AZAKLADKI(B" . 0.00967742)
+    (",ASPISOK(B" . 0.00967742)
+    ("chat" . 0.00967742)
+    (",ApEREDA^I(B" . 0.00967742)
+    (",APRISOEDINQTXSQ(B" . 0.00645161)
+    (",AHOST(B" . 0.00645161)
+    (",ApRINIMATX(B" . 0.00645161)
+    ("beep" . 0.00645161)
+    ("mirc" . 0.00645161)
+    ("kick" . 0.00645161)
+    (",AdIREKTORIQ(B" . 0.00645161)
+    (",Au[#L(B" . 0.00645161)
+    ("send" . 0.00645161)
+    (",AsOHRANITX(B" . 0.00645161)
+    (",ArASPOLOVENIE(B" . 0.00645161)
+    (",AmODULI(B" . 0.00645161)
+    (",ADLQ(B" . 0.00645161)
+    (",AkOMANDA(B" . 0.00645161)
+    (",APERED(B" . 0.00645161)))

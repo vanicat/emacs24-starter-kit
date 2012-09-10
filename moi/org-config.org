@@ -17,12 +17,23 @@
                   "~/org/aniversaire.org"
                   "~/org/contacts.org"
                   org-agenda-files-cours))
+   #+end_src
+** Exportons vers ical
+   #+begin_src emacs-lisp
+     (setq org-combined-agenda-icalendar-file "~/org/org.ics")
 
      (defun org-export-icalendar-cours ()
        (interactive)
        (let ((org-combined-agenda-icalendar-file "~/org/cours.ics"))
          (apply 'org-export-icalendar t org-agenda-files-cours)))
-        #+end_src
+
+     (setq org-icalendar-date-time-format ":%Y%m%dT%H%M%S")
+     (setq org-icalendar-include-todo t)
+     (setq org-icalendar-store-UID t)
+     (setq org-icalendar-timezone "Europe/Paris")
+     (setq org-icalendar-use-deadline '(event-if-not-todo event-if-todo))
+     (setq org-icalendar-use-scheduled '(event-if-not-todo event-if-todo))
+   #+end_src
 ** Utilisons des dates européennes
 #+begin_src emacs-lisp
   (setq calendar-date-style 'european)
@@ -319,17 +330,10 @@
                 ("i" "messageid" entry (file+headline "~/org/notes.org" "Notes")
                      "* %:subject\n  :PROPERTIES:\n  :SUBMITER: %:from\n  :END:\n  <%:message-id>\n  %:body"
                      :kill-buffer t))))
-  (setq org-combined-agenda-icalendar-file "~/org/org.ics")
   (setq org-enforce-todo-checkbox-dependencies t)
   (setq org-enforce-todo-dependencies t)
   (setq org-export-with-toc nil)
   (setq org-hide-leading-stars t)
-  (setq org-icalendar-date-time-format ";TZID=%Z:%Y%m%dT%H%M%S")
-  (setq org-icalendar-include-todo t)
-  (setq org-icalendar-store-UID t)
-  (setq org-icalendar-timezone "Europe/Paris")
-  (setq org-icalendar-use-deadline '(event-if-not-todo event-if-todo))
-  (setq org-icalendar-use-scheduled '(event-if-not-todo event-if-todo))
   (setq org-modules '(org-bbdb org-bibtex org-gnus org-id org-info org-jsinfo org-irc org-wl org-w3m))
   (setq org-refile-targets (quote ((org-agenda-files :level . 1))))
   (setq org-return-follows-link t)

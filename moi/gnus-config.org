@@ -355,7 +355,7 @@
   (require 'org-gnus)
 #+end_src
 * Notmuch
-#+begin_src emacs-lisp
+#+begin_example
   (defun lld-notmuch-shortcut ()
     (define-key gnus-group-mode-map "GG" 'notmuch-search))
 
@@ -390,7 +390,7 @@
     (setq notmuch-fcc-dirs ())
 
     (define-key notmuch-show-mode-map (kbd "C-c C-c") 'lld-notmuch-goto-message-in-gnus))
-#+end_src
+#+end_example
 
 * Expiring
   #+begin_src emacs-lisp 

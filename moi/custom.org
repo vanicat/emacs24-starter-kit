@@ -7,8 +7,6 @@
   (setq debian-bug-use-From-address t)
   (setq df-run-on-startup t)
   (setq dictionary-server "localhost")
-  (setq dired-guess-shell-alist-user (quote ((".pdf$" "evince * &") (".ps$" "evince * &" "gv * &" "lpr") (".mp3$" "see * &"))))
-  (setq dired-view-command-alist (quote (("[.]mp3\\'" . "totem %s") ("[.]\\(ps\\|ps_pages\\|eps\\)\\(.gz\\)?\\'" . "gv -spartan -color -watch %s") ("[.]pdf\\'" . "evince %s") ("[.]\\(jpe?g\\|gif\\|png\\)\\'" . "eog %s") ("[.]dvi\\'" . "xdvi -sidemargin 0.5 -topmargin 1 %s") ("[.]gnumeric\\'" . "gnumeric %s"))))
   (setq ediff-window-setup-function (quote ediff-setup-windows-plain))
   (setq emacs-goodies-el-defaults t)
   (setq enable-recursive-minibuffers t)

@@ -3,3 +3,13 @@
     (setq dired-guess-shell-alist-user (quote ((".pdf$" "evince * &") (".ps$" "evince * &" "gv * &" "lpr") (".mp3$" "see * &"))))
     (setq dired-view-command-alist (quote (("[.]mp3\\'" . "totem %s") ("[.]\\(ps\\|ps_pages\\|eps\\)\\(.gz\\)?\\'" . "gv -spartan -color -watch %s") ("[.]pdf\\'" . "evince %s") ("[.]\\(jpe?g\\|gif\\|png\\)\\'" . "eog %s") ("[.]dvi\\'" . "xdvi -sidemargin 0.5 -topmargin 1 %s") ("[.]gnumeric\\'" . "gnumeric %s"))))
   #+end_src
+* Create new dir on fly
+  #+begin_src emacs-lisp
+    (defadvice dired-mark-read-file-name (after rv:dired-create-dir-when-needed (prompt dir op-symbol arg files &optional default) activate)
+      (when (member op-symbol '(copy move))
+        (when (and (or (string= (file-name-as-directory ad-return-value) ad-return-value)
+                       (< 1 (length files)))
+                   (not (file-directory-p ad-return-value)))
+          (when (y-or-n-p (format "directory %s doesn't exist, create it?" ad-return-value))
+            (make-directory ad-return-value t)))))
+  #+end_src

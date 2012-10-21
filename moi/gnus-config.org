@@ -395,7 +395,13 @@
 * Expiring
   #+begin_src emacs-lisp 
     (setq gnus-parameters
-          '(("Gmail/\\[Gmail\\].Tous les messages" (expiry-target "nnimap+localhost:Gmail/[Gmail].Corbeille"))))
+          '(("Gmail/\\[Gmail\\].Tous les messages" (expiry-target "nnimap+localhost:Gmail/[Gmail].Corbeille"))
+            ("gmane.comp.version-control.git.magit" (to-address . "Magit Mailing List <magit@googlegroups.com>")
+                                                    (to-list    . "Magit Mailing List <magit@googlegroups.com>"))
+            ("gmane.comp.version-control.git" (to-address . "git mailing list <git@vger.kernel.org>")
+                                              (to-list    . "git mailing list <git@vger.kernel.org>"))
+            ("gmane.comp.lang.ocaml.beginners" (to-address . "ocaml_beginners@yahoogroups.com")
+                                               (to-list    . "ocaml_beginners@yahoogroups.com"))))
   #+end_src
 
 * Completion

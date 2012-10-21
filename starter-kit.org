@@ -91,7 +91,7 @@ mentioned in [[customizations]] immediately below.
    :END:
 
 The defaults built into the starter kit are only the beginning of
-most users customization of Emacs to suite their needs.  The starter
+most users customization of Emacs to suit their needs.  The starter
 kit provides a number of places for additional user and system
 specific customization.  These are designed in such a way that it will
 be easy for you to continue tracking your own personal customization
@@ -260,8 +260,9 @@ interested in the actual code implementing the starter kit.
 - ELPA archive repositories and two packages to install by default.
   #+begin_src emacs-lisp
     (setq package-archives
-          '(("original"    . "http://tromey.com/elpa/")
-            ("gnu"         . "http://elpa.gnu.org/packages/")
+          '(("gnu"         . "http://elpa.gnu.org/packages/")
+            ("original"    . "http://tromey.com/elpa/")
+            ("org"         . "http://orgmode.org/elpa/")
             ("marmalade"   . "http://marmalade-repo.org/packages/")))
     (package-initialize)
     

@@ -340,11 +340,14 @@
   (setq gnus-spam-process-destinations
         '(("nnml:.*" "nnml:mail.spam")
           ("Gmail/\\[Gmail\\].Spam" nil)
-          ("Gmail/.*" "nnimap+localhost:Gmail/[Gmail].Spam")))
+          ("Gmail/.*" "nnimap+localhost:Gmail/[Gmail].Spam")
+          ("nnimap\\+gmail:\\[Gmail\\]/Spam" nil)
+          ("nnimap\\+gmail:.*" "nnimap+gmail:[Gmail]/Spam")))
   
   (setq gnus-ham-process-destinations
         '(("nnml:.*" "nnml:mail.misc")
-          ("Gmail/\\[Gmail\\].Spam" "nnimap+localhost:Gmail/INBOX")))
+          ("Gmail/\\[Gmail\\].Spam" "nnimap+localhost:Gmail/INBOX")
+          ("nnimap\\+gmail:\\[Gmail\\]/Spam" "nnimap+gmail:INBOX")))
 #+end_src
 
 * Integration with org

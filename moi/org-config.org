@@ -310,6 +310,11 @@
   (require 'org-contacts)
   (setq org-contacts-files '("~/org/contacts.org"))
 #+end_src
+** ditaa
+   #+begin_src emacs-lisp
+     (setq org-ditaa-jar-path "/usr/share/ditaa/ditaa.jar")
+   #+end_src
+
 * from custom
   :PROPERTIES:
   :ID:       75dfd292-47cb-4284-82d9-fdb440701600

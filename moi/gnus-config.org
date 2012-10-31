@@ -10,7 +10,7 @@
               (nnspool-lib-dir "/var/lib/news")))
   
   ;  (setq imap-shell-program "/usr/sbin/dovecot --exec-mail imap")
-  (setq imap-shell-program "/usr/lib/dovecot/imap")
+  ;  (setq imap-shell-program "/usr/lib/dovecot/imap")
   
   (setq gnus-secondary-select-methods
         (if (string= system-name "ordicollegeS2")
@@ -21,7 +21,9 @@
               (nnimap "laposte"
                (nnimap-address "imap.laposte.net"))
               (nnimap "gmail"
-               (nnimap-address "imap.gmail.com")))))
+               (nnimap-address "imap.gmail.com")
+               (nnimap-server-port 993)
+               (nnimap-stream ssl)))))
   ;; (nnimap "localhost"
   ;;         (nnimap-stream shell)
   ;;         (nnir-search-engine imap))

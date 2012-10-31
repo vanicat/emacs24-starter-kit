@@ -7,9 +7,10 @@
   #+begin_src emacs-lisp
     (defadvice dired-mark-read-file-name (after rv:dired-create-dir-when-needed (prompt dir op-symbol arg files &optional default) activate)
       (when (member op-symbol '(copy move))
-        (when (and (or (string= (file-name-as-directory ad-return-value) ad-return-value)
-                       (< 1 (length files)))
-                   (not (file-directory-p ad-return-value)))
-          (when (y-or-n-p (format "directory %s doesn't exist, create it?" ad-return-value))
-            (make-directory ad-return-value t)))))
+        (let ((directory-name (if (< 1 (length files))
+                                  ad-return-value
+                                  (file-name-directory ad-return-value))))
+          (when (and (not (file-directory-p directory-name))
+                     (y-or-n-p (format "directory %s doesn't exist, create it?" directory-name)))
+            (make-directory directory-name t)))))
   #+end_src

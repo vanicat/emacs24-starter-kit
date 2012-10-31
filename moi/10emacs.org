@@ -635,114 +635,115 @@ Penser à reclasser les deux add-hook
 ** apt-util
 
 #+begin_src emacs-lisp
-    (eval-after-load 'apt-utils
-      '(progn
-        (require 'thingatpt)
+  (eval-after-load 'apt-utils
+    '(progn
+      (require 'thingatpt)
 
-        (defun apt-utils-choose-package ()
-          "Choose a Debian package name."
-          (let ((package
-                 (and (eq major-mode 'apt-utils-mode)
-                      (cadr (member 'apt-package
-                                    (text-properties-at (point))))))
-                (PC-word-delimiters "-"))
-            (when (not (stringp package))
-              (setq package (word-at-point)))
-            (completing-read (if package
-                                 (format "Choose Debian package (%s): " package)
-                                 "Choose Debian package: ")
-                             'apt-utils-choose-package-completion
-                             nil t package)))
+      (defun apt-utils-choose-package ()
+        "Choose a Debian package name."
+        (let ((package
+               (and (eq major-mode 'apt-utils-mode)
+                    (cadr (member 'apt-package
+                                  (text-properties-at (point))))))
+              (PC-word-delimiters "-"))
+          (when (not (stringp package))
+            (setq package (word-at-point)))
+          (completing-read (if package
+                               (format "Choose Debian package (%s): " package)
+                               "Choose Debian package: ")
+                           'apt-utils-choose-package-completion
+                           nil t package)))
 
-        (defun apt-utils-add-package-links ()
-          "Add hyperlinks to related Debian packages."
-          (let ((keywords '("Conflicts" "Depends" "Enhances" "Package"
-                            "Pre-Depends" "Provides" "Recommends" "Replaces"
-                            "Suggests"))
-                match)
-            (if (hash-table-p apt-utils-current-links)
-                (clrhash apt-utils-current-links)
-                (setq apt-utils-current-links (make-hash-table :test 'equal)))
-            (goto-char (point-min))
-            (while (re-search-forward "^\\([^ \n:]+\\):\\( \\|$\\)"
-                                      (point-max) t)
-              (setq match (match-string 1))
-              (add-text-properties (if (looking-at "$")
-                                       (point) ;; Conffiles (also see below)
-                                       (1- (point)))
-                                   (save-excursion
-                                     (beginning-of-line)
-                                     (point))
-                                   `(,apt-utils-face-property apt-utils-field-keyword-face))
-              (cond
-                ((member match keywords)
-                 ;; Remove newline characters in field
-                 (let ((end (apt-field-end-position)))
-                   (subst-char-in-region (point) end ?\n ?\  )
-                   (canonically-space-region (point) end))
-                 ;; Find packages
-                 (let ((packages (apt-utils-current-field-packages))
-                       (inhibit-read-only t)
-                       face
-                       length length-no-version
-                       package)
-                   (while packages
-                     (setq package (car packages))
-                     (setq length (length package))
-                     ;; Remove version info (in parenthesis), and whitespace
-                     (setq package (apt-utils-replace-regexp-in-string
-                                    "\\((.*)\\|\\s-+\\)" "" package))
-                     (setq length-no-version (length package))
-                     ;; Package type
-                     (cond
-                       ((equal (apt-utils-package-type package t) 'normal)
-                        (setq face 'apt-utils-normal-package-face))
-                       ((equal (apt-utils-package-type package t) 'virtual)
-                        (setq face 'apt-utils-virtual-package-face))
-                       (t
-                        (setq face 'apt-utils-broken-face)
-                        (setq package 'broken)))
-                     ;; Store package links
-                     (apt-utils-current-links-add-package package)
-                     ;; Add text properties
-                     (add-text-properties (point) (+ (point) length-no-version)
-                                          `(,apt-utils-face-property ,face
-                                                                     mouse-face highlight
-                                                                     apt-package ,package))
-                     ;; Version?
-                     (when (> length length-no-version)
-                       (add-text-properties (+ (point) length-no-version 1)
-                                            (+ (point) length)
-                                            `(,apt-utils-face-property apt-utils-version-face)))
-                     ;; Fill package names
-                     (when (and apt-utils-fill-packages
-                                (> (current-column) (+ 2 (length match)))
-                                (> (+ (current-column) length) fill-column))
-                       (when (equal (char-before) ?\ )
-                         (delete-char -1))          ; trailing whitespace
-                       (insert "\n" (make-string (+ 2 (length match)) ? )))
-                     (forward-char length)
-                     (when (and (equal match "Package")
-                                apt-utils-display-installed-status)
-                       (apt-utils-insert-installed-info package))
-                     (skip-chars-forward ", |\n")
-                     (setq packages (cdr packages)))))
-                ((string-match-p "Description\\(-..\\)?" match)
-                 (add-text-properties (point)
-                                      (save-excursion
-                                        (or
-                                         (re-search-forward "^[^ ]" (point-max) t)
-                                         (point-max)))
-                                      `(,apt-utils-face-property apt-utils-description-face)))
-                ;; Conffiles doesn't have trailing space
-                ((looking-at "$")
-                 nil)
-                (t
-                 (add-text-properties (1- (point))
-                                      (save-excursion
-                                        (end-of-line)
-                                        (point))
-                                      `(,apt-utils-face-property apt-utils-field-contents-face)))))))))
+      ;; (defun apt-utils-add-package-links ()
+      ;;   "Add hyperlinks to related Debian packages."
+      ;;   (let ((keywords '("Conflicts" "Depends" "Enhances" "Package"
+      ;;                     "Pre-Depends" "Provides" "Recommends" "Replaces"
+      ;;                     "Suggests"))
+      ;;         match)
+      ;;     (if (hash-table-p apt-utils-current-links)
+      ;;         (clrhash apt-utils-current-links)
+      ;;         (setq apt-utils-current-links (make-hash-table :test 'equal)))
+      ;;     (goto-char (point-min))
+      ;;     (while (re-search-forward "^\\([^ \n:]+\\):\\( \\|$\\)"
+      ;;                               (point-max) t)
+      ;;       (setq match (match-string 1))
+      ;;       (add-text-properties (if (looking-at "$")
+      ;;                                (point) ;; Conffiles (also see below)
+      ;;                                (1- (point)))
+      ;;                            (save-excursion
+      ;;                              (beginning-of-line)
+      ;;                              (point))
+      ;;                            `(,apt-utils-face-property apt-utils-field-keyword-face))
+      ;;       (cond
+      ;;         ((member match keywords)
+      ;;          ;; Remove newline characters in field
+      ;;          (let ((end (apt-field-end-position)))
+      ;;            (subst-char-in-region (point) end ?\n ?\  )
+      ;;            (canonically-space-region (point) end))
+      ;;          ;; Find packages
+      ;;          (let ((packages (apt-utils-current-field-packages))
+      ;;                (inhibit-read-only t)
+      ;;                face
+      ;;                length length-no-version
+      ;;                package)
+      ;;            (while packages
+      ;;              (setq package (car packages))
+      ;;              (setq length (length package))
+      ;;              ;; Remove version info (in parenthesis), and whitespace
+      ;;              (setq package (apt-utils-replace-regexp-in-string
+      ;;                             "\\((.*)\\|\\s-+\\)" "" package))
+      ;;              (setq length-no-version (length package))
+      ;;              ;; Package type
+      ;;              (cond
+      ;;                ((equal (apt-utils-package-type package t) 'normal)
+      ;;                 (setq face 'apt-utils-normal-package-face))
+      ;;                ((equal (apt-utils-package-type package t) 'virtual)
+      ;;                 (setq face 'apt-utils-virtual-package-face))
+      ;;                (t
+      ;;                 (setq face 'apt-utils-broken-face)
+      ;;                 (setq package 'broken)))
+      ;;              ;; Store package links
+      ;;              (apt-utils-current-links-add-package package)
+      ;;              ;; Add text properties
+      ;;              (add-text-properties (point) (+ (point) length-no-version)
+      ;;                                   `(,apt-utils-face-property ,face
+      ;;                                                              mouse-face highlight
+      ;;                                                              apt-package ,package))
+      ;;              ;; Version?
+      ;;              (when (> length length-no-version)
+      ;;                (add-text-properties (+ (point) length-no-version 1)
+      ;;                                     (+ (point) length)
+      ;;                                     `(,apt-utils-face-property apt-utils-version-face)))
+      ;;              ;; Fill package names
+      ;;              (when (and apt-utils-fill-packages
+      ;;                         (> (current-column) (+ 2 (length match)))
+      ;;                         (> (+ (current-column) length) fill-column))
+      ;;                (when (equal (char-before) ?\ )
+      ;;                  (delete-char -1))          ; trailing whitespace
+      ;;                (insert "\n" (make-string (+ 2 (length match)) ? )))
+      ;;              (forward-char length)
+      ;;              (when (and (equal match "Package")
+      ;;                         apt-utils-display-installed-status)
+      ;;                (apt-utils-insert-installed-info package))
+      ;;              (skip-chars-forward ", |\n")
+      ;;              (setq packages (cdr packages)))))
+      ;;         ((string-match-p "Description\\(-..\\)?" match)
+      ;;          (add-text-properties (point)
+      ;;                               (save-excursion
+      ;;                                 (or
+      ;;                                  (re-search-forward "^[^ ]" (point-max) t)
+      ;;                                  (point-max)))
+      ;;                               `(,apt-utils-face-property apt-utils-description-face)))
+      ;;         ;; Conffiles doesn't have trailing space
+      ;;         ((looking-at "$")
+      ;;          nil)
+      ;;         (t
+      ;;          (add-text-properties (1- (point))
+      ;;                               (save-excursion
+      ;;                                 (end-of-line)
+      ;;                                 (point))
+      ;;                               `(,apt-utils-face-property apt-utils-field-contents-face)))))))
+      ))
 #+end_src
 
 * inconnus:

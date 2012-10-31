@@ -372,7 +372,7 @@ Remove BUFFER from the cache, which is LIST for this recursion."
 	  (narrow-to-region (point) (min (point-max) (+ (point) guess-lang-max-buffer-size))))
       (let ((lang (guess-lang-1 (or langs guess-lang-languages-to-guess))))
 	(let ((numwords (guess-lang-how-many (guess-lang-language-word-regexp lang))))
-	  (when (> numwords guess-lang-min-words-to-cache)
+	  (when (and (> numwords guess-lang-min-words-to-cache) lang)
 	    (guess-lang-add-buffer-to-list (current-buffer) lang))
 	  (message nil)
 	  lang)))))

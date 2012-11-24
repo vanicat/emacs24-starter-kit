@@ -232,8 +232,27 @@
   (setq gnus-group-default-list-level gnus-level-subscribed)
   (setq gnus-level-default-unsubscribed 7)
   (setq gnus-activate-level (1+ gnus-level-subscribed))
-  (setq gnus-keep-same-level 'best)
 #+end_src
+
+** Moving arround:
+   #+name: loop-search
+   #+begin_src emacs-lisp
+     (setq gnus-keep-same-level t)
+     
+     (defadvice gnus-group-search-forward (after my-gnus-group-search-forward (&optional backward all level first-too) activate)
+       (unless (or backward ad-return-value (boundp 'my-no-recurse) (not level))
+         (let ((my-no-recurse))
+           (goto-char (point-min))
+           (setq ad-return-value (gnus-group-search-forward backward all (1+ level) t)))))
+   #+end_src
+
+(defadvice gnus-group-search-forward (after gnus-group-search-forward (&optional backward all level first-too) activate)
+  (unless (or backward ad-return-value (boundp 'my-no-recurse))
+    (let ((my-no-recurse))
+      (with-current-buffer gnus-group-buffer
+        (goto-char (point-min))
+        (setq ad-return-value (gnus-summary-search-group backward use-level))))))
+
 ** Topic
 #+begin_src emacs-lisp
 (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)

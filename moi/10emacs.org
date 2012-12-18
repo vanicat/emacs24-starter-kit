@@ -440,7 +440,7 @@ Penser à reclasser les deux add-hook
 ;  (global-set-key [?\C-c ?g ?f] 'mo-git-blame-file)
 #+end_src
 
-** config rails
+** config ruby et rails
    :PROPERTIES:
    :ID:       ad85a2b9-dd75-4a44-a45a-fadcbbd71a26
    :END:
@@ -475,6 +475,31 @@ Penser à reclasser les deux add-hook
   (folding-add-to-marks-list 'ruby-mode "# {{{" "# }}}")
 
   (push '(".*\\.html.erb" . rhtml-mode) auto-mode-alist)
+
+  (defvar my-ruby-outline-regexp "### \\| *def\\>\\| *module\\>\\| *class\\>")
+
+  (defun my-ruby-outline-level ()
+    "compute the level of a outline for ruby"
+    (save-match-data
+     (cond
+       ((looking-at "###") 1)
+       ((looking-at "\\( *\\)")
+        (+ 2 (length (match-string 1)))))))
+
+  (defun define-ruby-outline ()
+    (make-local-variable 'outline-regexp)
+    (setq outline-regexp my-ruby-outline-regexp)
+    (make-local-variable 'outline-level)
+    (setq outline-level #'my-ruby-outline-level)
+    (outline-minor-mode))
+
+  (add-hook 'ruby-mode-hook 'define-ruby-outline)
+
+  (eval-after-load 'outline
+    '(progn
+      (define-key outline-minor-mode-map [(control tab)] 'org-cycle)
+      (define-key outline-minor-mode-map [(backtab)] 'org-global-cycle)))
+
 #+end_src
 
 ** configurations C,java...

@@ -317,6 +317,7 @@
 ** Mime
 #+begin_src emacs-lisp
   (setq mm-discouraged-alternatives '("text/html" "text/richtext"))
+  (setq gnus-buttonized-mime-types (list "multipart/alternative"))
 #+end_src
 ** Smilley
 #+begin_src emacs-lisp

@@ -420,6 +420,7 @@
           '(("Gmail/\\[Gmail\\].Tous les messages" (expiry-target "nnimap+localhost:Gmail/[Gmail].Corbeille"))
             ("gmane.comp.version-control.git.magit" (to-address . "Magit Mailing List <magit@googlegroups.com>")
                                                     (to-list    . "Magit Mailing List <magit@googlegroups.com>"))
+            ("nnimap\\+gmail:INBOX" (expiry-wait . 2))
             ("gmane.comp.version-control.git" (to-address . "git mailing list <git@vger.kernel.org>")
                                               (to-list    . "git mailing list <git@vger.kernel.org>"))
             ("gmane.comp.lang.ocaml.beginners" (to-address . "ocaml_beginners@yahoogroups.com")

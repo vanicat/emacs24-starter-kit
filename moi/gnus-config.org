@@ -351,6 +351,11 @@
 #+begin_src emacs-lisp
 (add-hook 'gnus-article-mode-hook 'set-word-wrap)
 #+end_src
+** Expunge
+   #+name: gnus-expunge
+   #+begin_src emacs-lisp
+     (setq gnus-summary-expunge-below -20)
+   #+end_src
 * Spam
 #+begin_src emacs-lisp
   (spam-initialize)

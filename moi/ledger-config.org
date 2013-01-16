@@ -6,6 +6,29 @@
     (add-to-list 'auto-mode-alist '("\\.ledger$" . ledger-mode))
   #+end_src
 
+* Sorting
+  #+name: sort-ledger
+  #+begin_src emacs-lisp
+    (eval-after-load 'ledger
+      '(defun ledger-sort ()
+        (interactive)
+        (save-excursion
+          (goto-char (point-min))
+          (sort-subr
+           nil
+           (lambda ()
+             (if (re-search-forward
+                  (concat "^[0-9/.=-]+\\(\\s-+\\*\\)?\\(\\s-+(.*?)\\)?\\s-+"
+                          "\\(.+?\\)\\(\t\\|\n\\| [ \t]\\)") nil t)
+                 (goto-char (match-beginning 0))
+                 (goto-char (point-max))))
+           (lambda () (forward-paragraph))
+           (lambda ()
+             (looking-at "^\\([0-9/]+\\)[ \\*]+\\(.*\\)$")
+             (concat (match-string 1) (match-string 2)))))))
+  #+end_src
+
+
 * Auto conversion
   :PROPERTIES:
   :ID:       23aef8bf-b49a-432c-9e81-6dcbfa0d5fd0

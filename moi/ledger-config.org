@@ -49,6 +49,7 @@
   #+begin_src emacs-lisp
     (defvar ledger-read-from-qif-accounts
       '("Actifs:Banque:BPMC:Courant"
+        "Actifs:Banque:BPACA:Courant"
         "Actifs:Banque:BPMC:Solidarité"
         "Passifs:Carte de crédit"))
 

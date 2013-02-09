@@ -586,6 +586,29 @@ Penser à reclasser les deux add-hook
         (cons ".cmi" (cons ".cmo" completion-ignored-extensions)))
 #+end_src
 
+** Configuration lua
+   #+name: lua-conf
+   #+begin_src emacs-lisp
+     (defvar my-lua-outline-regexp "-- \\*+")
+
+     (defun my-lua-outline-level ()
+       "compute the level of a outline for lua"
+       (save-match-data
+         (cond
+           ((looking-at "-- \\(\\*+\\)") (length (match-string 1)))
+           (t 1))))
+
+     (defun define-lua-outline ()
+       (make-local-variable 'outline-regexp)
+       (setq outline-regexp my-lua-outline-regexp)
+       (make-local-variable 'outline-level)
+       (setq outline-level #'my-lua-outline-level)
+       (outline-minor-mode))
+
+
+   #+end_src
+
+
 ** Configuration lisp
    :PROPERTIES:
    :ID:       fedf760a-0745-44ab-9f2a-a632120f3e19

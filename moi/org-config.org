@@ -264,17 +264,20 @@
 #+begin_src emacs-lisp
   (defun note-for-org ()
     (interactive)
-    (while t
-      (goto-char (org-table-begin))
-      (org-table-recalculate)
-      (isearch-forward)
+    (org-narrow-to-subtree)
+    (goto-char (org-table-begin))
+    (org-table-recalculate)
+    (while (isearch-forward)
       (end-of-line)
       (org-table-beginning-of-field 0)
       (let* ((col (org-table-current-column))
              (line (org-table-current-line))
              (old (org-table-get line col))
              (new (read-string "Note:" old)))
-        (org-table-put line col new))))
+        (org-table-put line col new))
+      (goto-char (org-table-begin))
+      (org-table-recalculate))
+    (widen))
 #+end_src
 ** org-mobile
     :PROPERTIES:

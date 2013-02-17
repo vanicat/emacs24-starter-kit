@@ -394,13 +394,13 @@ Penser à reclasser les deux add-hook
   :PROPERTIES:
   :ID:       d3cb66bf-c960-4804-9495-14fcc2faca6c
   :END:
-#+begin_src emacs-lisp
-  (setq folding-mode-prefix-key "\C-c.")
+  #+begin_src emacs-lisp-comment
+    (setq folding-mode-prefix-key "\C-c.")
 
-  (require 'folding)
-  (folding-add-to-marks-list 'lua-mode "-- {{{" "-- }}}")
-  (folding-mode-add-find-file-hook)
-#+end_src
+    (require 'folding)
+    (folding-add-to-marks-list 'lua-mode "-- {{{" "-- }}}")
+    (folding-mode-add-find-file-hook)
+  #+end_src
 * Tramp
 #+begin_src emacs-lisp
   (eval-after-load 'tramp

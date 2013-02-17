@@ -605,10 +605,8 @@ Penser à reclasser les deux add-hook
        (setq outline-level #'my-lua-outline-level)
        (outline-minor-mode))
 
-
+     (add-hook 'lua-mode-hook 'define-lua-outline)
    #+end_src
-
-
 ** Configuration lisp
    :PROPERTIES:
    :ID:       fedf760a-0745-44ab-9f2a-a632120f3e19

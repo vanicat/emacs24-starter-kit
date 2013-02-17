@@ -472,8 +472,6 @@ Penser à reclasser les deux add-hook
   ;; (yas/load-directory "~/.myconfig/emacs.d/yasnippets/yasnippets-ruby/")
   ;; (yas/load-directory "~/.myconfig/emacs.d/yasnippets/yasnippets-rails/")
 
-  (folding-add-to-marks-list 'ruby-mode "# {{{" "# }}}")
-
   (push '(".*\\.html.erb" . rhtml-mode) auto-mode-alist)
 
   (defvar my-ruby-outline-regexp "####? \\| *def\\>\\| *module\\>\\| *class\\>")

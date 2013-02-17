@@ -1,7 +1,9 @@
 * Finding the mode
   #+name: ledger-is-there
   #+begin_src emacs-lisp
-    (add-to-list 'load-path "/home/moi/prog/ledger/ledger/lisp/")
+    (dolist ((path (list "/home/moi/prog/ledger/ledger/lisp/" "/home/moi/lang/ledger/ledger/lisp/")))
+      (when (file-readable-p path)
+        (add-to-list 'load-path path)))
 
     (autoload 'ledger-mode "ldg-new")
   #+end_src

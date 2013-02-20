@@ -1,3 +1,6 @@
 [submodule "src/magit"]
 	path = src/magit
 	url = git://github.com/magit/magit.git
+[submodule "src/git-annex"]
+	path = src/git-annex
+	url = git://github.com/jwiegley/git-annex-el.git

@@ -421,6 +421,7 @@ Penser à reclasser les deux add-hook
   (autoload 'git-blame-mode "git-blame"
   (autoload 'magit-status "magit" "" t)
     "Minor mode for incremental blame for Git." t)
+  (require 'git-annex)
 #+end_src
 *** vc
 #+begin_src emacs-lisp

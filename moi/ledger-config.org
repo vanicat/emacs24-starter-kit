@@ -38,6 +38,51 @@
              (concat (match-string 1) (match-string 2)))))))
   #+end_src
 
+* Auto insert
+  #+name: auto-transaction
+  #+begin_src emacs-lisp
+    (defvar ledger-liability ()
+      "A list of list containing automatic transaction to insert
+
+    each list look like
+     (PAYEE ACCOUNTS)
+    where ACCOUNTS is a list of list that look like
+     (ACCOUNT-NAME AMMOUNT)
+    AMOUNT are supposed to be in euro, and are optional")
+
+    (defun ledger-insert-a-transaction (date num payee &rest accounts)
+      (insert date)
+      (when num
+        (insert " (")
+        (insert num)
+        (insert ")"))
+      (when payee
+        (insert " ")
+        (insert payee))
+      (insert "\n")
+      (dolist (account accounts)
+        (insert "    ")
+        (insert (car account))
+        (when (cadr account)
+          (insert "                            € ")
+          (insert (cadr account))
+          (when (caddr account)
+            (insert "  ; ")
+            (insert (caddr account))))
+        (insert "\n"))
+      (insert "\n"))
+
+
+    (defun ledger-insert-monthly-liability (&optional date)
+      (interactive (list (when current-prefix-arg
+                           (read-from-minibuffer "Date of automatic transaction: "))))
+      (unless date
+        (setq date (format-time-string "%Y/%m/%d")))
+      (dolist (trans ledger-liability)
+        (apply #'ledger-insert-a-transaction date () (car trans)
+               (cdr trans))))
+
+      #+end_src
 
 * Auto conversion
   :PROPERTIES:

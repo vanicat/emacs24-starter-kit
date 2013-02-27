@@ -7,7 +7,7 @@
 
 ;; Use local org-mode
 
-(setq load-path (cons "/home/moi/lang/org-mode/lisp/" load-path))
+(setq load-path (cons "/home/moi/lang/elisp/org-mode/lisp/" load-path))
 
 ;; load the starter kit from the `after-init-hook' so all packages are loaded
 (add-hook 'after-init-hook

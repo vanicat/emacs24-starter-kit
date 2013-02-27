@@ -317,6 +317,28 @@
    #+begin_src emacs-lisp
      (setq org-ditaa-jar-path "/usr/share/ditaa/ditaa.jar")
    #+end_src
+** ox
+   #+name: org-export
+   #+begin_src emacs-lisp
+     (setq org-latex-classes '(("beamer" "\\documentclass{beamer}" ("\\section{%s}" . "\\section*{%s}"))
+                               ("article" "\\documentclass[11pt]{article}"
+                                ("\\section{%s}" . "\\section*{%s}")
+                                ("\\subsection{%s}" . "\\subsection*{%s}")
+                                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                                ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                                ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+                               ("report" "\\documentclass[11pt]{report}"
+                                ("\\part{%s}" . "\\part*{%s}")
+                                ("\\chapter{%s}" . "\\chapter*{%s}")
+                                ("\\section{%s}" . "\\section*{%s}")
+                                ("\\subsection{%s}" . "\\subsection*{%s}")
+                                ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+                               ("book" "\\documentclass[11pt]{book}" ("\\part{%s}" . "\\part*{%s}")
+                                ("\\chapter{%s}" . "\\chapter*{%s}")
+                                ("\\section{%s}" . "\\section*{%s}")
+                                ("\\subsection{%s}" . "\\subsection*{%s}")
+                                ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
+   #+end_src
 
 * from custom
   :PROPERTIES:

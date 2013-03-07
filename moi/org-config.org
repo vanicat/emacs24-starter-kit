@@ -1,4 +1,10 @@
 * Configurations de org-mode
+** Be sure to load loaddef
+   #+name: loaddef
+   #+begin_src emacs-lisp
+     (require 'org-loaddefs () t)
+   #+end_src
+
 ** Les fichiers de l'agenda
    #+begin_src emacs-lisp
      (setq org-agenda-files-cours

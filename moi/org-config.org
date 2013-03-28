@@ -30,8 +30,9 @@
 
      (defun org-export-icalendar-cours ()
        (interactive)
-       (let ((org-combined-agenda-icalendar-file "~/org/cours.ics"))
-         (apply 'org-export-icalendar t org-agenda-files-cours)))
+       (let ((org-icalendar-combined-agenda-file "~/org/cours.ics")
+             (org-agenda-files org-agenda-files-cours ))
+         (org-icalendar-combine-agenda-files)))
 
      (setq org-icalendar-date-time-format ":%Y%m%dT%H%M%S")
      (setq org-icalendar-include-todo t)

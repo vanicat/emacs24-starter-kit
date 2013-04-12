@@ -27,6 +27,13 @@
          :background "gray10")))
   #+end_src
 
+
+* Align
+  #+name: ledger-align
+  #+begin_src emacs-lisp
+    (setq ledger-post-amount-alignment-column 70)
+  #+end_src
+
 * Sorting
   #+name: sort-ledger
   #+begin_src emacs-lisp

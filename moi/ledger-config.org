@@ -21,7 +21,7 @@
   #+begin_src emacs-lisp
     (eval-after-load 'ldg-fonts
       '(progn
-        (set-face-attribute 'ledger-font-highlight-face nil
+        (set-face-attribute 'ledger-font-xact-highlight-face nil
          :background "gray20")
         (set-face-attribute 'ledger-occur-xact-face nil
          :background "gray10")))

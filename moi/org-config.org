@@ -355,7 +355,7 @@
   (setq org-agenda-include-diary t)
   (setq org-capture-templates
         (quote (("n" "note" entry (file+headline "~/org/notes.org" "Notes")
-                     "* \n   %a" :kill-buffer t)
+                     "* [Something] \n   %a" :kill-buffer t)
                 ("m" "mailnote" entry (file+headline "~/org/notes.org" "Notes")
                      "** De : %:from Objets : %:subject\n   %a" :kill-buffer t)
                 ("r" "rendezvous" entry (file+headline "/home/moi/org/personel.org" "Rendez Vous")

@@ -326,7 +326,7 @@
    #+end_src
 ** ox
    #+name: org-export
-   #+begin_src emacs-lisp
+   #+begin_src emacs-lisp :tangle nil
      (setq org-latex-classes '(("beamer" "\\documentclass{beamer}" ("\\section{%s}" . "\\section*{%s}"))
                                ("article" "\\documentclass[11pt]{article}"
                                 ("\\section{%s}" . "\\section*{%s}")

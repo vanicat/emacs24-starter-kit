@@ -163,7 +163,7 @@
 #+end_src
 ** My emails address
 #+begin_src emacs-lisp
-  (setq message-alternative-emails "remi.vanicat@free.fr\\|math.vanicat@gmail.com\\|remi.vanicat@ac-limoges.fr\\|vanicat@debian.org\\|remi.vanicat@gmail.com\\|remi.vanicat@laposte.net\\|[a-z.0-9]*.\\(vanicat\\|darkl\\)@\\(mamber.net\\|xoxy.net\\|spamgourmet.com\\|spamgourmet.net\\)")
+  (setq message-alternative-emails "rvanicat@april.org\\|remi.vanicat@free.fr\\|math.vanicat@gmail.com\\|remi.vanicat@ac-limoges.fr\\|vanicat@debian.org\\|remi.vanicat@gmail.com\\|remi.vanicat@laposte.net\\|[a-z.0-9]*.\\(vanicat\\|darkl\\)@\\(mamber.net\\|xoxy.net\\|spamgourmet.com\\|spamgourmet.net\\)")
 #+end_src
 ** My messages-id
 #+begin_src emacs-lisp

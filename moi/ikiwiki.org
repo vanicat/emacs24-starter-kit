@@ -1,0 +1,8 @@
+#+TITLE: Ikiwiki config
+
+* Set some auto-mode alist
+  #+name: ikiwiki-automode
+  #+begin_src emacs-lisp
+    (push '("\\._comment\\(_pending\\)?$" . markdown-mode) auto-mode-alist)
+    (push '("\\.mdwn$" . markdown-mode) auto-mode-alist)
+  #+end_src

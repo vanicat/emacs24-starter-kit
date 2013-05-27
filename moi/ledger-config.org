@@ -102,7 +102,7 @@
 
       #+end_src
 
-* Auto conversion
+* Auto conversion QIF
   :PROPERTIES:
   :ID:       23aef8bf-b49a-432c-9e81-6dcbfa0d5fd0
   :END:
@@ -194,3 +194,61 @@
           (insert "\n")))
       (ledger-mode))
   #+end_src
+
+* Auto conversion OFX
+** To sexp
+   #+name: from-ofx-to-sexp
+   #+begin_src emacs-lisp
+     (defun from-ofx-to-sexp (file)
+       (with-temp-buffer
+         (insert-file file)
+         (goto-char (point-min))
+         (search-forward "<OFX>")
+         (delete-region (point-min) (point))
+         (insert "(ofx ")
+         (while (search-forward-regexp (rx (not (any space ?\) ?\n))) () t)
+           (goto-char (match-beginning 0))
+           (cond ((looking-at (rx "</" (group-n 1 (* (not (any ?>)))) ">"))
+                  (delete-region (match-beginning 0) (match-end 0))
+                  (insert ")"))
+                 ((looking-at (rx (group-n 2 "<" (group-n 1 (* (not (any ?>)))) ">")
+                                  (*? anything)
+                                  (group-n 3 "</" (backref 1) ">")))
+                  (let ((tag (match-string 1)))
+                    (delete-region (match-beginning 3) (match-end 3))
+                    (goto-char (match-beginning 3))
+                    (insert ")")
+                    (goto-char (match-beginning 0))
+                    (delete-region (match-beginning 2) (match-end 2))
+                    (insert "(")
+                    (insert (downcase tag))
+                    (insert " ")))
+                 ((looking-at (rx "<" (group-n 1 (zero-or-more (not (any ?>)))) ">"))
+                  (let ((tag (match-string 1)) pt)
+                    (delete-region (match-beginning 0) (match-end 0))
+                    (insert "(")
+                    (insert (downcase tag))
+                    (insert " ")
+                    (setq pt (point))
+                    (search-forward-regexp (rx eol))
+                    (insert ")")
+                    (goto-char pt)))
+                 ((looking-at (rx (* not-newline) ?\) eol))
+                  (insert "\"")
+                  (goto-char (match-end 0))
+                  (insert "\"")
+                  (forward-char 1))
+                 ((looking-at (rx (* not-newline) eol))
+                  (insert "\"")
+                  (goto-char (1+ (match-end 0)))
+                  (insert "\""))))
+         (insert ")")
+         (goto-char (point-min))
+         (read (current-buffer))))
+   #+end_src
+** insert the sexp
+   #+name: from-ofx-to-sexp
+   #+begin_src emacs-lisp
+     (defun insert-my-ledegr (file)
+     )
+   #+end_src

@@ -4,3 +4,6 @@
 [submodule "src/git-annex"]
 	path = src/git-annex
 	url = git://github.com/jwiegley/git-annex-el.git
+[submodule "src/org-caldav"]
+	path = src/org-caldav
+	url = git://github.com/dengste/org-caldav.git

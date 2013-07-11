@@ -160,21 +160,36 @@
 *** Une classe
     #+name: org-latex-class
     #+begin_src emacs-lisp
-      (eval-after-load 'org-latex
-        '(add-to-list 'org-export-latex-classes
-                      '("ledger"
-                        "\\documentclass[a4paper]{article}
+      (eval-after-load 'ox-latex
+        '(progn
+          (add-to-list 'org-latex-classes
+           '("ledger"
+             "\\documentclass[a4paper]{article}
                          \\usepackage{myhead}
                          \\usepackage{hyperref}
                          \\header{Les comptes}
                          [NO-DEFAULT-PACKAGES]
                          [PACKAGES]
                          [EXTRA]"
-                        ("\\section{%s}" . "\\section*{%s}")
-                        ("\\subsection{%s}" . "\\subsection*{%s}")
-                        ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                        ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                        ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+             ("\\section{%s}" . "\\section*{%s}")
+             ("\\subsection{%s}" . "\\subsection*{%s}")
+             ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+             ("\\paragraph{%s}" . "\\paragraph*{%s}")
+             ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+          (add-to-list 'org-latex-classes
+           '("simple"
+             "\\documentclass[a4paper]{article}
+              \\usepackage{myhead}
+              \\usepackage{hyperref}
+              \\renewcommand{\\maketitle}{}
+              [NO-DEFAULT-PACKAGES]
+              [PACKAGES]
+              [EXTRA]"
+             ("\\section{%s}" . "\\section*{%s}")
+             ("\\subsection{%s}" . "\\subsection*{%s}")
+             ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+             ("\\paragraph{%s}" . "\\paragraph*{%s}")
+             ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))))
     #+end_src
 
 ** Pour l'agenda: la fête des mères et quelques autres fêtes.

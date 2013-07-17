@@ -5,7 +5,7 @@
       (when (file-readable-p path)
         (add-to-list 'load-path path)))
 
-    (autoload 'ledger-mode "ldg-new")
+    (autoload 'ledger-mode "ledger-mode")
   #+end_src
 
 * Auto mode

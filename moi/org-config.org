@@ -8,12 +8,7 @@
 ** Les fichiers de l'agenda
    #+begin_src emacs-lisp
      (setq org-agenda-files-cours
-           (list "~/org/cours.org"
-                 "~/travail/cours/P_SSI/P_SSI.org"
-                 "~/travail/cours/TESX/TESX.org"
-                 "~/travail/cours/SpeTES/SpeTES.org"
-                 "~/travail/cours/SpeTS/SpeTS.org"
-                 "~/travail/cours/TSTG/TSTG.org"))
+           (list "~/org/cours.org"))
 
      (setq org-agenda-files
            (list* "~/org/prgm.org"

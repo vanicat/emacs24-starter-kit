@@ -17,7 +17,7 @@
 * Face
   #+name: ledger-face
   #+begin_src emacs-lisp
-    (eval-after-load 'ldg-fonts
+    (eval-after-load 'ledger-fonts
       '(progn
         (set-face-attribute 'ledger-font-xact-highlight-face nil
          :background "gray20")

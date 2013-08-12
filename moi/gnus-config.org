@@ -57,6 +57,12 @@
   ;;;(setq smtpmail-local-domain "free.fr")
 #+end_src
 
+** Searching
+   #+name: searching
+   #+begin_src emacs-lisp
+     (eval-after-load 'nnir
+       '(add-to-list 'nnir-imap-search-arguments '("gmail" . "X-GM-RAW")))
+   #+end_src
 * Composing
 ** Posting style
 *** signature

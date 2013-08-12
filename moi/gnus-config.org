@@ -1,61 +1,61 @@
 * The methods
 ** Normal access group
-#+begin_src emacs-lisp
-  (setq nntp-connection-timeout 120)
-  
-  (setq gnus-select-method
-        '(nnspool ""
-          (nnspool-spool-directory "/var/spool/news/articles/")
-          (nnspool-nov-directory "/var/spool/news/overview")
-          (nnspool-lib-dir "/var/lib/news")))
-  
-  ;  (setq imap-shell-program "/usr/sbin/dovecot --exec-mail imap")
-  ;  (setq imap-shell-program "/usr/lib/dovecot/imap")
-  
-  (setq gnus-secondary-select-methods
-        (if (string= system-name "ordicollegeS2")
-            '((nnml "")
-              (nndraft ""))
-            '((nnml "")
-              (nndraft "")
-              (nnimap "laposte"
-               (nnimap-address "imap.laposte.net"))
-              (nnimap "gmail"
-               (nnimap-address "imap.gmail.com")
-               (nnimap-server-port 993)
-               (nnimap-stream ssl)
-               (nnir-search-engine imap))
-              (nntp "gmane"
-               (nntp-address "news.gmane.org")))))
-  ;; (nnimap "localhost"
-  ;;         (nnimap-stream shell)
-  ;;         (nnir-search-engine imap))
-#+end_src
+   #+begin_src emacs-lisp
+     (setq nntp-connection-timeout 120)
+     
+     (setq gnus-select-method
+           '(nnspool ""
+             (nnspool-spool-directory "/var/spool/news/articles/")
+             (nnspool-nov-directory "/var/spool/news/overview")
+             (nnspool-lib-dir "/var/lib/news")))
+     
+     ;  (setq imap-shell-program "/usr/sbin/dovecot --exec-mail imap")
+     ;  (setq imap-shell-program "/usr/lib/dovecot/imap")
+     
+     (setq gnus-secondary-select-methods
+           (if (string= system-name "ordicollegeS2")
+               '((nnml "")
+                 (nndraft ""))
+               '((nnml "")
+                 (nndraft "")
+                 (nnimap "laposte"
+                  (nnimap-address "imap.laposte.net"))
+                 (nnimap "gmail"
+                  (nnimap-address "imap.gmail.com")
+                  (nnimap-server-port 993)
+                  (nnimap-stream ssl)
+                  (nnir-search-engine imap))
+                 (nntp "gmane"
+                  (nntp-address "news.gmane.org")))))
+     ;; (nnimap "localhost"
+     ;;         (nnimap-stream shell)
+     ;;         (nnir-search-engine imap))
+   #+end_src
 
 ** Refer to article
-#+begin_src emacs-lisp
-  (setq gnus-refer-article-method
-        '(current
-          (nntp "localhost"
-           (nntp-address "127.0.0.1"))
-          ;; (nntp "free"
-          ;;       (nntp-address "news.free.fr"))
-          (nntp "gmane"
-                (nntp-address "news.gmane.org"))
-          (nnweb "refer" (nnweb-type google))))
-#+end_src
+   #+begin_src emacs-lisp
+     (setq gnus-refer-article-method
+           '(current
+             (nntp "localhost"
+              (nntp-address "127.0.0.1"))
+             ;; (nntp "free"
+             ;;       (nntp-address "news.free.fr"))
+             (nntp "gmane"
+                   (nntp-address "news.gmane.org"))
+             (nnweb "refer" (nnweb-type google))))
+   #+end_src
 
 ** Sending mails
-#+begin_src emacs-lisp
-  (setq send-mail-function 'smtpmail-send-it)
-  (setq message-send-mail-function 'smtpmail-send-it)
-  (setq smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil)))
-  (setq smtpmail-auth-credentials '(("smtp.gmail.com" 587 "remi.vanicat@gmail.com" nil)))
-  (setq smtpmail-default-smtp-server "smtp.gmail.com")
-  (setq smtpmail-smtp-server "smtp.gmail.com")
-  (setq smtpmail-smtp-service 587)
-  ;;;(setq smtpmail-local-domain "free.fr")
-#+end_src
+   #+begin_src emacs-lisp
+     (setq send-mail-function 'smtpmail-send-it)
+     (setq message-send-mail-function 'smtpmail-send-it)
+     (setq smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil)))
+     (setq smtpmail-auth-credentials '(("smtp.gmail.com" 587 "remi.vanicat@gmail.com" nil)))
+     (setq smtpmail-default-smtp-server "smtp.gmail.com")
+     (setq smtpmail-smtp-server "smtp.gmail.com")
+     (setq smtpmail-smtp-service 587)
+     ;;;(setq smtpmail-local-domain "free.fr")
+   #+end_src
 
 ** Searching
    #+name: searching
@@ -67,181 +67,179 @@
 ** Posting style
 *** signature
 **** fortunes
-#+begin_src emacs-lisp
-  (defun fortune (&optional files)
-    (let ((files (if files files fortune-files)))
-      (shell-command-to-string (apply 'concat "/usr/games/fortune "
-                                      files))))
-
-  (defun my-gnus-jdr-fortune ()
-    (fortune '("/home/moi/prog/fortune/pqf-5_1_signature "
-               "/home/moi/prog/fortune/flws_fr ")))
-
-
-  (defun fortune-insert ()
-    (interactive)
-    (insert (my-gnus-fortune)))
-
-
-  (defvar fortune-default-files
-    '("/home/moi/prog/fortune/gcu "
-      "/home/moi/prog/fortune/glp "
-      "/home/moi/prog/fortune/my_fortune "
-      "/home/moi/prog/fortune/pqf-5_1_signature ")
-    "*toto")
-
-  (defvar fortune-add-files ())
-
-  (defvar fortune-files
-    (append fortune-add-files fortune-default-files))
-#+end_src
+     #+begin_src emacs-lisp
+       (defun fortune (&optional files)
+         (let ((files (if files files fortune-files)))
+           (shell-command-to-string (apply 'concat "/usr/games/fortune "
+                                           files))))
+       
+       (defun my-gnus-jdr-fortune ()
+         (fortune '("/home/moi/prog/fortune/pqf-5_1_signature "
+                    "/home/moi/prog/fortune/flws_fr ")))
+       
+       
+       (defun fortune-insert ()
+         (interactive)
+         (insert (my-gnus-fortune)))
+       
+       
+       (defvar fortune-default-files
+         '("/home/moi/prog/fortune/gcu "
+           "/home/moi/prog/fortune/glp "
+           "/home/moi/prog/fortune/my_fortune "
+           "/home/moi/prog/fortune/pqf-5_1_signature ")
+         "*toto")
+       
+       (defvar fortune-add-files ())
+       
+       (defvar fortune-files
+         (append fortune-add-files fortune-default-files))
+     #+end_src
 **** Simple signature
-#+begin_src emacs-lisp
-  (setq message-signature "Rémi Vanicat\n")
-#+end_src
-
+     #+begin_src emacs-lisp
+       (setq message-signature "Rémi Vanicat\n")
+     #+end_src
 *** The posting style
-#+begin_src emacs-lisp
-  (setq gnus-posting-styles
-        '(("Gmail/.*"
-           (address "remi.vanicat@gmail.com"))
-          ("^fr.*"
-           (address "invalid.newsfr.10.vanicat@spamgourmet.com")
-           ("Reply-To" "newsfrreplyto.10.vanicat@spamgourmet.com"))
-          ("^comp.*"
-           (address "invalid.newscomp.10.vanicat@spamgourmet.com")
-           ("Reply-To" "invalid.newscompreplyto.10.vanicat@spamgourmet.com"))
-          ("yahoogroups"
-           (address "remi.vanicat@laposte.net"))
-          ("^alt.*"
-           (address "invalid.newsalt.10.vanicat@spamgourmet.com")
-           ("Reply-To" "invalid.newsaltreplyto.10.vanicat@spamgourmet.com"))
-          (".*caml.*"
-           ("Mail-Copy-To" "never"))
-          (".*jdr.*"
-           (signature my-gnus-jdr-fortune))
-          (".*abul.*"
-           (address "vanicat+abul@labri.fr"))
-          ("gmane.linux.debian.devel.ocaml"
-           ("Mail-Followup-To" "debian-ocaml-maint@lists.debian.org"))
-          ("Gmail/magit"
-           (signature "Rémi Vanicat\n")
-           (address "vanicat@debian.org"))
-          (".*debian.*"
-           (signature "Rémi Vanicat\n")
-           (address "vanicat@debian.org")
-           ("Mail-Copy-To" "never"))
-          ((header "to" "vanicat@debian.org")
-           (address "vanicat@debian.org"))
-          ((header "cc" "vanicat@debian.org")
-           (address "vanicat@debian.org"))
-          ((header "from" "vanicat@debian.org")
-           (address "vanicat@debian.org"))
-          ("gmane.*"
-           (address "vanicat@debian.org"))
-          ("gmane.comp.lang.ocaml.beginners"
-           (address "remi.vanicat@gmail.com"))
-          ("^dino"
-           (name "DarkLight")
-           (signature ()))))
-#+end_src
-
+    #+begin_src emacs-lisp
+      (setq gnus-posting-styles
+            '(("Gmail/.*"
+               (address "remi.vanicat@gmail.com"))
+              ("^fr.*"
+               (address "invalid.newsfr.10.vanicat@spamgourmet.com")
+               ("Reply-To" "newsfrreplyto.10.vanicat@spamgourmet.com"))
+              ("^comp.*"
+               (address "invalid.newscomp.10.vanicat@spamgourmet.com")
+               ("Reply-To" "invalid.newscompreplyto.10.vanicat@spamgourmet.com"))
+              ("yahoogroups"
+               (address "remi.vanicat@laposte.net"))
+              ("^alt.*"
+               (address "invalid.newsalt.10.vanicat@spamgourmet.com")
+               ("Reply-To" "invalid.newsaltreplyto.10.vanicat@spamgourmet.com"))
+              (".*caml.*"
+               ("Mail-Copy-To" "never"))
+              (".*jdr.*"
+               (signature my-gnus-jdr-fortune))
+              (".*abul.*"
+               (address "vanicat+abul@labri.fr"))
+              ("gmane.linux.debian.devel.ocaml"
+               ("Mail-Followup-To" "debian-ocaml-maint@lists.debian.org"))
+              ("Gmail/magit"
+               (signature "Rémi Vanicat\n")
+               (address "vanicat@debian.org"))
+              (".*debian.*"
+               (signature "Rémi Vanicat\n")
+               (address "vanicat@debian.org")
+               ("Mail-Copy-To" "never"))
+              ((header "to" "vanicat@debian.org")
+               (address "vanicat@debian.org"))
+              ((header "cc" "vanicat@debian.org")
+               (address "vanicat@debian.org"))
+              ((header "from" "vanicat@debian.org")
+               (address "vanicat@debian.org"))
+              ("gmane.*"
+               (address "vanicat@debian.org"))
+              ("gmane.comp.lang.ocaml.beginners"
+               (address "remi.vanicat@gmail.com"))
+              ("^dino"
+               (name "DarkLight")
+               (signature ()))))
+    #+end_src
 *** The from
-#+begin_src emacs-lisp
-  (setq message-from-style 'angles)
-#+end_src
+    #+begin_src emacs-lisp
+      (setq message-from-style 'angles)
+    #+end_src
 ** Conveniant message composing
-#+begin_src emacs-lisp
-  (add-hook 'message-mode-hook 'auto-fill-mode-on)
-  (add-hook 'message-mode-hook 'turn-on-flyspell)
-  (add-hook 'message-mode-hook 'ispell-guess-dictionary)
-#+end_src
+   #+begin_src emacs-lisp
+     (add-hook 'message-mode-hook 'auto-fill-mode-on)
+     (add-hook 'message-mode-hook 'turn-on-flyspell)
+     (add-hook 'message-mode-hook 'ispell-guess-dictionary)
+   #+end_src
 ** org-contact config
-#+begin_src emacs-lisp
-  (defun set-yas/fallback-behavior ()
-    (setq yas/fallback-behavior '(apply completion-at-point)))
-  
-  (add-hook 'message-mode-hook 'set-yas/fallback-behavior)
-#+end_src
+   #+begin_src emacs-lisp
+     (defun set-yas/fallback-behavior ()
+       (setq yas/fallback-behavior '(apply completion-at-point)))
+     
+     (add-hook 'message-mode-hook 'set-yas/fallback-behavior)
+   #+end_src
 ** Before sending
-#+begin_src emacs-lisp
-  (add-hook 'message-send-hook
-               (lambda ()
-                 (ispell-change-dictionary (guess-lang-message))
-                 (ispell-message)))
-#+end_src
+   #+begin_src emacs-lisp
+     (add-hook 'message-send-hook
+                  (lambda ()
+                    (ispell-change-dictionary (guess-lang-message))
+                    (ispell-message)))
+   #+end_src
 ** My emails address
-#+begin_src emacs-lisp
-  (setq message-alternative-emails "rvanicat@april.org\\|remi.vanicat@free.fr\\|math.vanicat@gmail.com\\|remi.vanicat@ac-limoges.fr\\|vanicat@debian.org\\|remi.vanicat@gmail.com\\|remi.vanicat@laposte.net\\|[a-z.0-9]*.\\(vanicat\\|darkl\\)@\\(mamber.net\\|xoxy.net\\|spamgourmet.com\\|spamgourmet.net\\)")
-#+end_src
+   #+begin_src emacs-lisp
+     (setq message-alternative-emails "rvanicat@april.org\\|remi.vanicat@free.fr\\|math.vanicat@gmail.com\\|remi.vanicat@ac-limoges.fr\\|vanicat@debian.org\\|remi.vanicat@gmail.com\\|remi.vanicat@laposte.net\\|[a-z.0-9]*.\\(vanicat\\|darkl\\)@\\(mamber.net\\|xoxy.net\\|spamgourmet.com\\|spamgourmet.net\\)")
+   #+end_src
 ** My messages-id
-#+begin_src emacs-lisp
-  (defun message-unique-id ()
-    ;; Don't use microseconds from (current-time), they may be unsupported.
-    ;; Instead we use this randomly inited counter.
-    (setq message-unique-id-char
-          (% (1+ (or message-unique-id-char (logand (random t) (1- (lsh 1 20)))))
-             ;; (current-time) returns 16-bit ints,
-             ;; and 2^16*25 just fits into 4 digits i base 36.
-             (* 25 25)))
-    (let ((tm (current-time)))
-      (concat
-       (if (memq system-type '(ms-dos emx vax-vms))
-           (let ((user (downcase (user-login-name))))
-             (while (string-match "[^a-z0-9_]" user)
-               (aset user (match-beginning 0) ?_))
-             user)
-           (message-number-base36 (user-uid) -1))
-       (message-number-base36 (+ (car   tm)
-                                 (lsh (% message-unique-id-char 25) 16)) 4)
-       (message-number-base36 (+ (nth 1 tm)
-                                 (lsh (/ message-unique-id-char 25) 16)) 4)
-       ;; Append the newsreader name, because while the generated
-       ;; ID is unique to this newsreader, other newsreaders might
-       ;; otherwise generate the same ID via another algorithm.
-       ".dlv")))
-#+end_src
+   #+begin_src emacs-lisp
+     (defun message-unique-id ()
+       ;; Don't use microseconds from (current-time), they may be unsupported.
+       ;; Instead we use this randomly inited counter.
+       (setq message-unique-id-char
+             (% (1+ (or message-unique-id-char (logand (random t) (1- (lsh 1 20)))))
+                ;; (current-time) returns 16-bit ints,
+                ;; and 2^16*25 just fits into 4 digits i base 36.
+                (* 25 25)))
+       (let ((tm (current-time)))
+         (concat
+          (if (memq system-type '(ms-dos emx vax-vms))
+              (let ((user (downcase (user-login-name))))
+                (while (string-match "[^a-z0-9_]" user)
+                  (aset user (match-beginning 0) ?_))
+                user)
+              (message-number-base36 (user-uid) -1))
+          (message-number-base36 (+ (car   tm)
+                                    (lsh (% message-unique-id-char 25) 16)) 4)
+          (message-number-base36 (+ (nth 1 tm)
+                                    (lsh (/ message-unique-id-char 25) 16)) 4)
+          ;; Append the newsreader name, because while the generated
+          ;; ID is unique to this newsreader, other newsreaders might
+          ;; otherwise generate the same ID via another algorithm.
+          ".dlv")))
+   #+end_src
 ** Old bonjour
-#+begin_src emacs-lisp
-  (defun insert-bonjour () (interactive)
-    (message-goto-body)
-    (insert "Bonjour,\n\n\n\nCordialement,")
-    (forward-line -2))
-
-  (defun my-message-load-hook ()
-    (define-key message-mode-map [(control ?c) ?i] insert-bonjour))
-#+end_src
+   #+begin_src emacs-lisp
+     (defun insert-bonjour () (interactive)
+       (message-goto-body)
+       (insert "Bonjour,\n\n\n\nCordialement,")
+       (forward-line -2))
+     
+     (defun my-message-load-hook ()
+       (define-key message-mode-map [(control ?c) ?i] insert-bonjour))
+   #+end_src
 
 * On entering group
-#+begin_src emacs-lisp
+  #+begin_src emacs-lisp
     (setq gnus-auto-select-first ())
-#+end_src
+  #+end_src
 
 * Charset
-#+begin_src emacs-lisp
-  (setq message-default-charset 'iso-8859-15
-        gnus-default-posting-charset 'iso-8859-15)
-#+end_src
+  #+begin_src emacs-lisp
+    (setq message-default-charset 'iso-8859-15
+          gnus-default-posting-charset 'iso-8859-15)
+  #+end_src
 
 * Groups
 ** New newsgroups
-#+begin_src emacs-lisp
-  (setq gnus-check-new-newsgroups 'ask-server)
-  (setq gnus-save-killed-list ())
-  (setq gnus-subscribe-newsgroup-method 'gnus-subscribe-killed)
-#+end_src
+   #+begin_src emacs-lisp
+     (setq gnus-check-new-newsgroups 'ask-server)
+     (setq gnus-save-killed-list ())
+     (setq gnus-subscribe-newsgroup-method 'gnus-subscribe-killed)
+   #+end_src
 ** Listing them
-#+begin_src emacs-lisp
-  (setq gnus-group-sort-function 'gnus-group-sort-by-level)
-  (setq gnus-group-list-inactive-groups ())
-#+end_src
+   #+begin_src emacs-lisp
+     (setq gnus-group-sort-function 'gnus-group-sort-by-level)
+     (setq gnus-group-list-inactive-groups ())
+   #+end_src
 ** Subscribing them
-#+begin_src emacs-lisp
-  (setq gnus-level-subscribed 6)
-  (setq gnus-group-default-list-level gnus-level-subscribed)
-  (setq gnus-level-default-unsubscribed 7)
-  (setq gnus-activate-level (1+ gnus-level-subscribed))
-#+end_src
+   #+begin_src emacs-lisp
+     (setq gnus-level-subscribed 6)
+     (setq gnus-group-default-list-level gnus-level-subscribed)
+     (setq gnus-level-default-unsubscribed 7)
+     (setq gnus-activate-level (1+ gnus-level-subscribed))
+   #+end_src
 
 ** Moving arround:
    #+name: loop-search
@@ -263,170 +261,170 @@
         (setq ad-return-value (gnus-summary-search-group backward use-level))))))
 
 ** Topic
-#+begin_src emacs-lisp
-(add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
-#+end_src
+   #+begin_src emacs-lisp
+     (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
+   #+end_src
 * The colors
-#+begin_src emacs-lisp
-  (cond (window-system
-         (eval-after-load "gnus-artsdq"
-           '(progn
-             (set-face-foreground 'gnus-header-name-face "MediumTurquoise")
-             (set-face-foreground 'gnus-header-from-face "DarkTurquoise")
-             (set-face-foreground 'gnus-header-subject-face "Turquoise")
-             (set-face-foreground 'gnus-header-newsgroups-face "Turquoise")
-             (set-face-foreground 'gnus-header-content-face "Turquoise")))
-  ;;;        (set-face-foreground 'gnus-cite-face-1 "Yellow")
-  ;;;        (set-face-foreground 'gnus-cite-face-2 "Yellow")
-  ;;;        (set-face-foreground 'gnus-cite-face-3 "Yellow")
-  ;;;        (set-face-foreground 'gnus-cite-face-4 "Yellow")
-  ;;;        (set-face-foreground 'gnus-cite-face-5 "Yellow")
-  ;;;        (set-face-foreground 'gnus-cite-face-6 "Yellow")
-  ;;;        (set-face-foreground 'gnus-cite-face-7 "Yellow")
-  ;;;        (set-face-foreground 'gnus-cite-face-8 "Yellow")
-  ;;;        (set-face-foreground 'gnus-cite-face-10 "Yellow"))
-  ;;;        (set-face-foreground 'gnus-cite-face-9 "Yellow")
-
-         (eval-after-load "gnus-group"
-           '(progn
-             (set-face-foreground 'gnus-group-news-1-empty-face "DarkTurquoise")))
-
-         (eval-after-load "gnus-sum"
-           '(progn
-             (set-face-foreground 'gnus-summary-high-read-face "DarkTurquoise")
-             (set-face-foreground 'gnus-summary-low-read-face "DarkTurquoise")
-             (set-face-foreground 'gnus-summary-normal-read-face "DarkTurquoise")
-             (set-face-foreground 'gnus-summary-normal-ticked-face "Green")))
-
-         (eval-after-load "message"
-           '(progn
-             (set-face-foreground 'message-header-name-face "MediumTurquoise")
-             (set-face-foreground 'message-header-newsgroups-face "Turquoise")
-             (set-face-foreground 'message-header-other-face "MediumTurquoise")
-             (set-face-foreground 'message-header-cc-face "DarkTurquoise")
-             (set-face-foreground 'message-header-subject-face "Turquoise")
-             (set-face-foreground 'message-header-to-face "DarkTurquoise")
-             (set-face-foreground 'message-header-xheader-face "MediumTurquoise")
-             (set-face-foreground 'message-separator-face "Cyan")
-             (set-face-foreground 'message-cited-text-face "DarkTurquoise")))))
-#+end_src
+  #+begin_src emacs-lisp
+    (cond (window-system
+           (eval-after-load "gnus-artsdq"
+             '(progn
+               (set-face-foreground 'gnus-header-name-face "MediumTurquoise")
+               (set-face-foreground 'gnus-header-from-face "DarkTurquoise")
+               (set-face-foreground 'gnus-header-subject-face "Turquoise")
+               (set-face-foreground 'gnus-header-newsgroups-face "Turquoise")
+               (set-face-foreground 'gnus-header-content-face "Turquoise")))
+    ;;;        (set-face-foreground 'gnus-cite-face-1 "Yellow")
+    ;;;        (set-face-foreground 'gnus-cite-face-2 "Yellow")
+    ;;;        (set-face-foreground 'gnus-cite-face-3 "Yellow")
+    ;;;        (set-face-foreground 'gnus-cite-face-4 "Yellow")
+    ;;;        (set-face-foreground 'gnus-cite-face-5 "Yellow")
+    ;;;        (set-face-foreground 'gnus-cite-face-6 "Yellow")
+    ;;;        (set-face-foreground 'gnus-cite-face-7 "Yellow")
+    ;;;        (set-face-foreground 'gnus-cite-face-8 "Yellow")
+    ;;;        (set-face-foreground 'gnus-cite-face-10 "Yellow"))
+    ;;;        (set-face-foreground 'gnus-cite-face-9 "Yellow")
+    
+           (eval-after-load "gnus-group"
+             '(progn
+               (set-face-foreground 'gnus-group-news-1-empty-face "DarkTurquoise")))
+    
+           (eval-after-load "gnus-sum"
+             '(progn
+               (set-face-foreground 'gnus-summary-high-read-face "DarkTurquoise")
+               (set-face-foreground 'gnus-summary-low-read-face "DarkTurquoise")
+               (set-face-foreground 'gnus-summary-normal-read-face "DarkTurquoise")
+               (set-face-foreground 'gnus-summary-normal-ticked-face "Green")))
+    
+           (eval-after-load "message"
+             '(progn
+               (set-face-foreground 'message-header-name-face "MediumTurquoise")
+               (set-face-foreground 'message-header-newsgroups-face "Turquoise")
+               (set-face-foreground 'message-header-other-face "MediumTurquoise")
+               (set-face-foreground 'message-header-cc-face "DarkTurquoise")
+               (set-face-foreground 'message-header-subject-face "Turquoise")
+               (set-face-foreground 'message-header-to-face "DarkTurquoise")
+               (set-face-foreground 'message-header-xheader-face "MediumTurquoise")
+               (set-face-foreground 'message-separator-face "Cyan")
+               (set-face-foreground 'message-cited-text-face "DarkTurquoise")))))
+  #+end_src
 
 * Reading messages
 ** Summaries confs
-#+begin_src emacs-lisp
-  (eval-after-load "gnus-sum"
-    '(progn
-       (define-key gnus-summary-mode-map
-         "!" 'gnus-summary-put-mark-as-ticked-next)
-       (define-key gnus-summary-mode-map
-         "E" 'gnus-summary-put-mark-as-expirable-next)
-       (define-key gnus-summary-mode-map
-         "c" 'gnus-summary-catchup-and-goto-next-group)))
-#+end_src
+   #+begin_src emacs-lisp
+     (eval-after-load "gnus-sum"
+       '(progn
+          (define-key gnus-summary-mode-map
+            "!" 'gnus-summary-put-mark-as-ticked-next)
+          (define-key gnus-summary-mode-map
+            "E" 'gnus-summary-put-mark-as-expirable-next)
+          (define-key gnus-summary-mode-map
+            "c" 'gnus-summary-catchup-and-goto-next-group)))
+   #+end_src
 ** Mime
-#+begin_src emacs-lisp
-  (setq mm-discouraged-alternatives '("text/html" "text/richtext"))
-  (setq gnus-buttonized-mime-types (list "multipart/alternative"))
-#+end_src
+   #+begin_src emacs-lisp
+     (setq mm-discouraged-alternatives '("text/html" "text/richtext"))
+     (setq gnus-buttonized-mime-types (list "multipart/alternative"))
+   #+end_src
 ** Smilley
-#+begin_src emacs-lisp
-  (setq gnus-treat-display-smileys ())
-#+end_src
+   #+begin_src emacs-lisp
+     (setq gnus-treat-display-smileys ())
+   #+end_src
 ** Summary: thread
-#+begin_src emacs-lisp
-  (setq gnus-summary-line-format "%U%R%z%(%[%4L: %-20,20f%]%)%B %s\n"
-        ;; C'est le %B qui est important ici, et il n'est géré qu'avec ognus.
-        gnus-summary-same-subject "")
-  
-  (setq gnus-summary-make-false-root 'empty)
-  
-  (if 't                                  ; •
-      (setq gnus-sum-thread-tree-false-root "·"
-            gnus-sum-thread-tree-root "––» "
-            gnus-sum-thread-tree-single-indent "––» "
-            gnus-sum-thread-tree-leaf-with-other "┣––» "
-            gnus-sum-thread-tree-vertical "┃"
-            gnus-sum-thread-tree-single-leaf "┗––» "
-            gnus-sum-thread-tree-indent " ")
-      (setq gnus-sum-thread-tree-root "> "
-            gnus-sum-thread-tree-single-indent "> "
-            gnus-sum-thread-tree-vertical "|"
-            gnus-sum-thread-tree-indent " "
-            gnus-sum-thread-tree-leaf-with-other "+-> "
-            gnus-sum-thread-tree-single-leaf "\\-> "))
-  
-#+end_src
+   #+begin_src emacs-lisp
+     (setq gnus-summary-line-format "%U%R%z%(%[%4L: %-20,20f%]%)%B %s\n"
+           ;; C'est le %B qui est important ici, et il n'est géré qu'avec ognus.
+           gnus-summary-same-subject "")
+     
+     (setq gnus-summary-make-false-root 'empty)
+     
+     (if 't                                  ; •
+         (setq gnus-sum-thread-tree-false-root "·"
+               gnus-sum-thread-tree-root "––» "
+               gnus-sum-thread-tree-single-indent "––» "
+               gnus-sum-thread-tree-leaf-with-other "┣––» "
+               gnus-sum-thread-tree-vertical "┃"
+               gnus-sum-thread-tree-single-leaf "┗––» "
+               gnus-sum-thread-tree-indent " ")
+         (setq gnus-sum-thread-tree-root "> "
+               gnus-sum-thread-tree-single-indent "> "
+               gnus-sum-thread-tree-vertical "|"
+               gnus-sum-thread-tree-indent " "
+               gnus-sum-thread-tree-leaf-with-other "+-> "
+               gnus-sum-thread-tree-single-leaf "\\-> "))
+     
+   #+end_src
 ** Word wrapping
-#+begin_src emacs-lisp
-(add-hook 'gnus-article-mode-hook 'set-word-wrap)
-#+end_src
+   #+begin_src emacs-lisp
+     (add-hook 'gnus-article-mode-hook 'set-word-wrap)
+   #+end_src
 ** Expunge
    #+name: gnus-expunge
    #+begin_src emacs-lisp
      (setq gnus-summary-expunge-below -20)
    #+end_src
 * Spam
-#+begin_src emacs-lisp
-  (spam-initialize)
-  
-  (setq gnus-spam-newsgroup-contents
-        '((".*[Ss][Pp][Aa][Mm].*" gnus-group-spam-classification-spam)
-          (".*" neither)))
-  
-  (setq gnus-spam-process-destinations
-        '(("nnml:.*" "nnml:mail.spam")
-          ("Gmail/\\[Gmail\\].Spam" nil)
-          ("Gmail/.*" "nnimap+localhost:Gmail/[Gmail].Spam")
-          ("nnimap\\+gmail:\\[Gmail\\]/Spam" nil)
-          ("nnimap\\+gmail:.*" "nnimap+gmail:[Gmail]/Spam")))
-  
-  (setq gnus-ham-process-destinations
-        '(("nnml:.*" "nnml:mail.misc")
-          ("Gmail/\\[Gmail\\].Spam" "nnimap+localhost:Gmail/INBOX")
-          ("nnimap\\+gmail:\\[Gmail\\]/Spam" "nnimap+gmail:INBOX")))
-#+end_src
+  #+begin_src emacs-lisp
+    (spam-initialize)
+    
+    (setq gnus-spam-newsgroup-contents
+          '((".*[Ss][Pp][Aa][Mm].*" gnus-group-spam-classification-spam)
+            (".*" neither)))
+    
+    (setq gnus-spam-process-destinations
+          '(("nnml:.*" "nnml:mail.spam")
+            ("Gmail/\\[Gmail\\].Spam" nil)
+            ("Gmail/.*" "nnimap+localhost:Gmail/[Gmail].Spam")
+            ("nnimap\\+gmail:\\[Gmail\\]/Spam" nil)
+            ("nnimap\\+gmail:.*" "nnimap+gmail:[Gmail]/Spam")))
+    
+    (setq gnus-ham-process-destinations
+          '(("nnml:.*" "nnml:mail.misc")
+            ("Gmail/\\[Gmail\\].Spam" "nnimap+localhost:Gmail/INBOX")
+            ("nnimap\\+gmail:\\[Gmail\\]/Spam" "nnimap+gmail:INBOX")))
+  #+end_src
 
 * Integration with org
-#+begin_src emacs-lisp
-  (require 'org-gnus)
-#+end_src
+  #+begin_src emacs-lisp
+    (require 'org-gnus)
+  #+end_src
 * Notmuch
-#+begin_example
-  (defun lld-notmuch-shortcut ()
-    (define-key gnus-group-mode-map "GG" 'notmuch-search))
-
-  (setq lld-notmuch-my-gmail
-        (if (string= system-name "ordicollegeS2")
-            "Gmail/"
-            "nnimap+localhost:Gmail/"))
-
-  (defun lld-notmuch-file-to-group (file)
-    "Calculate the Gnus group name from the given file name."
-    (let ((group (file-name-directory (directory-file-name (file-name-directory file)))))
-      (setq group (replace-regexp-in-string ".*/Gmail/" lld-notmuch-my-gmail group))
-      (setq group (replace-regexp-in-string "/$" "" group))
-      (if (string-match ":$" group)
-          (concat group "INBOX")
-          (replace-regexp-in-string ":\\." ":" group))))
-
-  (defun lld-notmuch-goto-message-in-gnus ()
-    "Open a summary buffer containing the current notmuch article."
-    (interactive)
-    (let ((group (lld-notmuch-file-to-group (notmuch-show-get-filename)))
-          (message-id (replace-regexp-in-string
-                       "^id:\\|\"" "" (notmuch-show-get-message-id))))
-      (if (and group message-id)
-          (progn
-            (switch-to-buffer "*Group*")
-            (org-gnus-follow-link group message-id))
-          (message "Couldn't get relevant infos for switching to Gnus."))))
-
-  (when (require 'notmuch () t)
-    (add-hook 'gnus-group-mode-hook 'lld-notmuch-shortcut)
-    (setq notmuch-fcc-dirs ())
-
-    (define-key notmuch-show-mode-map (kbd "C-c C-c") 'lld-notmuch-goto-message-in-gnus))
-#+end_example
+  #+begin_example
+    (defun lld-notmuch-shortcut ()
+      (define-key gnus-group-mode-map "GG" 'notmuch-search))
+    
+    (setq lld-notmuch-my-gmail
+          (if (string= system-name "ordicollegeS2")
+              "Gmail/"
+              "nnimap+localhost:Gmail/"))
+    
+    (defun lld-notmuch-file-to-group (file)
+      "Calculate the Gnus group name from the given file name."
+      (let ((group (file-name-directory (directory-file-name (file-name-directory file)))))
+        (setq group (replace-regexp-in-string ".*/Gmail/" lld-notmuch-my-gmail group))
+        (setq group (replace-regexp-in-string "/$" "" group))
+        (if (string-match ":$" group)
+            (concat group "INBOX")
+            (replace-regexp-in-string ":\\." ":" group))))
+    
+    (defun lld-notmuch-goto-message-in-gnus ()
+      "Open a summary buffer containing the current notmuch article."
+      (interactive)
+      (let ((group (lld-notmuch-file-to-group (notmuch-show-get-filename)))
+            (message-id (replace-regexp-in-string
+                         "^id:\\|\"" "" (notmuch-show-get-message-id))))
+        (if (and group message-id)
+            (progn
+              (switch-to-buffer "*Group*")
+              (org-gnus-follow-link group message-id))
+            (message "Couldn't get relevant infos for switching to Gnus."))))
+    
+    (when (require 'notmuch () t)
+      (add-hook 'gnus-group-mode-hook 'lld-notmuch-shortcut)
+      (setq notmuch-fcc-dirs ())
+    
+      (define-key notmuch-show-mode-map (kbd "C-c C-c") 'lld-notmuch-goto-message-in-gnus))
+  #+end_example
 
 * Expiring
   #+begin_src emacs-lisp 
@@ -450,15 +448,15 @@
   #+begin_src python :tangle ~/.offlineimap.py
     #!/usr/bin/python
     import re, os
-
+    
     def get_authinfo_password(machine, login, port):
         s = "machine %s login %s password ([^ ]*)\n" % (machine, login)
         p = re.compile(s)
         authinfo = os.popen("gpg --use-agent -q --no-tty -d ~/.authinfo.gpg").read()
         return p.search(authinfo).group(1)
-
+    
     atend = [ '[Gmail].Tous les messages', '[Gmail].Important', '[Gmail].Corbeille' ]
-
+    
     def mycmp(x, y):
         for suffix in atend:
             xsw = x.endswith(suffix)

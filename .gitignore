@@ -51,3 +51,5 @@ secret.org
 .emacs.desktop*
 .*~
 agent/*
+/org-caldav-backup.org
+/bookmarks

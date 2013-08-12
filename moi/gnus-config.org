@@ -4,10 +4,10 @@
   (setq nntp-connection-timeout 120)
   
   (setq gnus-select-method
-            '(nnspool ""
-              (nnspool-spool-directory "/var/spool/news/articles/")
-              (nnspool-nov-directory "/var/spool/news/overview")
-              (nnspool-lib-dir "/var/lib/news")))
+        '(nnspool ""
+          (nnspool-spool-directory "/var/spool/news/articles/")
+          (nnspool-nov-directory "/var/spool/news/overview")
+          (nnspool-lib-dir "/var/lib/news")))
   
   ;  (setq imap-shell-program "/usr/sbin/dovecot --exec-mail imap")
   ;  (setq imap-shell-program "/usr/lib/dovecot/imap")
@@ -23,7 +23,10 @@
               (nnimap "gmail"
                (nnimap-address "imap.gmail.com")
                (nnimap-server-port 993)
-               (nnimap-stream ssl)))))
+               (nnimap-stream ssl)
+               (nnir-search-engine imap))
+              (nntp "gmane"
+               (nntp-address "news.gmane.org")))))
   ;; (nnimap "localhost"
   ;;         (nnimap-stream shell)
   ;;         (nnir-search-engine imap))

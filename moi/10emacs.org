@@ -104,8 +104,6 @@ Penser à reclasser les deux add-hook
   :ID:       b26b3373-e1ff-4a6e-a226-c63e195a9ceb
   :END:
 #+begin_src emacs-lisp
-  (global-set-key [?\C-x ?g] 'magit-status)
-
   (define-key input-decode-map (kbd "C-à") [?\C-c])
 
   (global-set-key [SunFA_Circum] 'nop)
@@ -413,36 +411,6 @@ Penser à reclasser les deux add-hook
                     (list (regexp-quote "lot-of-stuff.info") "blog" "/ssh:moi@lot-of-stuff.info:"))))
 #+end_src
 * configurations des modes
-** vcs
-*** git/magit
-   :PROPERTIES:
-   :ID:       2945a736-1523-4cd8-8b7c-a58fed61f7f8
-   :END:
-#+begin_src emacs-lisp
-  (autoload 'git-status "git" "" t)
-  (autoload 'git-blame-mode "git-blame"
-  (autoload 'magit-status "magit" "" t)
-    "Minor mode for incremental blame for Git." t)
-  (require 'git-annex)
-#+end_src
-*** vc
-#+begin_src emacs-lisp
-  (eval-after-load "vc-hooks"
-    '(define-key vc-prefix-map "=" 'ediff-revision))
-  (add-to-list 'vc-handled-backends 'GIT)
-#+end_src
-*** mo-git-blame
-    :PROPERTIES:
-    :ID:       26718e97-db3d-40b2-bc2b-6842a6289d42
-    :END:
-#+begin_src emacs-lisp
-  (autoload 'mo-git-blame-file "mo-git-blame" nil t)
-  (autoload 'mo-git-blame-current "mo-git-blame" nil t)
-
-;  (global-set-key [?\C-c ?g ?c] 'mo-git-blame-current)
-;  (global-set-key [?\C-c ?g ?f] 'mo-git-blame-file)
-#+end_src
-
 ** config ruby et rails
    :PROPERTIES:
    :ID:       ad85a2b9-dd75-4a44-a45a-fadcbbd71a26

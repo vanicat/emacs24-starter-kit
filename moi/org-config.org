@@ -406,7 +406,7 @@
   (setq org-export-with-toc nil)
   (setq org-hide-leading-stars t)
   (setq org-modules '(org-bbdb org-bibtex org-gnus org-id org-info org-jsinfo org-irc org-wl org-w3m))
-  (setq org-refile-targets (quote ((org-agenda-files :level . 1))))
+  (setq org-refile-targets (quote ((org-agenda-files :maxlevel . 3))))
   (setq org-return-follows-link t)
   (setq org-time-stamp-custom-formats '("<%a %d/%m/%y>" . "<%a %d/%m/%y %H:%M>"))
   (setq org-todo-keywords '((sequence "TODO" "NEXT(n)" "WAIT(w!)" "PROGRESS(p)" "|" "ABANDON(a!)" "DONE(d!)")))

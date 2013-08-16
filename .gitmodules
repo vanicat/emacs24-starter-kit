@@ -7,3 +7,6 @@
 [submodule "src/org-caldav"]
 	path = src/org-caldav
 	url = git://github.com/dengste/org-caldav.git
+[submodule "src/epresent"]
+	path = src/epresent
+	url = https://github.com/eschulte/epresent.git

@@ -123,7 +123,6 @@ Penser à reclasser les deux add-hook
 
   (global-set-key [f3] 'speedbar-get-focus)
 
-  (global-set-key [f4] 'woman)
   (global-set-key [S-f4] 'indent-region)
 
   (global-set-key [f5] 'ispell-word)
@@ -769,3 +768,15 @@ Penser à reclasser les deux add-hook
 #+begin_src emacs-lisp
   (setq gnus-local-domain ())
 #+end_src
+* Woman and man
+  #+name: woman-and-man
+  #+begin_src emacs-lisp
+    (defun woman-or-man (&optional re-cache)
+      (interactive (list current-prefix-arg))
+      (let ((file-name (woman-file-name nil re-cache)))
+        (condition-case nil
+            (woman-find-file file-name)
+          (error (man file-name)))))
+
+    (global-set-key [f4] 'woman-or-man)
+  #+end_src

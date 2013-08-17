@@ -10,3 +10,6 @@
 [submodule "src/epresent"]
 	path = src/epresent
 	url = https://github.com/eschulte/epresent.git
+[submodule "src/git-modes"]
+	path = src/git-modes
+	url = git@github.com:magit/git-modes.git

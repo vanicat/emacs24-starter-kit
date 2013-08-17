@@ -773,6 +773,7 @@ Penser à reclasser les deux add-hook
   #+begin_src emacs-lisp
     (defun woman-or-man (&optional re-cache)
       (interactive (list current-prefix-arg))
+      (require 'woman)
       (let ((file-name (woman-file-name nil re-cache)))
         (condition-case nil
             (woman-find-file file-name)

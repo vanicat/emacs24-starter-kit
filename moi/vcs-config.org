@@ -16,7 +16,7 @@
     #+name: git-wip
     #+begin_src emacs-lisp
       (require 'magit-wip)
-      (magit-wip-save-mode)
+      (global-magit-wip-save-mode)
     #+end_src
 
 ** vc

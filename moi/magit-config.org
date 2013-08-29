@@ -1,0 +1,12 @@
+* vcsh by tramp
+  #+name: vsh-by-tramp
+  #+begin_src emacs-lisp
+    (add-to-list 'tramp-methods '("vcsh"
+                                  (tramp-login-program "vcsh")
+                                  (tramp-login-args
+                                   (("enter")
+                                    ("%h")))
+                                  (tramp-remote-shell "/bin/sh")
+                                  (tramp-remote-shell-args
+                                   ("-c"))))
+  #+end_src

@@ -7,10 +7,13 @@
 
 ** Les fichiers de l'agenda
    #+begin_src emacs-lisp
+     (require 'em-glob)
      (setq org-agenda-files-cours
-           (list "~/org/cours.org"
-                 "~/travail/cours/1ES/1ES.org"
-                 "~/travail/cours/1STMG/1STMG.org"))
+           (cons "~/org/cours.org"
+                 (cl-loop for dir in (eshell-extended-glob "~/travail/cours/*/")
+                          for name = (file-name-nondirectory (directory-file-name dir))
+                          for org = (expand-file-name (concat name ".org") dir)
+                          when (file-readable-p org) collect org)))
 
      (setq org-agenda-files
            (list* "~/org/prgm.org"

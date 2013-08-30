@@ -55,8 +55,6 @@ Penser à reclasser les deux add-hook
     (add-hook 'before-save-hook 'clean-whitespace-tentative))
 
   (add-hook 'before-save-hook 'time-stamp)
-  (add-hook 'before-save-hook 'copyright-update)
-
 #+end_src
 
 * Le desktop

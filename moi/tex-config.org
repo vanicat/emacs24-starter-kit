@@ -5,15 +5,15 @@
    :ID:       c7219d91-75da-49e4-ab56-5d903f2cd00f
    :END:
 #+begin_src emacs-lisp
-  (defun my-LaTeX-mode-hook ()
-   ;  (require 'bib-cite)
-    (auto-fill-mode-on)
-    (abbrev-mode 1)
-    (setq case-fold-search ())
-    (latex-math-mode))
-
-  (add-hook 'LaTeX-mode-hook 'my-LaTeX-mode-hook)
-  (add-hook 'latex-mode-hook 'my-LaTeX-mode-hook)
+    (defun my-LaTeX-mode-hook ()
+     ;  (require 'bib-cite)
+      (auto-fill-mode-on)
+      (abbrev-mode 1)
+      (setq case-fold-search ())
+      (latex-math-mode))
+  
+    (add-hook 'LaTeX-mode-hook 'my-LaTeX-mode-hook)
+    (add-hook 'latex-mode-hook 'my-LaTeX-mode-hook)
 #+end_src
 * Ecriture des maths
   :PROPERTIES:
@@ -57,6 +57,38 @@
               1 LaTeX-auto-environment)
        LaTeX-auto-regexp-list)))
 #+end_src
+* Outline minor mode
+  #+name: outline-for-tex
+  #+begin_src emacs-lisp
+    (defvar my-latex-outline-regexp 
+      "\\\\\\(sub\\)*section\\| *\\\\begin\\>\\| *\\\\end\\>")
+    
+    (defun my-tex-outline-level ()
+      "compute the level of a outline for ruby"
+      (save-match-data
+        (cond
+          ((looking-at "\\\\begin{document}")
+           1)
+          ((looking-at "\\\\\\(sub\\)*section") 
+           (+ (/ (- (length (match-string 0))
+                     8)
+                  3)
+              2))
+                  
+          ((looking-at "\\( *\\)")
+           (+ 4 (length (match-string 1)))))))
+    
+    (defun define-latex-outline ()
+      (interactive)
+      (make-local-variable 'outline-regexp)
+      (setq outline-regexp my-latex-outline-regexp)
+      (make-local-variable 'outline-level)
+      (setq outline-level #'my-tex-outline-level)
+      (outline-minor-mode))
+    
+    (add-hook 'latex-mode-hook #'define-latex-outline)
+  #+end_src
+
 * Le reste
   :PROPERTIES:
   :ID:       17134eb5-6bc8-4c58-b836-e7812c407746

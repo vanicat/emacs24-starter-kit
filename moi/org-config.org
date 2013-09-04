@@ -401,8 +401,8 @@
                      "* \n%T" :kill-buffer t)
                 ("k" "kill-ring" entry (file+headline "~/org/notes.org" "Notes")
                      "* \n%c" :kill-buffer t)
-                ("c" "contact" entry (file+headline "~/org/contacts.org" "Divers")
-                     "**  \n   :PROPERTIES:\n   :EMAIL:\n   :END:\n" :kill-buffer t)
+                ("c" "Contacts" entry (file+headline "~/org/contacts.org" "Divers")
+                     "** %(org-contacts-template-name) \n   :PROPERTIES:\n   :EMAIL: %(org-contacts-template-email)\n   :END:\n")
                 ("i" "messageid" entry (file+headline "~/org/notes.org" "Notes")
                      "* %:subject\n  :PROPERTIES:\n  :SUBMITER: %:from\n  :END:\n  <%:message-id>\n  %:body"
                      :kill-buffer t))))

@@ -1,3 +1,14 @@
+* Registry
+  #+name: registry-init
+  #+begin_src emacs-lisp
+    (setq gnus-registry-ignored-groups '(("nntp" t)
+                                         ("nnrss" t)
+                                         ("spam" t)))
+    (setq gnus-registry-max-entries 5000)
+    
+    (gnus-registry-initialize)
+  #+end_src
+
 * The methods
 ** Normal access group
    #+begin_src emacs-lisp

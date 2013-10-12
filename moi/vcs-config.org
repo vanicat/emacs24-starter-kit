@@ -36,3 +36,16 @@
 ;  (global-set-key [?\C-c ?g ?c] 'mo-git-blame-current)
 ;  (global-set-key [?\C-c ?g ?f] 'mo-git-blame-file)
 #+end_src
+** vcsh by tramp
+   #+name: vsh-by-tramp
+   #+begin_src emacs-lisp
+     (eval-after-load 'tramp
+       '(add-to-list 'tramp-methods '("vcsh"
+                                      (tramp-login-program "vcsh")
+                                      (tramp-login-args
+                                       (("enter")
+                                        ("%h")))
+                                      (tramp-remote-shell "/bin/sh")
+                                      (tramp-remote-shell-args
+                                       ("-c")))))
+   #+end_src

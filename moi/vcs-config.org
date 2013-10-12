@@ -5,6 +5,7 @@
    :END:
 #+begin_src emacs-lisp
   (global-set-key [?\C-x ?g] 'magit-status)
+  (global-set-key [?\C-x ?L] 'magit-file-log)
 
   (autoload 'git-status "git" "" t)
   (autoload 'git-blame-mode "git-blame"

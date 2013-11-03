@@ -237,26 +237,19 @@
        (interactive)
        (when (member gnus-newsgroup-name mygnus-auto-mark-unread-group-list)
          (let* ((expirables (sort gnus-newsgroup-expirable '<))
-                (marks (nth 3 (assq gnus-newsgroup-name (gnus-group-entry gnus-newsgroup-name))))
-                (seen (cdr (assq 'seen marks)))
-                (expire (cdr (assq 'expire marks)))
-                (tick (cdr (assq 'tick marks)))
-                (dormant (cdr (assq 'dormant marks)))
-                (articles (gnus-range-difference
-                           (gnus-range-difference 
-                            (gnus-range-difference seen expire)
-                            tick)
-                           dormant))
-                (last-range (car (last articles)))
-                (last (if (consp last-range) (cdr last-range) last-range))
-                (other (gnus-active gnus-newsgroup-name ))
-                (bigger (gnus-range-difference other (cons 1 last))))
-           (dolist (article (gnus-uncompress-range (gnus-range-nconcat articles bigger)))
-             (let ((old-time (gnus-registry-get-id-key article 'make-unread)))
-               (when (or (null old-time)
-                         (< 2 (time-to-number-of-days (time-subtract (current-time) old-time))))
-                 (gnus-registry-set-id-key article 'make-unread (current-time))
-                 (gnus-summary-mark-article article ? )))))))
+                (dormant (sort gnus-newsgroup-dormant '<))
+                (ticked (sort gnus-newsgroup-marked '<)))
+           (dolist (article (gnus-uncompress-range (gnus-range-add gnus-newsgroup-unseen gnus-newsgroup-seen)))
+             (unless (or (member article expirables)
+                         (member article ticked)
+                         (member article dormant))
+               (let* ((id (gnus-registry-fetch-message-id-fast article))
+                      (old-time (gnus-registry-get-id-key id 'make-unread)))
+                 (when (and id
+                            (or (null old-time)
+                                (< 2 (time-to-number-of-days (time-subtract (current-time) old-time)))))
+                   (gnus-registry-set-id-key id 'make-unread (current-time))
+                   (gnus-summary-mark-article article ? ))))))))
      
      (defun mygnus-unread-add-registry ()
        (when (member gnus-newsgroup-name mygnus-auto-mark-unread-group-list)
@@ -264,8 +257,8 @@
            (unless (gnus-registry-get-id-key (car article) 'make-unread)
              (gnus-registry-set-id-key (car article) 'make-unread (current-time))))))
      
-     (add-hook 'gnus-summary-generate-hook #'mygnus-summary-unread-article)
-     (add-hook 'gnus-summary-prepare-exit-hook 'mygnus-unread-add-registry)
+     (add-hook 'gnus-summary-prepare-hook #'mygnus-summary-unread-article t)
+     ; (add-hook 'gnus-summary-prepare-exit-hook 'mygnus-unread-add-registry)
    #+end_src
 
 * Charset
@@ -483,7 +476,8 @@
   #+begin_src emacs-lisp 
     (setq gnus-parameters
           '(("Gmail/\\[Gmail\\].Tous les messages" (expiry-target "nnimap+localhost:Gmail/[Gmail].Corbeille"))
-            ("nnimap\\+gmail:INBOX" (expiry-wait . 2))
+            ("gmane.*" (gnus-fetch-old-headers nil))
+            ("INBOX$" (expiry-wait . 2) (display . all) (gnus-fetch-old-headers t))
             ("gmane.comp.version-control.git" (to-address . "git mailing list <git@vger.kernel.org>")
                                               (to-list    . "git mailing list <git@vger.kernel.org>"))
             ("gmane.comp.version-control.git.magit" (to-address . "Magit Mailing List <magit@googlegroups.com>")

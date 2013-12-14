@@ -25,6 +25,16 @@
          :background "gray10")))
   #+end_src
 
+* Error handling
+  #+name: ledger-error
+  #+begin_src emacs-lisp
+    (setq ledger-compilation-error-regexp-alist
+          '("^While parsing file \"\\(.*\\)\", line \\([0-9]+\\):" 1 2))
+
+    (push (list* 'ledger ledger-compilation-error-regexp-alist) compilation-error-regexp-alist-alist)
+
+    (push 'ledger compilation-error-regexp-alist)
+  #+end_src
 
 * Align
   #+name: ledger-align

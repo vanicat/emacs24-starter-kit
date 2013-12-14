@@ -149,10 +149,10 @@
                (address "vanicat@debian.org"))
               ("gmane.*"
                (address "vanicat@debian.org"))
-              ("gmane.comp.lang.ocaml.beginners"
-               (address "remi.vanicat@gmail.com"))
-              ("^dino"
+              ("gmane.comp.lang.ocaml.beginners")
+              ("\\(^\\|nntp\\+dino:\\)dino"
                (name "DarkLight")
+               (address "darklight@dino.ens-lyon.org")
                (signature ()))))
     #+end_src
 *** The from

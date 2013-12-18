@@ -231,6 +231,15 @@ Penser à reclasser les deux add-hook
   (push '("vimperator-.*.tmp" . text-mode) auto-mode-alist)
 #+end_src
 
+** Flycheck
+   #+name: flycheck-enable
+   #+begin_src emacs-lisp
+     (unless (require 'flycheck () t)
+       (package-install 'flycheck))
+
+     (add-hook 'after-init-hook #'global-flycheck-mode)
+   #+end_src
+
 ** fonctions utiles
 *** Disable des fonctions enquiquinante
     :PROPERTIES:

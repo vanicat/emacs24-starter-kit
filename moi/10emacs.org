@@ -236,6 +236,8 @@ Penser à reclasser les deux add-hook
    #+begin_src emacs-lisp
      (unless (require 'flycheck () t)
        (package-install 'flycheck))
+     (unless (require 'flycheck-ledger () t)
+       (package-install 'flycheck-ledger))
 
      (add-hook 'after-init-hook #'global-flycheck-mode)
    #+end_src

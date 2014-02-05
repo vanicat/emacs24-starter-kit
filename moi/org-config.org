@@ -18,7 +18,6 @@
      (setq org-agenda-files
            (list* "~/org/prgm.org"
                   "~/org/notes.org"
-                  "~/org/mononoke.org"
                   "~/org/personel.org"
                   "~/org/aniversaire.org"
                   "~/org/contacts.org"

@@ -299,6 +299,27 @@
         (org-table-recalculate))
       (widen)))
 #+end_src
+** Calculer des moyennes...
+   #+name: moyenne-in-org
+   #+begin_src emacs-lisp
+     (defun mean-compute (coefs tots values)
+       "compute mean with stuff"
+       (let ((tot-coef (cl-loop
+                        for coef in coefs
+                        for tot in tots
+                        for v in values
+                        when (and v (numberp v))
+                        sum (* coef tot)
+                        ))
+             (tot-note (cl-loop
+                       for coef in coefs
+                       for tot in tots
+                       for v in values
+                       when v
+                       sum (* coef v)
+                       )))
+         (/ (float (ceiling (/ (* 200. (float tot-note)) tot-coef))) 10)))
+   #+end_src
 ** org-mobile
     :PROPERTIES:
     :ID:       b9a1d2b5-5823-4f6e-a8b5-33ebfb942917

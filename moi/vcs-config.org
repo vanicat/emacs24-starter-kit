@@ -3,21 +3,24 @@
    :PROPERTIES:
    :ID:       2945a736-1523-4cd8-8b7c-a58fed61f7f8
    :END:
-#+begin_src emacs-lisp
-  (global-set-key [?\C-x ?g] 'magit-status)
-  (global-set-key [?\C-x ?L] 'magit-file-log)
+   #+name: magit-and-git-config
+   #+begin_src emacs-lisp
+     (global-set-key [?\C-x ?g] 'magit-status)
+     (global-set-key [?\C-x ?L] 'magit-file-log)
 
-  (autoload 'git-status "git" "" t)
-  (autoload 'git-blame-mode "git-blame"
-  (autoload 'magit-status "magit" "" t)
-    "Minor mode for incremental blame for Git." t)
-#+end_src
+     (autoload 'git-status "git" "" t)
+     (autoload 'git-blame-mode "git-blame"
+     (autoload 'magit-status "magit" "" t)
+       "Minor mode for incremental blame for Git." t)
+   #+end_src
+
 *** git-wip
     #+name: git-wip
     #+begin_src emacs-lisp
       (require 'magit-wip)
       (global-magit-wip-save-mode)
     #+end_src
+
 *** git in English
     #+name: git-english
     #+begin_src emacs-lisp
@@ -47,22 +50,13 @@
     #+end_src
 
 ** vc
-#+begin_src emacs-lisp
-  (eval-after-load "vc-hooks"
-    '(define-key vc-prefix-map "=" 'ediff-revision))
-  (add-to-list 'vc-handled-backends 'GIT)
-#+end_src
-** mo-git-blame
-    :PROPERTIES:
-    :ID:       26718e97-db3d-40b2-bc2b-6842a6289d42
-    :END:
-#+begin_src emacs-lisp
-  (autoload 'mo-git-blame-file "mo-git-blame" nil t)
-  (autoload 'mo-git-blame-current "mo-git-blame" nil t)
+   #+name: emacs-vc-config
+   #+begin_src emacs-lisp
+     (eval-after-load "vc-hooks"
+       '(define-key vc-prefix-map "=" 'ediff-revision))
+     (add-to-list 'vc-handled-backends 'GIT)
+   #+end_src
 
-;  (global-set-key [?\C-c ?g ?c] 'mo-git-blame-current)
-;  (global-set-key [?\C-c ?g ?f] 'mo-git-blame-file)
-#+end_src
 ** vcsh by tramp
    #+name: vsh-by-tramp
    #+begin_src emacs-lisp

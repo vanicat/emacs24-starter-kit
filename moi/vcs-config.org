@@ -11,7 +11,6 @@
   (autoload 'git-blame-mode "git-blame"
   (autoload 'magit-status "magit" "" t)
     "Minor mode for incremental blame for Git." t)
-  (require 'git-annex)
 #+end_src
 *** git-wip
     #+name: git-wip
@@ -33,6 +32,18 @@
         (let ((process-environment process-environment))
           (setenv "LANG" "en_US")
           ad-do-it))
+    #+end_src
+
+*** git annex
+    #+name: git-annex
+    #+begin_src emacs-lisp
+      (require 'git-annex)
+      (require 'magit-annex () t)
+
+      (eval-after-load 'dired
+        '(progn
+          (define-key dired-mode-map [@ e] 'magit-annex-edit-dired)
+          (define-key dired-mode-map [@ g] 'magit-annex-get-dired)))
     #+end_src
 
 ** vc

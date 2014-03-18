@@ -19,6 +19,21 @@
       (require 'magit-wip)
       (global-magit-wip-save-mode)
     #+end_src
+*** git in English
+    #+name: git-english
+    #+begin_src emacs-lisp
+      (defadvice magit-start-process (around lang-en_US activate)
+        "Set LANG to en_US."
+        (let ((process-environment process-environment))
+          (setenv "LANG" "en_US")
+          ad-do-it))
+
+      (defadvice magit-call-process (around lang-en_US activate)
+        "Set LANG to en_US."
+        (let ((process-environment process-environment))
+          (setenv "LANG" "en_US")
+          ad-do-it))
+    #+end_src
 
 ** vc
 #+begin_src emacs-lisp

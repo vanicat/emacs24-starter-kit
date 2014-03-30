@@ -23,6 +23,14 @@
                   "~/org/contacts.org"
                   org-agenda-files-cours))
    #+end_src
+
+** Affichage
+#+name: startup
+#+begin_src emacs-lisp
+  (setq org-startup-with-inline-images t)
+  (setq org-startup-indented t)
+#+end_src
+
 ** Exportons vers ical
    #+begin_src emacs-lisp
      (setq org-combined-agenda-icalendar-file "~/org/org.ics")

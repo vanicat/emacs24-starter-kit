@@ -317,7 +317,9 @@
                        when v
                        sum (* coef v)
                        )))
-         (/ (float (ceiling (/ (* 200. (float tot-note)) tot-coef))) 10)))
+         (if (= tot-coef 0)
+             ()
+             (/ (float (ceiling (/ (* 200. (float tot-note)) tot-coef))) 10))))
    #+end_src
 ** org-mobile
     :PROPERTIES:

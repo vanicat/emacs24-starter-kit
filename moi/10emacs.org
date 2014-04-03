@@ -234,10 +234,9 @@ Penser à reclasser les deux add-hook
 ** Flycheck
    #+name: flycheck-enable
    #+begin_src emacs-lisp
-     (unless (require 'flycheck () t)
-       (package-install 'flycheck))
-     (unless (require 'flycheck-ledger () t)
-       (package-install 'flycheck-ledger))
+     (require 'flycheck () t)
+
+     (require 'flycheck-ledger () t)
 
      (add-hook 'after-init-hook #'global-flycheck-mode)
    #+end_src
@@ -429,7 +428,6 @@ Penser à reclasser les deux add-hook
 
   (autoload 'rhtml-mode "rhtml-mode" "" t)
 
-  (require 'rinari)
   (eval-after-load 'ruby-mode
     '(require 'ruby-electric))
 
@@ -444,9 +442,7 @@ Penser à reclasser les deux add-hook
           (newline)
           (ruby-insert-end))))
 
-  (unless (require 'nxml-mode () t)
-    (package-install 'nxml-mode)
-    (require 'nxml-mode))
+  (require 'nxml-mode)
 
   ;; (yas/load-directory "~/.myconfig/emacs.d/yasnippets/yasnippets-ruby/")
   ;; (yas/load-directory "~/.myconfig/emacs.d/yasnippets/yasnippets-rails/")

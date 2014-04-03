@@ -31,9 +31,10 @@
     (setq ledger-compilation-error-regexp-alist
           '("^While parsing file \"\\(.*\\)\", line \\([0-9]+\\):" 1 2))
 
-    (push (list* 'ledger ledger-compilation-error-regexp-alist) compilation-error-regexp-alist-alist)
-
-    (push 'ledger compilation-error-regexp-alist)
+    (eval-after-load 'compile
+      '(progn
+        (push (list* 'ledger ledger-compilation-error-regexp-alist) compilation-error-regexp-alist-alist)
+        (push 'ledger compilation-error-regexp-alist)))
   #+end_src
 
 * Align

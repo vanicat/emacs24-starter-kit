@@ -1,6 +1,6 @@
 * Elisp
   #+begin_src emacs-lisp
-    (unless (require 'paredit () t) (package-install 'paredit))
+    (require 'paredit)
 
     (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
     (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)

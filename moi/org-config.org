@@ -23,6 +23,14 @@
                   "~/org/contacts.org"
                   org-agenda-files-cours))
    #+end_src
+
+** Affichage
+#+name: startup
+#+begin_src emacs-lisp
+  (setq org-startup-with-inline-images t)
+  (setq org-startup-indented t)
+#+end_src
+
 ** Exportons vers ical
    #+begin_src emacs-lisp
      (setq org-combined-agenda-icalendar-file "~/org/org.ics")
@@ -48,7 +56,7 @@
    #+name: french-date
    #+begin_src emacs-lisp
      (defvar parse-time-weekdays-french
-       '(("dim" . 0) ("lun" . 1) ("mar" . 2)
+       '(("dim" . 0) ("lun" . 1) ; ("mar" . 2) colision with march
          ("mer" . 3) ("jeu" . 4) ("ven" . 5)
          ("sam" . 6)
          ("dimanche" . 0) ("lundi" . 1)
@@ -317,7 +325,9 @@
                        when v
                        sum (* coef v)
                        )))
-         (/ (float (ceiling (/ (* 200. (float tot-note)) tot-coef))) 10)))
+         (if (= tot-coef 0)
+             ()
+             (/ (float (ceiling (/ (* 200. (float tot-note)) tot-coef))) 10))))
    #+end_src
 ** org-mobile
     :PROPERTIES:

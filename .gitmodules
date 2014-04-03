@@ -13,3 +13,6 @@
 [submodule "src/git-modes"]
 	path = src/git-modes
 	url = git@github.com:magit/git-modes.git
+[submodule "src/magit-annex"]
+	path = src/magit-annex
+	url = git@github.com:kyleam/magit-annex.git

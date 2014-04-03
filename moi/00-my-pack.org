@@ -1,7 +1,7 @@
 * load my package
   #+begin_src emacs-lisp
      (defvar my-starter-kit-packages
-      (list 'ruby-electric 'flycheck 'flycheck-ledger 'nxml-mode  'paredit)
+      (list 'ruby-electric 'flycheck 'flycheck-ledger 'nxml  'paredit)
       "Libraries that should be installed.")
 
     (dolist (package my-starter-kit-packages)

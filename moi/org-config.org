@@ -329,6 +329,21 @@
          (if (= tot-coef 0)
              10
              (/ (float (ceiling (/ (* 200. (float tot-note)) tot-coef))) 10))))
+
+     (defmacro defmycal-on-list (op)
+       (let ((fun (intern (format "my-%s" op))))
+         `(defun ,fun (&rest vecs)
+            (calc-eval ,(format "v%s($)" op) ()
+                       (require 'calc-vec)
+                       (apply #'calcFunc-vec
+                              (mapcar #'(lambda (x)
+                                          (math-read-number (number-to-string x)))
+                                      (remove-if-not #'numberp vecs)))))))
+
+     (defmycal-on-list min)
+     (defmycal-on-list max)
+     (defmycal-on-list mean)
+     (defmycal-on-list sdev)
    #+end_src
 ** org-mobile
     :PROPERTIES:

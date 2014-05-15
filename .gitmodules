@@ -16,3 +16,6 @@
 [submodule "src/magit-annex"]
 	path = src/magit-annex
 	url = git@github.com:kyleam/magit-annex.git
+[submodule "src/dino"]
+	path = src/dino
+	url = user-data@lot-of-stuff.info:git-repos/dino.git

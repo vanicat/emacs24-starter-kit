@@ -333,8 +333,8 @@
      (defmacro defmycal-on-list (op)
        (let ((fun (intern (format "my-%s" op))))
          `(defun ,fun (&rest vecs)
+            (require 'calc-vec)
             (calc-eval ,(format "v%s($)" op) ()
-                       (require 'calc-vec)
                        (apply #'calcFunc-vec
                               (mapcar #'(lambda (x)
                                           (math-read-number (number-to-string x)))

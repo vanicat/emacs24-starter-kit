@@ -23,17 +23,17 @@
 
 *** git in English
 #+name: git-english
-#+begin_src emacs-lisp
+#+begin_src fundamental
   (defadvice magit-start-process (around lang-en_US activate)
     "Set LANG to en_US."
     (let ((process-environment process-environment))
-      (setenv "LANG" "en_US")
+      (setenv "LANG" "en_US.utf8")
       ad-do-it))
 
   (defadvice magit-call-process (around lang-en_US activate)
     "Set LANG to en_US."
     (let ((process-environment process-environment))
-      (setenv "LANG" "en_US")
+      (setenv "LANG" "en_US.utf8")
       ad-do-it))
 #+end_src
 

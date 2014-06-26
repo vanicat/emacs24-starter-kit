@@ -54,10 +54,10 @@
      (setq org-icalendar-date-time-format ":%Y%m%dT%H%M%S")
      (setq org-icalendar-store-UID t)
      (setq org-icalendar-timezone "Europe/Paris")
-     (setq org-icalendar-include-todo t)
+     (setq org-icalendar-include-todo ())
      (setq org-icalendar-with-timestamps 'active)
-     (setq org-icalendar-use-deadline '(event-if-not-todo event-if-todo todo-due))
-     (setq org-icalendar-use-scheduled '(event-if-not-todo event-if-todo todo-start))
+     (setq org-icalendar-use-deadline '(event-if-not-todo event-if-todo))
+     (setq org-icalendar-use-scheduled '(event-if-not-todo event-if-todo))
    #+end_src
 ** Utilisons des dates européennes
 #+begin_src emacs-lisp

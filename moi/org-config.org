@@ -39,6 +39,7 @@
 #+begin_src emacs-lisp
   (setq org-startup-with-inline-images t)
   (setq org-startup-indented t)
+  (setq org-startup-truncated ())
 #+end_src
 
 ** Exportons vers ical

@@ -28,7 +28,8 @@
      (setq org-agenda-incoming-main "~/org/notes.org")
 
      (setq org-agenda-files
-           (append org-agenda-files-floss
+           (append '("~/org/sante.org")
+                   org-agenda-files-floss
                    org-agenda-files-personel
                    org-agenda-files-main
                    org-agenda-files-cours))

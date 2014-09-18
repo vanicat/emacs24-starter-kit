@@ -335,7 +335,7 @@
                        for coef in coefs
                        for tot in tots
                        for v in values
-                       when v
+                       when (and v (not (eq v 'NA)))
                        sum (* coef v)
                        )))
          (if (= tot-coef 0)
@@ -351,6 +351,8 @@
                               (mapcar #'(lambda (x)
                                           (math-read-number (number-to-string x)))
                                       (remove-if-not #'numberp vecs)))))))
+
+     (defconst NA 'NA)
 
      (defmycal-on-list min)
      (defmycal-on-list max)

@@ -14,14 +14,25 @@
                           for name = (file-name-nondirectory (directory-file-name dir))
                           for org = (expand-file-name (concat name ".org") dir)
                           when (file-readable-p org) collect org)))
+     (setq org-agenda-incoming-cours "~/org/cours.org")
+
+     (setq org-agenda-files-floss '("~/org/prgm.org"))
+     (setq org-agenda-incoming-floss "~/org/prgm.org")
+
+     (setq org-agenda-files-personel (list "~/org/personel.org"
+                                     "~/org/aniversaire.org"
+                                     "~/org/contacts.org"))
+     (setq org-agenda-incoming-personel "~/org/personel.org")
+
+     (setq org-agenda-files-main '("~/org/notes.org"))
+     (setq org-agenda-incoming-main "~/org/notes.org")
 
      (setq org-agenda-files
-           (list* "~/org/prgm.org"
-                  "~/org/notes.org"
-                  "~/org/personel.org"
-                  "~/org/aniversaire.org"
-                  "~/org/contacts.org"
-                  org-agenda-files-cours))
+           (append '("~/org/sante.org")
+                   org-agenda-files-floss
+                   org-agenda-files-personel
+                   org-agenda-files-main
+                   org-agenda-files-cours))
    #+end_src
 
 ** Affichage
@@ -29,6 +40,7 @@
 #+begin_src emacs-lisp
   (setq org-startup-with-inline-images t)
   (setq org-startup-indented t)
+  (setq org-startup-truncated ())
 #+end_src
 
 ** Exportons vers ical
@@ -44,10 +56,10 @@
      (setq org-icalendar-date-time-format ":%Y%m%dT%H%M%S")
      (setq org-icalendar-store-UID t)
      (setq org-icalendar-timezone "Europe/Paris")
-     (setq org-icalendar-include-todo t)
+     (setq org-icalendar-include-todo ())
      (setq org-icalendar-with-timestamps 'active)
-     (setq org-icalendar-use-deadline '(event-if-not-todo event-if-todo todo-due))
-     (setq org-icalendar-use-scheduled '(event-if-not-todo event-if-todo todo-start))
+     (setq org-icalendar-use-deadline '(event-if-not-todo event-if-todo))
+     (setq org-icalendar-use-scheduled '(event-if-not-todo event-if-todo))
    #+end_src
 ** Utilisons des dates européennes
 #+begin_src emacs-lisp
@@ -323,7 +335,7 @@
                        for coef in coefs
                        for tot in tots
                        for v in values
-                       when v
+                       when (and v (not (eq v 'NA)))
                        sum (* coef v)
                        )))
          (if (= tot-coef 0)
@@ -339,6 +351,8 @@
                               (mapcar #'(lambda (x)
                                           (math-read-number (number-to-string x)))
                                       (remove-if-not #'numberp vecs)))))))
+
+     (defconst NA 'NA)
 
      (defmycal-on-list min)
      (defmycal-on-list max)

@@ -597,8 +597,6 @@ Penser à reclasser les deux add-hook
    :ID:       fedf760a-0745-44ab-9f2a-a632120f3e19
    :END:
 #+begin_src emacs-lisp
-  (setq lisp-indent-function 'common-lisp-indent-function)
-
   (setq inferior-lisp-program "sbcl --noinform")
 
   ;; (setq slime-net-coding-system 'utf-8-unix)

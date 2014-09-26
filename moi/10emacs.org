@@ -151,7 +151,7 @@ Penser à reclasser les deux add-hook
    :PROPERTIES:
    :ID:       8c9ce6d5-bc15-410d-9667-2eb61bf410a7
    :END:
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (global-set-key [XF86AudioPlay] 'lagn-toggle)
   (global-set-key [XF86Back] 'lagn-prev)
   (global-set-key [XF86Forward] 'lagn-next)
@@ -621,7 +621,7 @@ Penser à reclasser les deux add-hook
    :PROPERTIES:
    :ID:       aa7e5923-38d6-494a-ab8f-52e41869db6b
    :END:
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (autoload 'lagn-list "lagn" "" t)
   (autoload 'lagn-search "lagn" "" t)
   (autoload 'lagn-toggle "lagn" "" t)

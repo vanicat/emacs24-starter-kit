@@ -425,9 +425,7 @@ Penser à reclasser les deux add-hook
        (add-to-list 'tramp-default-proxies-alist
                     '(nil "\\`root\\'" "/ssh:%h:"))
        (add-to-list 'tramp-default-proxies-alist
-                    (list (regexp-quote (system-name)) nil nil))
-       (add-to-list 'tramp-default-proxies-alist
-                    (list (regexp-quote "lot-of-stuff.info") "blog" "/ssh:moi@lot-of-stuff.info:"))))
+                    (list (regexp-quote (system-name)) nil nil))))
 #+end_src
 * configurations des modes
 ** config ruby et rails

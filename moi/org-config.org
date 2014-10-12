@@ -446,6 +446,15 @@
        (f-ediff-org-showhide ediff-buffer-C 'hide-sublevels 1))
    #+end_src
 
+** For R
+#+name: org-for-r
+#+begin_src elisp
+  (defun my-init-r-ess ()
+    (comint-send-string (get-buffer-process (current-buffer)) "source('/usr/share/ess/etc/ESSR/R/.basic.R')\n"))
+
+  (add-hook 'ess-post-run-hook #'my-init-r-ess)
+#+end_src
+
 * from custom
   :PROPERTIES:
   :ID:       75dfd292-47cb-4284-82d9-fdb440701600

@@ -422,7 +422,7 @@
 
 ** ediff of org mode
    #+name: ediff-org-mode
-   #+begin_src elisp
+   #+begin_src emacs-lisp
      ;; diff hooks for org mode
      (add-hook 'ediff-select-hook 'f-ediff-org-unfold-tree-element)
      (add-hook 'ediff-unselect-hook 'f-ediff-org-fold-tree)
@@ -448,7 +448,7 @@
 
 ** For R
 #+name: org-for-r
-#+begin_src elisp
+#+begin_src emacs-lisp
   (defun my-init-r-ess ()
     (comint-send-string (get-buffer-process (current-buffer)) "source('/usr/share/ess/etc/ESSR/R/.basic.R')\n"))
 

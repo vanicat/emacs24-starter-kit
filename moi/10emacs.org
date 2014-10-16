@@ -346,6 +346,7 @@ Penser à reclasser les deux add-hook
     (find-tag (thing-at-point 'word)))
 
   (defun auto-fill-mode-on () (auto-fill-mode 1))
+  (defun auto-fill-mode-off () (auto-fill-mode -1))
   (defun longlines-mode-on () (longlines-mode 1))
 
   (defalias 'report-debian-bug 'debian-bug)

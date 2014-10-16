@@ -28,7 +28,8 @@
      (setq org-agenda-incoming-main "~/org/notes.org")
 
      (setq org-agenda-files
-           (append org-agenda-files-floss
+           (append '("~/org/sante.org")
+                   org-agenda-files-floss
                    org-agenda-files-personel
                    org-agenda-files-main
                    org-agenda-files-cours))
@@ -341,7 +342,7 @@
                        for coef in coefs
                        for tot in tots
                        for v in values
-                       when v
+                       when (and v (not (eq v 'NA)))
                        sum (* coef v)
                        )))
          (if (= tot-coef 0)
@@ -357,6 +358,8 @@
                               (mapcar #'(lambda (x)
                                           (math-read-number (number-to-string x)))
                                       (remove-if-not #'numberp vecs)))))))
+
+     (defconst NA 'NA)
 
      (defmycal-on-list min)
      (defmycal-on-list max)
@@ -426,7 +429,7 @@
 
 ** ediff of org mode
    #+name: ediff-org-mode
-   #+begin_src elisp
+   #+begin_src emacs-lisp
      ;; diff hooks for org mode
      (add-hook 'ediff-select-hook 'f-ediff-org-unfold-tree-element)
      (add-hook 'ediff-unselect-hook 'f-ediff-org-fold-tree)
@@ -449,6 +452,23 @@
        (f-ediff-org-showhide ediff-buffer-B 'hide-sublevels 1)
        (f-ediff-org-showhide ediff-buffer-C 'hide-sublevels 1))
    #+end_src
+
+** For R
+#+name: org-for-r
+#+begin_src emacs-lisp
+  (defun my-init-r-ess ()
+    (comint-send-string (get-buffer-process (current-buffer)) "source('/usr/share/ess/etc/ESSR/R/.basic.R')\n"))
+
+  (add-hook 'ess-post-run-hook #'my-init-r-ess)
+#+end_src
+
+** For yasnipet
+#+name: org-for-yas
+#+begin_src none
+  (eval-after-load 'org
+    '(progn
+       (define-key org-mode-map (kbd "<C-tab>") #'yas/expand)))
+#+end_src
 
 * from custom
   :PROPERTIES:

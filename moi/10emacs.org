@@ -773,6 +773,13 @@ Penser à reclasser les deux add-hook
       ;;                               `(,apt-utils-face-property apt-utils-field-contents-face)))))))
       ))
 #+end_src
+** yas
+#+name: yas-config
+#+begin_src emacs-lisp
+  (setq yas/trigger-key "<C-tab>")
+  (eval-after-load 'yasnippet-bundle
+    '(yas/load-directory "~/.emacs.d/snippets/"))
+#+end_src
 
 * inconnus:
   :PROPERTIES:

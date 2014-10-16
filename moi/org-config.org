@@ -455,6 +455,14 @@
   (add-hook 'ess-post-run-hook #'my-init-r-ess)
 #+end_src
 
+** For yasnipet
+#+name: org-for-yas
+#+begin_src none
+  (eval-after-load 'org
+    '(progn
+       (define-key org-mode-map (kbd "<C-tab>") #'yas/expand)))
+#+end_src
+
 * from custom
   :PROPERTIES:
   :ID:       75dfd292-47cb-4284-82d9-fdb440701600

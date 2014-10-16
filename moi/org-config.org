@@ -42,6 +42,13 @@
   (setq org-startup-truncated ())
 #+end_src
 
+** Auto fill
+#+name: auto-fill
+#+begin_src emacs-lisp
+  (add-hook 'org-mode-hook 'auto-fill-mode-off)
+#+end_src
+
+
 ** Exportons vers ical
    #+begin_src emacs-lisp
      (setq org-combined-agenda-icalendar-file "~/org/org.ics")

@@ -346,6 +346,7 @@ Penser à reclasser les deux add-hook
     (find-tag (thing-at-point 'word)))
 
   (defun auto-fill-mode-on () (auto-fill-mode 1))
+  (defun auto-fill-mode-off () (auto-fill-mode -1))
   (defun longlines-mode-on () (longlines-mode 1))
 
   (defalias 'report-debian-bug 'debian-bug)
@@ -425,9 +426,7 @@ Penser à reclasser les deux add-hook
        (add-to-list 'tramp-default-proxies-alist
                     '(nil "\\`root\\'" "/ssh:%h:"))
        (add-to-list 'tramp-default-proxies-alist
-                    (list (regexp-quote (system-name)) nil nil))
-       (add-to-list 'tramp-default-proxies-alist
-                    (list (regexp-quote "lot-of-stuff.info") "blog" "/ssh:moi@lot-of-stuff.info:"))))
+                    (list (regexp-quote (system-name)) nil nil))))
 #+end_src
 * configurations des modes
 ** config ruby et rails
@@ -774,6 +773,13 @@ Penser à reclasser les deux add-hook
       ;;                                 (point))
       ;;                               `(,apt-utils-face-property apt-utils-field-contents-face)))))))
       ))
+#+end_src
+** yas
+#+name: yas-config
+#+begin_src emacs-lisp
+  (setq yas/trigger-key "<C-tab>")
+  (eval-after-load 'yasnippet-bundle
+    '(yas/load-directory "~/.emacs.d/snippets/"))
 #+end_src
 
 * inconnus:

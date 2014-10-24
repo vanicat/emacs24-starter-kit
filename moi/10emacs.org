@@ -96,6 +96,36 @@ Penser à reclasser les deux add-hook
   (menu-bar-mode -1)
   (tool-bar-mode -1)
 #+end_src
+* Paire de parenthèse
+#+name: paire-de-parenthese
+#+begin_src emacs-lisp
+  (defvar pair-or-self-insert-alist
+    '((?\( ?\)) (?\[ ?\]) (?\{ ?\}) (?\< ?\>) (?\" ?\") (?\' ?\') (?\` ?\') (?\« ?\») (?\$ ?\$)))
+
+  (defun pair-or-self-insert-command (N)
+    (interactive "P")
+    (if (and transient-mark-mode mark-active)
+        (let ((pair (or (assq last-command-event pair-or-self-insert-alist)
+                        (assq (event-basic-type last-command-event)
+                              pair-or-self-insert-alist)))
+              open close)
+          (when pair
+            (if (nth 2 pair)
+                (setq open (nth 1 pair) close (nth 2 pair))
+              (setq open (nth 0 pair) close (nth 1 pair)))
+            (save-excursion (goto-char (region-end))       (insert close))
+            (save-excursion (goto-char (region-beginning)) (insert open))))
+      (call-interactively 'self-insert-command)))
+
+  (global-set-key "\"" 'pair-or-self-insert-command)
+  (global-set-key "«" 'pair-or-self-insert-command)
+  (global-set-key "<" 'pair-or-self-insert-command)
+  (global-set-key "(" 'pair-or-self-insert-command)
+  (global-set-key "[" 'pair-or-self-insert-command)
+  (global-set-key "{" 'pair-or-self-insert-command)
+  (eval-after-load 'latex
+    '(define-key LaTeX-mode-map "$" 'pair-or-self-insert-command))
+#+end_src
 
 * raccourcies globaux
   :PROPERTIES:

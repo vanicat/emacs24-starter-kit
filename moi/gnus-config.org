@@ -1,3 +1,9 @@
+* wait for gnus to be available
+#+name: wait
+#+begin_src emacs-lisp
+  (with-eval-after-load 'gnus
+#+end_src
+
 * Registry
   #+name: registry-init
   #+begin_src emacs-lisp
@@ -430,10 +436,6 @@
             ("nnimap\\+gmail:\\[Gmail\\]/Spam" "nnimap+gmail:INBOX")))
   #+end_src
 
-* Integration with org
-  #+begin_src emacs-lisp
-    (require 'org-gnus)
-  #+end_src
 * Notmuch
   #+begin_example
     (defun lld-notmuch-shortcut ()
@@ -491,6 +493,16 @@
     (setq gnus-completing-read-function 'gnus-ido-completing-read)
   #+end_src
 
+* Go...
+#+name: wait
+#+begin_src emacs-lisp
+    )
+#+end_src
+* Integration with org
+  #+begin_src emacs-lisp
+    (require 'org-gnus)
+  #+end_src
+
 * offlineimaprc.py
   #+begin_src python :tangle ~/.offlineimap.py
     #!/usr/bin/python
@@ -516,3 +528,4 @@
                 return -1
         return cmp(x, y)
   #+end_src
+

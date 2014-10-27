@@ -309,7 +309,7 @@ Penser à reclasser les deux add-hook
     :ID:       89894fca-1f8b-414c-9767-707b8510af10
     :END:
     ça sert encore ?
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp-comment
   (defun try-complete-abbrev (old)
     (if (expand-abbrev)
         t nil))
@@ -469,30 +469,23 @@ Penser à reclasser les deux add-hook
 
   (autoload 'rhtml-mode "rhtml-mode" "" t)
 
-  (eval-after-load 'ruby-mode
-    '(require 'ruby-electric))
+  (with-eval-after-load 'ruby-mode
+    (require 'ruby-electric)
 
-  (autoload 'autotest "autotest" "rez" t)
+    (autoload 'autotest "autotest" "rez" t)
 
-  (defun ruby-electric-return (arg)
-    (interactive "P")
-    (self-insert-command (prefix-numeric-value arg))
-    (if (ruby-electric-space-can-be-expanded-p)
-        (save-excursion
-          (ruby-indent-line t)
-          (newline)
-          (ruby-insert-end))))
+    (defun ruby-electric-return (arg)
+      (interactive "P")
+      (self-insert-command (prefix-numeric-value arg))
+      (if (ruby-electric-space-can-be-expanded-p)
+          (save-excursion
+            (ruby-indent-line t)
+            (newline)
+            (ruby-insert-end))))
 
-  (require 'nxml-mode)
+    (defvar my-ruby-outline-regexp "####? \\| *def\\>\\| *module\\>\\| *class\\>")
 
-  ;; (yas/load-directory "~/.myconfig/emacs.d/yasnippets/yasnippets-ruby/")
-  ;; (yas/load-directory "~/.myconfig/emacs.d/yasnippets/yasnippets-rails/")
-
-  (push '(".*\\.html.erb" . rhtml-mode) auto-mode-alist)
-
-  (defvar my-ruby-outline-regexp "####? \\| *def\\>\\| *module\\>\\| *class\\>")
-
-  (defun my-ruby-outline-level ()
+    (defun my-ruby-outline-level ()
     "compute the level of a outline for ruby"
     (save-match-data
      (cond
@@ -501,20 +494,25 @@ Penser à reclasser les deux add-hook
        ((looking-at "\\( *\\)")
         (+ 3 (length (match-string 1)))))))
 
-  (defun define-ruby-outline ()
-    (make-local-variable 'outline-regexp)
-    (setq outline-regexp my-ruby-outline-regexp)
-    (make-local-variable 'outline-level)
-    (setq outline-level #'my-ruby-outline-level)
-    (outline-minor-mode))
+    (defun define-ruby-outline ()
+      (make-local-variable 'outline-regexp)
+      (setq outline-regexp my-ruby-outline-regexp)
+      (make-local-variable 'outline-level)
+      (setq outline-level #'my-ruby-outline-level)
+      (outline-minor-mode))
+    (add-hook 'ruby-mode-hook 'define-ruby-outline))
 
-  (add-hook 'ruby-mode-hook 'define-ruby-outline)
+  ;; (require 'nxml-mode)
 
-  (eval-after-load 'outline
-    '(progn
+  ;; (yas/load-directory "~/.myconfig/emacs.d/yasnippets/yasnippets-ruby/")
+  ;; (yas/load-directory "~/.myconfig/emacs.d/yasnippets/yasnippets-rails/")
+
+  (push '(".*\\.html.erb" . rhtml-mode) auto-mode-alist)
+
+  (with-eval-after-load 'outline
+    (progn
       (define-key outline-minor-mode-map [(control tab)] 'org-cycle)
       (define-key outline-minor-mode-map [(backtab)] 'org-global-cycle)))
-
 #+end_src
 
 ** configurations C,java...
@@ -522,62 +520,65 @@ Penser à reclasser les deux add-hook
    :ID:       e8033fd5-649b-4a66-b70d-a0caeac259a6
    :END:
 #+begin_src emacs-lisp
-  (setq c-brace-offset -2)
-  (setq c-auto-newline 't)
-  (add-hook 'c-mode-hook (lambda () (c-toggle-auto-hungry-state 1)))
-  (add-hook 'c-mode-hook (lambda () (set 'dabbrev-case-fold-search ())))
+  (with-eval-after-load 'cc-mode
+    (setq c-brace-offset -2)
+    (setq c-auto-newline 't)
+    (add-hook 'c-mode-hook (lambda () (c-toggle-auto-hungry-state 1)))
+    (add-hook 'c-mode-hook (lambda () (set 'dabbrev-case-fold-search ())))
 
-  (defun java-compile () (interactive)
-    (compile (concat "javac " (buffer-name))))
+    (defun java-compile () (interactive)
+           (compile (concat "javac " (buffer-name))))
 
-  (add-hook 'java-mode-hook 'my-java-mode-hook)
-  (defun my-java-mode-hook ()
-    (cond (window-system
-  ;         (require 'andersl-java-font-lock)
-           (turn-on-font-lock)))
-    (c-toggle-auto-hungry-state 1)
-    (set 'dabbrev-case-fold-search ())
-    (local-set-key "\M-j" 'java-compile))
+    (add-hook 'java-mode-hook 'my-java-mode-hook)
+    (defun my-java-mode-hook ()
+      (cond (window-system
+                                          ;         (require 'andersl-java-font-lock)
+             (turn-on-font-lock)))
+      (c-toggle-auto-hungry-state 1)
+      (set 'dabbrev-case-fold-search ())
+      (local-set-key "\M-j" 'java-compile)))
 #+end_src
 
 *** Edition des fichiers xmms2
 #+begin_src emacs-lisp
-  (defun xmms2-c-mode ()
-    "C mode with adjusted defaults for use with the xmms2."
-    (interactive)
-    (c-mode)
-    (c-set-style "K&R")
-    (setq tab-width 4)
-    (setq indent-tabs-mode t)
-    (setq c-basic-offset 4)
+  (with-eval-after-load 'cc-mode
+    (defun xmms2-c-mode ()
+      "C mode with adjusted defaults for use with the xmms2."
+      (interactive)
+      (c-mode)
+      (c-set-style "K&R")
+      (setq tab-width 4)
+      (setq indent-tabs-mode t)
+      (setq c-basic-offset 4)
 
-    ; Align closing paren with opening paren
-    (c-set-offset 'arglist-close 'c-lineup-arglist-intro-after-paren)
+      ;; Align closing paren with opening paren
+      (c-set-offset 'arglist-close 'c-lineup-arglist-intro-after-paren)
 
-    (add-hook 'c-special-indent-hook 'smart-tab-indent-hook))
+      (add-hook 'c-special-indent-hook 'smart-tab-indent-hook))
 
-  (defun get-nonempty-context ()
-    (let ((curr-context (car (c-guess-basic-syntax))))
-      (if (or (eq (car curr-context) 'arglist-intro)
-              (eq (car curr-context) 'arglist-cont)
-              (eq (car curr-context) 'arglist-cont-nonempty)
-              (eq (car curr-context) 'arglist-close))
-          curr-context
-        nil)))
+    (defun get-nonempty-context ()
+      (let ((curr-context (car (c-guess-basic-syntax))))
+        (if (or (eq (car curr-context) 'arglist-intro)
+                (eq (car curr-context) 'arglist-cont)
+                (eq (car curr-context) 'arglist-cont-nonempty)
+                (eq (car curr-context) 'arglist-close))
+            curr-context
+          nil))
 
-  (defun smart-tab-indent-hook ()
-    "Fixes indentation to pad with spaces in arglists."
-    (let ((nonempty-ctx (get-nonempty-context)))
-      (if nonempty-ctx
-          (let ((tabbed-columns (+ (point-at-bol)
-                                   (/ (c-langelem-col nonempty-ctx t)
-                                      tab-width)))
-                (orig-column (current-column)))
-            (tabify (point-at-bol) tabbed-columns)
-            (untabify tabbed-columns (point-at-eol))
-            ; editing tabs screws the pointer position
-            (move-to-column orig-column)))))
+      (defun smart-tab-indent-hook ()
+        "Fixes indentation to pad with spaces in arglists."
+        (let ((nonempty-ctx (get-nonempty-context)))
+          (if nonempty-ctx
+              (let ((tabbed-columns (+ (point-at-bol)
+                                       (/ (c-langelem-col nonempty-ctx t)
+                                          tab-width)))
+                    (orig-column (current-column)))
+                (tabify (point-at-bol) tabbed-columns)
+                (untabify tabbed-columns (point-at-eol))
+                                          ; editing tabs screws the pointer position
+                (move-to-column orig-column)))))))
 
+  (autoload 'xmms2-c-mode "cc-mode")
   (setq auto-mode-alist
         (cons '(".*xmms2.*/.*\\.[ch]$" . xmms2-c-mode)
               auto-mode-alist))
@@ -588,9 +589,10 @@ Penser à reclasser les deux add-hook
    :ID:       5f5cb5fa-b5de-4cf5-9935-d09e45937efa
    :END:
 #+begin_src emacs-lisp
-  (setq tuareg-with-indent 0)
-  (setq tuareg-function-indent 0)
-  (setq tuareg-in-indent 0)
+  (with-eval-after-load 'tuareg
+    (setq tuareg-with-indent 0)
+    (setq tuareg-function-indent 0)
+    (setq tuareg-in-indent 0))
 
   ;(autoload 'tuareg-imenu-set-imenu "tuareg-imenu" "Configuration of imenu for tuareg" t)
 
@@ -603,23 +605,24 @@ Penser à reclasser les deux add-hook
 ** Configuration lua
    #+name: lua-conf
    #+begin_src emacs-lisp
-     (defvar my-lua-outline-regexp "-- \\*+")
+     (with-eval-after-load 'lua-mode
+       (defvar my-lua-outline-regexp "-- \\*+")
 
-     (defun my-lua-outline-level ()
-       "compute the level of a outline for lua"
-       (save-match-data
-         (cond
-           ((looking-at "-- \\(\\*+\\)") (length (match-string 1)))
-           (t 1))))
+       (defun my-lua-outline-level ()
+         "compute the level of a outline for lua"
+         (save-match-data
+           (cond
+            ((looking-at "-- \\(\\*+\\)") (length (match-string 1)))
+            (t 1))))
 
-     (defun define-lua-outline ()
-       (make-local-variable 'outline-regexp)
-       (setq outline-regexp my-lua-outline-regexp)
-       (make-local-variable 'outline-level)
-       (setq outline-level #'my-lua-outline-level)
-       (outline-minor-mode))
+       (defun define-lua-outline ()
+         (make-local-variable 'outline-regexp)
+         (setq outline-regexp my-lua-outline-regexp)
+         (make-local-variable 'outline-level)
+         (setq outline-level #'my-lua-outline-level)
+         (outline-minor-mode))
 
-     (add-hook 'lua-mode-hook 'define-lua-outline)
+       (add-hook 'lua-mode-hook 'define-lua-outline))
    #+end_src
 ** Configuration lisp
    :PROPERTIES:
@@ -693,7 +696,7 @@ Penser à reclasser les deux add-hook
 #+end_src
 ** apt-util
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp-comment
   (eval-after-load 'apt-utils
     '(progn
       (require 'thingatpt)

@@ -394,6 +394,12 @@ Penser à reclasser les deux add-hook
       (setq browse-url-generic-program "x-www-browser")
     #+END_SRC
 
+** Set some auto-mode for ikiwiki alist
+  #+name: ikiwiki-automode
+  #+begin_src emacs-lisp
+    (push '("\\._comment\\(_pending\\)?$" . markdown-mode) auto-mode-alist)
+    (push '("\\.mdwn$" . markdown-mode) auto-mode-alist)
+  #+end_src
 * Qui suis-je
   :PROPERTIES:
   :ID:       823c7df7-e19e-4906-9937-4047451411d6

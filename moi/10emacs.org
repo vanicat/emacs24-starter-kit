@@ -841,3 +841,24 @@ Penser à reclasser les deux add-hook
 
     (global-set-key [f4] 'woman-or-man)
   #+end_src
+* isearch ignore accentuated letter
+#+name: isearc-accent
+#+begin_src emacs-lisp
+  (let ((eqv-list '("aAàÀáÁâÂãÃäÄåÅ"
+                    "cCçÇ"
+                    "eEèÈéÉêÊëË"
+                    "iIìÌíÍîÎïÏ"
+                    "nNñÑ"
+                    "oOòÒóÓôÔõÕöÖøØ"
+                    "uUùÙúÚûÛüÜ"
+                    "yYýÝÿ"))
+        (table (standard-case-table))
+        canon)
+    (setq canon (copy-sequence table))
+    (mapcar (lambda (s)
+              (mapcar (lambda (c) (aset canon c (aref s 0))) s))
+            eqv-list)
+    (set-char-table-extra-slot table 1 canon)
+    (set-char-table-extra-slot table 2 nil)
+    (set-standard-case-table table))
+#+end_src

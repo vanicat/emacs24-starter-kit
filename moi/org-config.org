@@ -267,6 +267,8 @@
      (sh . t)
      (sql . nil)
      (sqlite . t)))
+
+  (advice-add 'org-babel-execute-maybe :after #'org-display-inline-images)
 #+end_src
 ** mouvement dans org
     :PROPERTIES:

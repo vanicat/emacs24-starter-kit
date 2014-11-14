@@ -68,6 +68,17 @@
      (setq org-icalendar-use-deadline '(event-if-not-todo event-if-todo))
      (setq org-icalendar-use-scheduled '(event-if-not-todo event-if-todo))
    #+end_src
+
+** for caldav
+#+name: caldav-advice
+#+begin_src emacs-lisp
+  (defun my-caldav-advice (oldfun)
+    (let ((org-babel-confirm-evaluate-answer-no t))
+      (apply oldfun ())))
+
+  (advice-add 'org-caldav-sync :around #'my-caldav-advice)
+#+end_src
+
 ** Utilisons des dates européennes
 #+begin_src emacs-lisp
   (setq calendar-date-style 'european)

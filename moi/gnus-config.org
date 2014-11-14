@@ -477,9 +477,9 @@
 * Expiring
   #+begin_src emacs-lisp 
     (setq gnus-parameters
-          '(("Gmail/\\[Gmail\\].Tous les messages" (expiry-target "nnimap+localhost:Gmail/[Gmail].Corbeille"))
+          '(("Gmail/\\[Gmail\\].Tous les messages" (expiry-wait . never))
             ("gmane.*" (gnus-fetch-old-headers nil))
-            ("INBOX$" (expiry-wait . 2) (display . 10000) (gnus-fetch-old-headers t))
+            ("INBOX$" (expiry-wait . 2) (display . 10000) (gnus-fetch-old-headers . t))
             ("gmane.comp.version-control.git" (to-address . "git mailing list <git@vger.kernel.org>")
                                               (to-list    . "git mailing list <git@vger.kernel.org>"))
             ("gmane.comp.version-control.git.magit" (to-address . "Magit Mailing List <magit@googlegroups.com>")

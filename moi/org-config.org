@@ -9,7 +9,7 @@
    #+begin_src emacs-lisp
      (require 'em-glob)
      (setq org-agenda-files-cours
-           (cons "~/org/cours.org"
+           (cons "~/org/cours.org" "~/org/edt.org"
                  (cl-loop for dir in (eshell-extended-glob "~/travail/cours/*/")
                           for name = (file-name-nondirectory (directory-file-name dir))
                           for org = (expand-file-name (concat name ".org") dir)

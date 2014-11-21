@@ -844,21 +844,33 @@ Penser à reclasser les deux add-hook
 * isearch ignore accentuated letter
 #+name: isearc-accent
 #+begin_src emacs-lisp
-  (let ((eqv-list '("aAàÀáÁâÂãÃäÄåÅ"
-                    "cCçÇ"
-                    "eEèÈéÉêÊëË"
-                    "iIìÌíÍîÎïÏ"
-                    "nNñÑ"
-                    "oOòÒóÓôÔõÕöÖøØ"
-                    "uUùÙúÚûÛüÜ"
-                    "yYýÝÿ"))
-        (table (standard-case-table))
-        canon)
-    (setq canon (copy-sequence table))
-    (mapcar (lambda (s)
-              (mapcar (lambda (c) (aset canon c (aref s 0))) s))
-            eqv-list)
-    (set-char-table-extra-slot table 1 canon)
-    (set-char-table-extra-slot table 2 nil)
-    (set-standard-case-table table))
+  (defvar my-isearch-case-table
+    (let ((eqv-list '("aAàÀáÁâÂãÃäÄåÅ"
+                      "cCçÇ"
+                      "eEèÈéÉêÊëË"
+                      "iIìÌíÍîÎïÏ"
+                      "nNñÑ"
+                      "oOòÒóÓôÔõÕöÖøØ"
+                      "uUùÙúÚûÛüÜ"
+                      "yYýÝÿ"))
+          (table (standard-case-table))
+          canon)
+      (setq canon (copy-sequence table))
+      (mapcar (lambda (s)
+                (mapcar (lambda (c) (aset canon c (aref s 0))) s))
+              eqv-list)
+      (set-char-table-extra-slot table 1 canon)
+      (set-char-table-extra-slot table 2 nil)
+      table)
+    "a case table for ignoring accentuated letter")
+
+  (defun my-isearch-case-table-advice (oldfun &rest args)
+    (let ((current-case (current-case-table)))
+      (unwind-protect
+          (set-case-table my-isearch-case-table)
+          (apply oldfun args)
+        (set-case-table current-case))))
+
+  (advice-add 'isearch-forward :around #'my-isearch-case-table-advice)
+  (advice-add 'isearch-forward-regexp :around #'my-isearch-case-table-advice)
 #+end_src

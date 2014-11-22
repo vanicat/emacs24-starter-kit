@@ -853,9 +853,11 @@ Penser à reclasser les deux add-hook
                       "oOòÒóÓôÔõÕöÖøØ"
                       "uUùÙúÚûÛüÜ"
                       "yYýÝÿ"))
-          (table (standard-case-table))
-          canon)
-      (setq canon (copy-sequence table))
+          (table (make-char-table 'case-table))
+          (parent (standard-case-table))
+          (canon (make-char-table 'case-table)))
+      (set-char-table-parent table parent)
+      (set-char-table-parent canon (char-table-extra-slot parent 1))
       (mapcar (lambda (s)
                 (mapcar (lambda (c) (aset canon c (aref s 0))) s))
               eqv-list)
@@ -864,13 +866,17 @@ Penser à reclasser les deux add-hook
       table)
     "a case table for ignoring accentuated letter")
 
-  (defun my-isearch-case-table-advice (oldfun &rest args)
-    (let ((current-case (current-case-table)))
-      (unwind-protect
-          (set-case-table my-isearch-case-table)
-          (apply oldfun args)
-        (set-case-table current-case))))
+  (defun my-set-isearch-case-table ()
+    (interactive)
+    (set-case-table my-isearch-case-table))
 
-  (advice-add 'isearch-forward :around #'my-isearch-case-table-advice)
+  (add-hook 'text-mode-hook 'my-set-isearch-case-table)
+
+  ; this does nothing, and this doing nothing make baby cry.
+  (defun my-isearch-case-table-advice (oldfun &rest args)
+    (with-case-table my-isearch-case-table
+      (apply oldfun args)))
+
+  (advice-add 'isearch-mode :around #'my-isearch-case-table-advice)
   (advice-add 'isearch-forward-regexp :around #'my-isearch-case-table-advice)
 #+end_src

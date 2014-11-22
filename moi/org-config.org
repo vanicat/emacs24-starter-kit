@@ -49,6 +49,11 @@
   (add-hook 'org-mode-hook 'auto-fill-mode-off)
 #+end_src
 
+** Auto fill
+#+name: yasnipett-org
+#+begin_src emacs-lisp
+  (add-hook 'org-mode-hook 'yas/minor-mode)
+#+end_src
 
 ** Exportons vers ical
    #+begin_src emacs-lisp

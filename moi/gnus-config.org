@@ -271,8 +271,14 @@ This file define a function that should be run in .gnus
 
 * Charset
   #+begin_src emacs-lisp
-    (setq message-default-charset 'iso-8859-15
-          gnus-default-posting-charset 'iso-8859-15)
+    (setq message-default-charset 'utf-8
+          gnus-default-posting-charset 'utf-8)
+
+    (setq gnus-group-posting-charset-alist '((message-this-is-mail nil
+                                                                   (utf-8))
+                                             (message-this-is-news nil t)))
+
+
   #+end_src
 
 * Groups

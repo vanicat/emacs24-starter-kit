@@ -1,7 +1,9 @@
-* wait for gnus to be available
+* wait for gnus to be available: 
+This file define a function that should be run in .gnus
 #+name: wait
 #+begin_src emacs-lisp
-  (with-eval-after-load 'gnus
+  (defun my-gnus-config ()
+    (interactive)
 #+end_src
 
 * Registry
@@ -492,16 +494,22 @@
   #+begin_src emacs-lisp
     (setq gnus-completing-read-function 'gnus-ido-completing-read)
   #+end_src
-
-* Go...
-#+name: wait
-#+begin_src emacs-lisp
-    )
-#+end_src
 * Integration with org
   #+begin_src emacs-lisp
     (require 'org-gnus)
   #+end_src
+
+* end of defun
+#+name: wait
+#+begin_src emacs-lisp
+    )
+#+end_src
+
+* the .gnus
+#+name: dot-gnus
+#+begin_src emacs-lisp :tangle ~/.gnus
+  (my-gnus-config)
+#+end_src
 
 * offlineimaprc.py
   #+begin_src python :tangle ~/.offlineimap.py

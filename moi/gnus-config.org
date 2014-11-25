@@ -497,7 +497,7 @@ This file define a function that should be run in .gnus
   #+end_src
 
 * Completion
-  #+begin_src emacs-lisp
+  #+begin_src emacs-lisp-nop
     (setq gnus-completing-read-function 'gnus-ido-completing-read)
   #+end_src
 * Integration with org

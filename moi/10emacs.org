@@ -217,7 +217,7 @@ Penser à reclasser les deux add-hook
 #+end_src
 
 ** ido
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp-nop
   (setq ido-use-filename-at-point nil)
 
   (setq ido-file-extensions-order

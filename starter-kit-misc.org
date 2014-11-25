@@ -75,7 +75,7 @@ evaluated a theme is activated using the =load-theme= function.
 ** ido mode
 ido-mode is like magic pixie dust!
 #+srcname: starter-kit-loves-ido-mode
-#+begin_src emacs-lisp 
+#+begin_src emacs-lisp-nop
 (when (> emacs-major-version 21)
   (ido-mode t)
   (setq ido-enable-prefix nil

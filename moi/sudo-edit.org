@@ -3,7 +3,7 @@
   (defun sudo-edit (&optional arg)
     (interactive "P")
     (if arg
-        (find-file (concat "/sudo::" (ido-read-file-name "File: ")))
+        (find-file (concat "/sudo::" (read-file-name "File: ")))
         (let ((file-name (or dired-directory buffer-file-name)))
           (if (tramp-tramp-file-p file-name)
               (with-parsed-tramp-file-name file-name file

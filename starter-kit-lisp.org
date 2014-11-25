@@ -150,7 +150,7 @@ back, =C-M-u= up, =C-M-d= down)
   
   Kills existing SLIME session, if any."
     (interactive (list
-                  (ido-read-directory-name
+                  (read-directory-name
                    "Project root: "
                    (locate-dominating-file default-directory "pom.xml"))))
     (when (get-buffer "*inferior-lisp*")

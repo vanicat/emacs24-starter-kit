@@ -308,8 +308,8 @@ Penser à reclasser les deux add-hook
     :PROPERTIES:
     :ID:       89894fca-1f8b-414c-9767-707b8510af10
     :END:
-    ça sert encore ?
-#+begin_src emacs-lisp-comment
+    ça sert encore ? ben oui...
+#+begin_src emacs-lisp
   (defun try-complete-abbrev (old)
     (if (expand-abbrev)
         t nil))

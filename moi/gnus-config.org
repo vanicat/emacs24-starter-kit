@@ -52,17 +52,17 @@ This file define a function that should be run in .gnus
    #+end_src
 
 ** Refer to article
-   #+begin_src emacs-lisp
-     (setq gnus-refer-article-method
-           '(current
-             (nntp "localhost"
-              (nntp-address "127.0.0.1"))
-             ;; (nntp "free"
-             ;;       (nntp-address "news.free.fr"))
-             (nntp "gmane"
-                   (nntp-address "news.gmane.org"))
-             (nnweb "refer" (nnweb-type google))))
-   #+end_src
+#+begin_src emacs-lisp
+  (setq gnus-refer-article-method
+        '(current
+          (nntp "localhost"
+           (nntp-address "127.0.0.1"))
+          ;; (nntp "free"
+          ;;       (nntp-address "news.free.fr"))
+          (nntp "gmane"
+                (nntp-address "news.gmane.org"))
+          (nnweb "refer" (nnweb-type google))))
+#+end_src
 
 ** Sending mails
    #+begin_src emacs-lisp

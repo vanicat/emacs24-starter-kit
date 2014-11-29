@@ -877,6 +877,13 @@ Penser à reclasser les deux add-hook
     (with-case-table my-isearch-case-table
       (apply oldfun args)))
 
+  (defun my-set-buffer-case-table (&optional buffer)
+    (interactive)
+    (when buffer
+      (with-current-buffer buffer
+        (set-case-table my-isearch-case-table)))
+    buffer)
+
   (advice-add 'isearch-mode :around #'my-isearch-case-table-advice)
   (advice-add 'isearch-forward-regexp :around #'my-isearch-case-table-advice)
 #+end_src
@@ -921,4 +928,9 @@ Penser à reclasser les deux add-hook
   (global-set-key (kbd "C-x C-f") 'helm-find-files)
   (global-set-key [f4] 'helm-man-woman)
   (global-set-key (kbd "C-c h o") 'helm-occur)
+#+end_src
+** Diacritique and helm
+#+name: herm-diacritique
+#+begin_src emacs-lisp
+  (advice-add #'helm-candidate-buffer :filter-return #'my-set-buffer-case-table)
 #+end_src

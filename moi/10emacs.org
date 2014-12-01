@@ -2,9 +2,9 @@
 #+OPTIONS: toc:nil num:nil ^:nil
 
 * le load path
-  :PROPERTIES:
-  :ID:       0875263f-9b86-4115-9380-221aa25af6e3
-  :END:
+:PROPERTIES:
+:ID:       0875263f-9b86-4115-9380-221aa25af6e3
+:END:
 #+begin_src emacs-lisp
   (defun add-load-path (dir)
     (interactive "D")
@@ -16,9 +16,9 @@
   (setq max-lisp-eval-depth 3000)
 #+end_src
 * Chromium a besoin de edit-server
-   :PROPERTIES:
-   :ID:       89bfd095-c7f5-455b-b726-40d3bb011102
-   :END:
+:PROPERTIES:
+:ID:       89bfd095-c7f5-455b-b726-40d3bb011102
+:END:
 #+begin_src emacs-lisp-comment
   (require 'edit-server)
   (setq edit-server-new-frame nil)
@@ -28,25 +28,25 @@
     (error nil))
 #+end_src
 * Really launch the server
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp-comment
   (let ((delete-by-moving-to-trash nil))
     (server-force-delete)
     (server-start))
 #+end_src
 
 * Lisons nos fichiers infos
-  :PROPERTIES:
-  :ID:       8863eaa9-3ef6-472c-8e1f-9f58b2cd7af9
-  :END:
+:PROPERTIES:
+:ID:       8863eaa9-3ef6-472c-8e1f-9f58b2cd7af9
+:END:
 #+begin_src emacs-lisp
   (setq Info-directory-list (list* "~/info"
                                    Info-default-directory-list))
 #+end_src
 
 * TODO Gestions des espaces
-  :PROPERTIES:
-  :ID:       31b77c03-0413-4005-a450-19e44c99ac5f
-  :END:
+:PROPERTIES:
+:ID:       31b77c03-0413-4005-a450-19e44c99ac5f
+:END:
 Doit être au début sinon, problème avec le before-save-hook
 
 Penser à reclasser les deux add-hook
@@ -62,9 +62,9 @@ Penser à reclasser les deux add-hook
   (setq desktop-save ())
 #+end_src
 * face, font et font-lock, look&feel
-  :PROPERTIES:
-  :ID:       2a7d9bc0-0d8d-47d8-b412-0759e4defe75
-  :END:
+:PROPERTIES:
+:ID:       2a7d9bc0-0d8d-47d8-b412-0759e4defe75
+:END:
   d'abord une règle pour la taille de l'affichage
 012345678901234567890123456789012345678901234567890123456789012345678901234567890
           1         2         3         4         5         6         7         8
@@ -98,7 +98,7 @@ Penser à reclasser les deux add-hook
 #+end_src
 * Paire de parenthèse
 #+name: paire-de-parenthese
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp-comment
   (defvar pair-or-self-insert-alist
     '((?\( ?\)) (?\[ ?\]) (?\{ ?\}) (?\< ?\>) (?\" ?\") (?\' ?\') (?\` ?\') (?\« ?\») (?\$ ?\$)))
 
@@ -128,9 +128,9 @@ Penser à reclasser les deux add-hook
 #+end_src
 
 * raccourcies globaux
-  :PROPERTIES:
-  :ID:       b26b3373-e1ff-4a6e-a226-c63e195a9ceb
-  :END:
+:PROPERTIES:
+:ID:       b26b3373-e1ff-4a6e-a226-c63e195a9ceb
+:END:
 #+begin_src emacs-lisp
   (define-key input-decode-map (kbd "C-à") [?\C-c])
 
@@ -178,9 +178,9 @@ Penser à reclasser les deux add-hook
 #+end_src
 
 ** lagn
-   :PROPERTIES:
-   :ID:       8c9ce6d5-bc15-410d-9667-2eb61bf410a7
-   :END:
+:PROPERTIES:
+:ID:       8c9ce6d5-bc15-410d-9667-2eb61bf410a7
+:END:
 #+begin_src emacs-lisp :tangle no
   (global-set-key [XF86AudioPlay] 'lagn-toggle)
   (global-set-key [XF86Back] 'lagn-prev)
@@ -202,12 +202,6 @@ Penser à reclasser les deux add-hook
   (add-to-list 'package-archives
     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 #+end_src
-** TODO helm
-#+name: helm-install
-#+begin_src emacs-lisp
-
-#+end_src
-
 ** dabbrev
 #+begin_src emacs-lisp
   (eval-after-load 'dabbrev
@@ -216,24 +210,10 @@ Penser à reclasser les deux add-hook
       (setcdr fst (cons 'try-expand-dabbrev-all-buffers (cdr fst)))))
 #+end_src
 
-** ido
-#+begin_src emacs-lisp-nop
-  (setq ido-use-filename-at-point nil)
-
-  (setq ido-file-extensions-order
-        '(".org" ".gpg" ".el" t ".png" ".jpg" ".gif"
-          ".pdf" ".dvi" ".log" ".aux" ".snm"))
-
-  (setq ido-show-dot-for-dired t)
-  (setq ido-enable-dot-prefix t)
-  ;; (setq ido-auto-merge-work-directories-length -1)
-  (setq ido-auto-merge-delay-time 1.4)
-#+end_src
-
 ** auto-compression
-   :PROPERTIES:
-   :ID:       bb4b8b20-1119-46e9-ac76-60ac3864c744
-   :END:
+:PROPERTIES:
+:ID:       bb4b8b20-1119-46e9-ac76-60ac3864c744
+:END:
 #+begin_src emacs-lisp
   (require 'jka-compr)
 
@@ -241,34 +221,34 @@ Penser à reclasser les deux add-hook
 #+end_src
 
 ** abbrev
-   :PROPERTIES:
-   :ID:       ccd2c801-ece6-4c92-b14b-e7bbd9d91b35
-   :END:
+:PROPERTIES:
+:ID:       ccd2c801-ece6-4c92-b14b-e7bbd9d91b35
+:END:
 #+begin_src emacs-lisp
   (quietly-read-abbrev-file)
 #+end_src
 
 ** Langue
-   :PROPERTIES:
-   :ID:       4749f1fb-abc3-4861-99d5-963307ceeeeb
-   :END:
+:PROPERTIES:
+:ID:       4749f1fb-abc3-4861-99d5-963307ceeeeb
+:END:
 #+begin_src emacs-lisp
   (set-language-environment "utf-8")
   (set-selection-coding-system 'utf-8)
 #+end_src
 
 ** recentf
-   :PROPERTIES:
-   :ID:       1ca0d627-4494-459a-9a03-a62aabd1d62f
-   :END:
+:PROPERTIES:
+:ID:       1ca0d627-4494-459a-9a03-a62aabd1d62f
+:END:
 #+begin_src emacs-lisp
   (recentf-mode 1)
 #+end_src
 
 ** Fichiers texte
-   :PROPERTIES:
-   :ID:       164173cc-e748-400d-aa06-940edde96add
-   :END:
+:PROPERTIES:
+:ID:       164173cc-e748-400d-aa06-940edde96add
+:END:
 #+begin_src emacs-lisp
   (push '("vimperator-.*.tmp" . text-mode) auto-mode-alist)
 #+end_src
@@ -285,17 +265,17 @@ Penser à reclasser les deux add-hook
 
 ** fonctions utiles
 *** Disable des fonctions enquiquinante
-    :PROPERTIES:
-    :ID:       fb3cff40-1a64-4e1e-9c8f-aa46fbeb6ce5
-    :END:
+:PROPERTIES:
+:ID:       fb3cff40-1a64-4e1e-9c8f-aa46fbeb6ce5
+:END:
 #+begin_src emacs-lisp
   (put 'gnus-group-check-bogus-groups 'disabled t)
 #+end_src
 
 *** Enlève des "disabled"
-  :PROPERTIES:
-  :ID:       90cc2e7c-333b-407f-a060-c8d721dd6f90
-  :END:
+:PROPERTIES:
+:ID:       90cc2e7c-333b-407f-a060-c8d721dd6f90
+:END:
 #+begin_src emacs-lisp
   (put 'narrow-to-region 'disabled nil)
   (put 'narrow-to-page 'disabled nil)
@@ -305,9 +285,9 @@ Penser à reclasser les deux add-hook
 #+end_src
 
 *** try-complete fonction
-    :PROPERTIES:
-    :ID:       89894fca-1f8b-414c-9767-707b8510af10
-    :END:
+:PROPERTIES:
+:ID:       89894fca-1f8b-414c-9767-707b8510af10
+:END:
     ça sert encore ? ben oui...
 #+begin_src emacs-lisp
   (defun try-complete-abbrev (old)
@@ -330,31 +310,12 @@ Penser à reclasser les deux add-hook
         ()))
 #+end_src
 
-*** yank-pop
-    :PROPERTIES:
-    :ID:       b782841a-4141-40ef-a973-f9e91cdb10bd
-    :END:
-#+begin_src emacs-lisp
-  (defadvice yank-pop (around kill-ring-browse-maybe (arg))
-    "If last action was not a yank, run `browse-kill-ring' instead."
-    (if (not (eq last-command 'yank))
-        (browse-kill-ring)
-        ad-do-it))
-
-  (ad-activate 'yank-pop)
-#+end_src
-
 *** Quelques autres
-    :PROPERTIES:
-    :ID:       6923c5de-ce77-4c41-b54b-a27bf21b6c78
-    :END:
+:PROPERTIES:
+:ID:       6923c5de-ce77-4c41-b54b-a27bf21b6c78
+:END:
 #+begin_src emacs-lisp
   (defun nop () (interactive))
-
-  (defun run-a-out ()
-    "Run a a.out in the current window."
-    (interactive)
-    (start-process "a.out" "a.out" "a.out"))
 
   (defun set-word-wrap () (interactive) (setq word-wrap t))
 
@@ -387,23 +348,23 @@ Penser à reclasser les deux add-hook
     (shell-command command (generate-new-buffer "*Async Shell*")))
 #+end_src
 *** Browse url
-    #+BEGIN_SRC emacs-lisp
-      (require 'browse-url)
+#+BEGIN_SRC emacs-lisp
+  (require 'browse-url)
 
-      (setq browse-url-browser-function (quote browse-url-generic))
-      (setq browse-url-generic-program "x-www-browser")
-    #+END_SRC
+  (setq browse-url-browser-function (quote browse-url-generic))
+  (setq browse-url-generic-program "x-www-browser")
+#+END_SRC
 
 ** Set some auto-mode for ikiwiki alist
-  #+name: ikiwiki-automode
-  #+begin_src emacs-lisp
-    (push '("\\._comment\\(_pending\\)?$" . markdown-mode) auto-mode-alist)
-    (push '("\\.mdwn$" . markdown-mode) auto-mode-alist)
-  #+end_src
+#+name: ikiwiki-automode
+#+begin_src emacs-lisp
+  (push '("\\._comment\\(_pending\\)?$" . markdown-mode) auto-mode-alist)
+  (push '("\\.mdwn$" . markdown-mode) auto-mode-alist)
+#+end_src
 * Qui suis-je
-  :PROPERTIES:
-  :ID:       823c7df7-e19e-4906-9937-4047451411d6
-  :END:
+:PROPERTIES:
+:ID:       823c7df7-e19e-4906-9937-4047451411d6
+:END:
 #+begin_src emacs-lisp
   (setq debian-changelog-mailing-address "vanicat@debian.org")
   (setq debian-changelog-full-name "Rémi Vanicat")
@@ -417,9 +378,9 @@ Penser à reclasser les deux add-hook
 #+end_src
 
 * ISPELL
-  :PROPERTIES:
-  :ID:       ebf5cf4a-9f07-44a7-8854-e21c5bd07fd3
-  :END:
+:PROPERTIES:
+:ID:       ebf5cf4a-9f07-44a7-8854-e21c5bd07fd3
+:END:
 #+begin_src emacs-lisp
   (setq ispell-program-name "aspell")
 
@@ -444,17 +405,6 @@ Penser à reclasser les deux add-hook
   (add-hook 'text-mode-hook #'ispell-guess-dictionary)
 #+end_src
 
-* Folding
-  :PROPERTIES:
-  :ID:       d3cb66bf-c960-4804-9495-14fcc2faca6c
-  :END:
-  #+begin_src emacs-lisp-comment
-    (setq folding-mode-prefix-key "\C-c.")
-
-    (require 'folding)
-    (folding-add-to-marks-list 'lua-mode "-- {{{" "-- }}}")
-    (folding-mode-add-find-file-hook)
-  #+end_src
 * Tramp
 #+begin_src emacs-lisp
   (eval-after-load 'tramp
@@ -466,9 +416,9 @@ Penser à reclasser les deux add-hook
 #+end_src
 * configurations des modes
 ** config ruby et rails
-   :PROPERTIES:
-   :ID:       ad85a2b9-dd75-4a44-a45a-fadcbbd71a26
-   :END:
+:PROPERTIES:
+:ID:       ad85a2b9-dd75-4a44-a45a-fadcbbd71a26
+:END:
 #+begin_src emacs-lisp
   (modify-coding-system-alist 'file "\\..?rb$" 'utf-8)
   (modify-coding-system-alist 'file "\\.rhtml$" 'utf-8)
@@ -521,28 +471,16 @@ Penser à reclasser les deux add-hook
       (define-key outline-minor-mode-map [(backtab)] 'org-global-cycle)))
 #+end_src
 
-** configurations C,java...
-   :PROPERTIES:
-   :ID:       e8033fd5-649b-4a66-b70d-a0caeac259a6
-   :END:
+** configurations C
+:PROPERTIES:
+:ID:       e8033fd5-649b-4a66-b70d-a0caeac259a6
+:END:
 #+begin_src emacs-lisp
   (with-eval-after-load 'cc-mode
     (setq c-brace-offset -2)
     (setq c-auto-newline 't)
     (add-hook 'c-mode-hook (lambda () (c-toggle-auto-hungry-state 1)))
-    (add-hook 'c-mode-hook (lambda () (set 'dabbrev-case-fold-search ())))
-
-    (defun java-compile () (interactive)
-           (compile (concat "javac " (buffer-name))))
-
-    (add-hook 'java-mode-hook 'my-java-mode-hook)
-    (defun my-java-mode-hook ()
-      (cond (window-system
-                                          ;         (require 'andersl-java-font-lock)
-             (turn-on-font-lock)))
-      (c-toggle-auto-hungry-state 1)
-      (set 'dabbrev-case-fold-search ())
-      (local-set-key "\M-j" 'java-compile)))
+    (add-hook 'c-mode-hook (lambda () (set 'dabbrev-case-fold-search ()))))
 #+end_src
 
 *** Edition des fichiers xmms2
@@ -591,9 +529,9 @@ Penser à reclasser les deux add-hook
 #+end_src
 
 ** Configurations ocaml
-   :PROPERTIES:
-   :ID:       5f5cb5fa-b5de-4cf5-9935-d09e45937efa
-   :END:
+:PROPERTIES:
+:ID:       5f5cb5fa-b5de-4cf5-9935-d09e45937efa
+:END:
 #+begin_src emacs-lisp
   (with-eval-after-load 'tuareg
     (setq tuareg-with-indent 0)
@@ -609,31 +547,31 @@ Penser à reclasser les deux add-hook
 #+end_src
 
 ** Configuration lua
-   #+name: lua-conf
-   #+begin_src emacs-lisp
-     (with-eval-after-load 'lua-mode
-       (defvar my-lua-outline-regexp "-- \\*+")
+#+name: lua-conf
+#+begin_src emacs-lisp
+  (with-eval-after-load 'lua-mode
+    (defvar my-lua-outline-regexp "-- \\*+")
 
-       (defun my-lua-outline-level ()
-         "compute the level of a outline for lua"
-         (save-match-data
-           (cond
-            ((looking-at "-- \\(\\*+\\)") (length (match-string 1)))
-            (t 1))))
+    (defun my-lua-outline-level ()
+      "compute the level of a outline for lua"
+      (save-match-data
+        (cond
+         ((looking-at "-- \\(\\*+\\)") (length (match-string 1)))
+         (t 1))))
 
-       (defun define-lua-outline ()
-         (make-local-variable 'outline-regexp)
-         (setq outline-regexp my-lua-outline-regexp)
-         (make-local-variable 'outline-level)
-         (setq outline-level #'my-lua-outline-level)
-         (outline-minor-mode))
+    (defun define-lua-outline ()
+      (make-local-variable 'outline-regexp)
+      (setq outline-regexp my-lua-outline-regexp)
+      (make-local-variable 'outline-level)
+      (setq outline-level #'my-lua-outline-level)
+      (outline-minor-mode))
 
-       (add-hook 'lua-mode-hook 'define-lua-outline))
-   #+end_src
+    (add-hook 'lua-mode-hook 'define-lua-outline))
+#+end_src
 ** Configuration lisp
-   :PROPERTIES:
-   :ID:       fedf760a-0745-44ab-9f2a-a632120f3e19
-   :END:
+:PROPERTIES:
+:ID:       fedf760a-0745-44ab-9f2a-a632120f3e19
+:END:
 #+begin_src emacs-lisp
   (setq inferior-lisp-program "sbcl --noinform")
 
@@ -654,9 +592,9 @@ Penser à reclasser les deux add-hook
 #+end_src
 
 ** lagn
-   :PROPERTIES:
-   :ID:       aa7e5923-38d6-494a-ab8f-52e41869db6b
-   :END:
+:PROPERTIES:
+:ID:       aa7e5923-38d6-494a-ab8f-52e41869db6b
+:END:
 #+begin_src emacs-lisp :tangle no
   (autoload 'lagn-list "lagn" "" t)
   (autoload 'lagn-search "lagn" "" t)
@@ -666,19 +604,19 @@ Penser à reclasser les deux add-hook
 #+end_src
 
 ** erc
-   :PROPERTIES:
-   :ID:       de65504b-346b-4109-aacd-1b8d9dd3e641
-   :END:
+:PROPERTIES:
+:ID:       de65504b-346b-4109-aacd-1b8d9dd3e641
+:END:
 #+begin_src emacs-lisp
   (defun erc-freenode ()
     (interactive)
     (erc :server "irc.freenode.net" :full-name "Rémi Vanicat"
-         :nick "__DL__" :full-name "Rémi Vanicat"))
+:nick "__DL__" :full-name "Rémi Vanicat"))
 
   (defun erc-debian ()
     (interactive)
     (erc :server "irc.oftc.net" :full-name "Rémi Vanicat"
-         :nick "__DL__" :full-name "Rémi Vanicat"))
+:nick "__DL__" :full-name "Rémi Vanicat"))
 
   (defun erc-otaku ()
     (interactive)
@@ -686,17 +624,17 @@ Penser à reclasser les deux add-hook
 #+end_src
 
 ** google-maps
-   :PROPERTIES:
-   :ID:       41053174-198d-4fff-a97f-0b640d5a1792
-   :END:
+:PROPERTIES:
+:ID:       41053174-198d-4fff-a97f-0b640d5a1792
+:END:
 #+begin_src emacs-lisp
   (autoload 'google-maps "google-maps" "" t)
 #+end_src
 
 ** bbdb
-   :PROPERTIES:
-   :ID:       41053174-198d-4fff-a97f-0b640d5a8732
-   :END:
+:PROPERTIES:
+:ID:       41053174-198d-4fff-a97f-0b640d5a8732
+:END:
 #+begin_src emacs-lisp
   ; (bbdb-initialize)
 #+end_src
@@ -822,9 +760,9 @@ Penser à reclasser les deux add-hook
 #+end_src
 
 * inconnus:
-  :PROPERTIES:
-  :ID:       55d5e2b7-e3df-4fc9-8334-bb2f911b4fc2
-  :END:
+:PROPERTIES:
+:ID:       55d5e2b7-e3df-4fc9-8334-bb2f911b4fc2
+:END:
 #+begin_src emacs-lisp
   (setq gnus-local-domain ())
 #+end_src

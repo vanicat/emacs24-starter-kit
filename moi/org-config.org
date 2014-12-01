@@ -343,6 +343,39 @@
         (goto-char (org-table-begin))
         (org-table-recalculate))
       (widen)))
+
+  (defvar my-org-table-column)
+
+  (make-variable-buffer-local 'my-org-table-column)
+
+  (defvar note-for-org-mode-map
+    (let ((map (make-sparse-keymap)))
+      (define-key map (kbd "n") 'helm-find-student)
+      (define-key map (kbd "q") 'helm-note-quit)
+      (define-key map (kbd "a") 'my-helm-insert-na)
+      map))
+
+  (define-minor-mode note-for-org-mode
+    "minor mode for editing note in org"
+    :init-value ()
+    :lighter "note"
+    :keymap 'note-for-org-mode-map
+    (org-narrow-to-subtree)
+    (setq my-org-table-column (org-table-current-column)))
+
+  (defun my-helm-insert-na ()
+    (interactive)
+    (insert "NA"))
+
+  (defun helm-note-quit ()
+    (widen)
+    (note-for-org-mode -1))
+
+  (defun helm-find-student ()
+    (interactive)
+    (helm-occur)
+    (when (boundp 'my-org-table-column)
+      (org-table-goto-column my-org-table-column)))
 #+end_src
 ** Calculer des moyennes...
    #+name: moyenne-in-org

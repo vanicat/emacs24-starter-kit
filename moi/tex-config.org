@@ -9,7 +9,6 @@
      ;  (require 'bib-cite)
       (auto-fill-mode-on)
       (abbrev-mode 1)
-      (setq case-fold-search ())
       (latex-math-mode))
   
     (add-hook 'LaTeX-mode-hook 'my-LaTeX-mode-hook)
@@ -109,7 +108,6 @@
   (setq TeX-auto-x-regexp-list 'LaTeX-auto-regexp-list)
   (setq TeX-byte-compile t)
   (setq TeX-electric-sub-and-superscript t)
-  (setq TeX-master nil)
   (setq TeX-math-close-double-dollar t)
   (setq TeX-output-view-style '(("^dvi$" ("^landscape$" "^pstricks$\\|^pst-\\|^psfrag$")
                                  "%(o?)dvips -t landscape %d -o && evince %f")

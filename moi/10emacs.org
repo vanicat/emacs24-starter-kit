@@ -867,6 +867,7 @@ Penser à reclasser les deux add-hook
   (global-set-key (kbd "C-x C-f") 'helm-find-files)
   (global-set-key [f4] 'helm-man-woman)
   (global-set-key (kbd "C-c h o") 'helm-occur)
+  (global-set-key (kbd "C-c h g") 'helm-do-grep)
 #+end_src
 ** Diacritique and helm
 #+name: herm-diacritique

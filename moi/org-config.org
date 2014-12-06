@@ -351,6 +351,7 @@
   (defvar note-for-org-mode-map
     (let ((map (make-sparse-keymap)))
       (define-key map (kbd "n") 'helm-find-student)
+      (define-key map (kbd "RET") 'helm-find-student)
       (define-key map (kbd "q") 'helm-note-quit)
       (define-key map (kbd "a") 'my-helm-insert-na)
       map))

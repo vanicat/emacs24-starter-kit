@@ -369,6 +369,7 @@
     (insert "NA"))
 
   (defun helm-note-quit ()
+    (interactive)
     (widen)
     (note-for-org-mode -1))
 

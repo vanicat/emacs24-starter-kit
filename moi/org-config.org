@@ -350,8 +350,8 @@
 
   (defvar note-for-org-mode-map
     (let ((map (make-sparse-keymap)))
-      (define-key map (kbd "n") 'helm-find-student)
-      (define-key map (kbd "RET") 'helm-find-student)
+      (define-key map (kbd "n") 'helm-find-student-in-table)
+      (define-key map (kbd "RET") 'helm-find-student-in-table)
       (define-key map (kbd "q") 'helm-note-quit)
       (define-key map (kbd "a") 'my-helm-insert-na)
       map))
@@ -373,11 +373,18 @@
     (widen)
     (note-for-org-mode -1))
 
-  (defun helm-find-student ()
+  (defun helm-find-student-in-table ()
     (interactive)
     (helm-occur)
     (when (boundp 'my-org-table-column)
       (org-table-goto-column my-org-table-column)))
+
+  (defun helm-find-student-in-tree ()
+    (interactive)
+    (outline-up-heading 1)
+    (org-narrow-to-subtree)
+    (helm-occur)
+    (widen))
 #+end_src
 ** Recopier les note pour le trimestre
 #+name: note-tri

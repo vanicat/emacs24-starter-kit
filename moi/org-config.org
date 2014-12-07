@@ -361,7 +361,9 @@
     :init-value ()
     :lighter "note"
     :keymap 'note-for-org-mode-map
-    (org-narrow-to-subtree)
+    (if note-for-org-mode
+        (org-narrow-to-subtree)
+      (widen))
     (setq my-org-table-column (org-table-current-column)))
 
   (defun my-helm-insert-na ()
@@ -370,8 +372,8 @@
 
   (defun helm-note-quit ()
     (interactive)
-    (widen)
-    (note-for-org-mode -1))
+    (note-for-org-mode -1)
+    (widen))
 
   (defun helm-find-student-in-table ()
     (interactive)

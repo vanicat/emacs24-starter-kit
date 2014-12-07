@@ -389,12 +389,12 @@
 ** Recopier les note pour le trimestre
 #+name: note-tri
 #+begin_src emacs-lisp
-  (defun find-note ()
+  (defun copy-note-here ()
     (interactive)
     (unless (boundp 'note-for-org-trimestre)
-      (set (make-local-variable note-for-org-trimestre) (read-from-minibuffer "trimestre: ")))
+      (set (make-local-variable 'note-for-org-trimestre) (read-from-minibuffer "trimestre: ")))
     (unless (boundp 'note-for-org-table-name)
-      (set (make-local-variable note-for-org-table-name) (read-from-minibuffer "Nom de la table: " (format "note-%s" note-for-org-trimestre))))
+      (set (make-local-variable 'note-for-org-table-name) (read-from-minibuffer "Nom de la table: " (format "note-%s" note-for-org-trimestre))))
     (let* ((start (point-marker)))
       (outline-previous-visible-heading 1)
       (looking-at "\*+ \\(.*\\)")
@@ -413,10 +413,7 @@
         (goto-char start)
         (insert "- " note-for-org-trimestre " :: ")
         (insert (replace-regexp-in-string " *| *" "; " line)))))
-
-
 #+end_src
-
 ** Calculer des moyennes...
    #+name: moyenne-in-org
    #+begin_src emacs-lisp

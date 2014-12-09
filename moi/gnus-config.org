@@ -113,7 +113,7 @@
 *** The posting style
     #+begin_src emacs-lisp
       (setq gnus-posting-styles
-            '(("Gmail/.*"
+            '(("nnimap\\+gmail:.*"
                (address "remi.vanicat@gmail.com"))
               ("^fr.*"
                (address "invalid.newsfr.10.vanicat@spamgourmet.com")
@@ -130,13 +130,16 @@
                ("Mail-Copy-To" "never"))
               (".*jdr.*"
                (signature my-gnus-jdr-fortune))
-              (".*abul.*"
-               (address "vanicat+abul@labri.fr"))
               ("gmane.linux.debian.devel.ocaml"
                ("Mail-Followup-To" "debian-ocaml-maint@lists.debian.org"))
-              ("Gmail/magit"
+              ("magit"
+               (name "Rémi Vanicat")
                (signature "Rémi Vanicat\n")
                (address "vanicat@debian.org"))
+              ("floss/april/educ"
+               (signature "Rémi Vanicat\nDévelopeur debian depuis...\n")
+               (name "Rémi Vanicat")
+               (address "Remi.Vanicat@ac-bordeaux.fr"))
               (".*debian.*"
                (signature "Rémi Vanicat\n")
                (address "vanicat@debian.org")

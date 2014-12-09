@@ -377,9 +377,13 @@
 
   (defun helm-find-student-in-table ()
     (interactive)
+    (org-table-maybe-eval-formula)
+    (org-table-maybe-recalculate-line)
+    (org-table-justify-field-maybe)
     (helm-occur)
     (when (boundp 'my-org-table-column)
-      (org-table-goto-column my-org-table-column)))
+      (org-table-goto-column my-org-table-column))
+    (setq this-command 'org-cycle))
 
   (defun helm-find-student-in-tree ()
     (interactive)

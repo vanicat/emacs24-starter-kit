@@ -407,18 +407,32 @@
       (let* ((name  (match-string-no-properties 1))
              (regex-name (setq name (replace-regexp-in-string " " "[| ]+" name)))
              beg end
-             line)
+             names maxs notes)
         (goto-char (point-min))
         (search-forward note-for-org-table-name)
+        (forward-line 1)
+        (setq beg (point))
+        (forward-line 1)
+        (setq end (point))
+        (setq names (split-string (buffer-substring-no-properties beg end) " *| *"))
+        (setq beg (point))
+        (forward-line 1)
+        (setq end (point))
+        (setq maxs (split-string (buffer-substring-no-properties beg end) " *| *"))
+
         (search-forward-regexp regex-name)
         (forward-line 0)
         (setq beg (point))
         (forward-line 1)
         (setq end (point))
-        (setq line (buffer-substring beg end))
+        (setq notes (split-string (buffer-substring-no-properties beg end) " *| *"))
         (goto-char start)
         (insert "- " note-for-org-trimestre " :: ")
-        (insert (replace-regexp-in-string " *| *" "; " line)))))
+        (cl-loop for max in maxs
+                 for name in names
+                 for note in notes
+                 if (not (member max '("\n" "")))
+                 do (insert " " name ": " note "/" max)))))
 #+end_src
 ** Calculer des moyennes...
    #+name: moyenne-in-org

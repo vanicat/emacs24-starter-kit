@@ -8,31 +8,31 @@
 ** Les fichiers de l'agenda
    #+begin_src emacs-lisp
      (require 'em-glob)
-     (setq org-agenda-files-cours
-           (list* "~/org/cours.org" "~/org/edt.org"
-                  (cl-loop for dir in (eshell-extended-glob "~/travail/cours/*/")
-                           for name = (file-name-nondirectory (directory-file-name dir))
-                           for org = (expand-file-name (concat name ".org") dir)
-                           when (file-readable-p org) collect org)))
-     (setq org-agenda-incoming-cours "~/org/cours.org")
+     (defconst org-agenda-files-cours
+       (list* "~/org/cours.org" "~/org/edt.org" "~/org/agenda-pronote.org"
+              (cl-loop for dir in (eshell-extended-glob "~/travail/cours/*/")
+                       for name = (file-name-nondirectory (directory-file-name dir))
+                       for org = (expand-file-name (concat name ".org") dir)
+                       when (file-readable-p org) collect org)))
+     (defconst org-agenda-incoming-cours "~/org/cours.org")
 
-     (setq org-agenda-files-floss '("~/org/prgm.org"))
-     (setq org-agenda-incoming-floss "~/org/prgm.org")
+     (defconst org-agenda-files-floss '("~/org/prgm.org"))
+     (defconst org-agenda-incoming-floss "~/org/prgm.org")
 
-     (setq org-agenda-files-personel (list "~/org/personel.org"
+     (defconst org-agenda-files-personel (list "~/org/personel.org"
                                      "~/org/aniversaire.org"
                                      "~/org/contacts.org"))
-     (setq org-agenda-incoming-personel "~/org/personel.org")
+     (defconst org-agenda-incoming-personel "~/org/personel.org")
 
-     (setq org-agenda-files-main '("~/org/notes.org"))
-     (setq org-agenda-incoming-main "~/org/notes.org")
+     (defconst org-agenda-files-main '("~/org/notes.org"))
+     (defconst org-agenda-incoming-main "~/org/notes.org")
 
      (setq org-agenda-files
-           (append '("~/org/sante.org")
-                   org-agenda-files-floss
+           (append org-agenda-files-floss
                    org-agenda-files-personel
                    org-agenda-files-main
-                   org-agenda-files-cours))
+                   org-agenda-files-cours
+                   '("~/org/sante.org")))
    #+end_src
 
 ** Affichage
@@ -59,10 +59,11 @@
    #+begin_src emacs-lisp
      (setq org-combined-agenda-icalendar-file "~/org/org.ics")
 
+     ;;; Plus utilisé...
      (defun org-export-icalendar-cours ()
        (interactive)
        (let ((org-icalendar-combined-agenda-file "~/org/cours.ics")
-             (org-agenda-files org-agenda-files-cours ))
+             (org-agenda-files org-agenda-files-cours))
          (org-icalendar-combine-agenda-files)))
 
      (setq org-icalendar-date-time-format ":%Y%m%dT%H%M%S")

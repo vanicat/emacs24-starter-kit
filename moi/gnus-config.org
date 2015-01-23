@@ -62,8 +62,8 @@
      (setq message-send-mail-function 'smtpmail-send-it)
      (setq smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil)))
      (setq smtpmail-auth-credentials '(("smtp.gmail.com" 587 "remi.vanicat@gmail.com" nil)))
-     (setq smtpmail-default-smtp-server "smtp.gmail.com")
-     (setq smtpmail-smtp-server "smtp.gmail.com")
+     (setq smtpmail-default-smtp-server "smtp.dsl.ovh.net")
+     (setq smtpmail-smtp-server "smtp.dsl.ovh.net")
      (setq smtpmail-smtp-service 587)
      ;;;(setq smtpmail-local-domain "free.fr")
    #+end_src
@@ -83,12 +83,12 @@
          (let ((files (if files files fortune-files)))
            (shell-command-to-string (apply 'concat "/usr/games/fortune "
                                            files))))
-       
+
        (defun my-gnus-jdr-fortune ()
          (fortune '("/home/moi/prog/fortune/pqf-5_1_signature "
                     "/home/moi/prog/fortune/flws_fr ")))
-       
-       
+
+
        (defun fortune-insert ()
          (interactive)
          (insert (my-gnus-fortune)))

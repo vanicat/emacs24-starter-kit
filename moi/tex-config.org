@@ -1,5 +1,11 @@
 #+TITLE: Config pour TeX/LaTeX
 #+OPTIONS: toc:nil num:nil ^:nil
+* Wait for load
+#+name: wait-for-latex
+#+begin_src emacs-lisp
+  (with-eval-after-load 'tex
+#+end_src
+
 * The latex hook
    :PROPERTIES:
    :ID:       c7219d91-75da-49e4-ab56-5d903f2cd00f
@@ -94,12 +100,12 @@
   :END:
 #+begin_src emacs-lisp
   (add-hook 'tex-mode-hook 'auto-fill-mode-on)
-  
+
   (setq TeX-macro-private (list "~/texmf/tex/latex/myhead/"))
   (setq TeX-auto-private (list "~/texmf/auto/"))
-  
+
   (add-hook 'text-mode-hook 'turn-on-flyspell)
-  
+
   (setq TeX-PDF-mode t)
   (setq TeX-arg-right-insert-p nil)
   (setq TeX-auto-save t)
@@ -109,12 +115,30 @@
   (setq TeX-byte-compile t)
   (setq TeX-electric-sub-and-superscript t)
   (setq TeX-math-close-double-dollar t)
-  (setq TeX-output-view-style '(("^dvi$" ("^landscape$" "^pstricks$\\|^pst-\\|^psfrag$")
+  (setq TeX-command-list
+        (append TeX-command-list
+                '(("pythontex" "pythontex %s" TeX-run-command nil t :help "run pythontex")
+  )))
+  (setq TeX-output-view-style '(("^dvi$"
+                                 ("^landscape$" "^pstricks$\\|^pst-\\|^psfrag$")
                                  "%(o?)dvips -t landscape %d -o && evince %f")
                                 ("^dvi$" "^pstricks$\\|^pst-\\|^psfrag$" "%(o?)dvips %d -o && evince %f")
-                                ("^dvi$" "." "%(o?)evince %d")
-                                ("^pdf$" "." "evince \"%s\".pdf")
-                                ("^html?$" "." "netscape %o")))
+                                ("^dvi$"
+                                 ("^\\(?:a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4\\)$" "^landscape$")
+                                 "%(o?)xdvi %dS -paper a4r -s 0 %d")
+                                ("^dvi$" "^\\(?:a4\\(?:dutch\\|paper\\|wide\\)\\|sem-a4\\)$" "%(o?)xdvi %dS -paper a4 %d")
+                                ("^dvi$"
+                                 ("^\\(?:a5\\(?:comb\\|paper\\)\\)$" "^landscape$")
+                                 "%(o?)xdvi %dS -paper a5r -s 0 %d")
+                                ("^dvi$" "^\\(?:a5\\(?:comb\\|paper\\)\\)$" "%(o?)xdvi %dS -paper a5 %d")
+                                ("^dvi$" "^b5paper$" "%(o?)xdvi %dS -paper b5 %d")
+                                ("^dvi$" "^letterpaper$" "%(o?)xdvi %dS -paper us %d")
+                                ("^dvi$" "^legalpaper$" "%(o?)xdvi %dS -paper legal %d")
+                                ("^dvi$" "^executivepaper$" "%(o?)xdvi %dS -paper 7.25x10.5in %d")
+                                ("^dvi$" "." "%(o?)xdvi %dS %d")
+                                ("^pdf$" "." "evince -remote %s -raise %o %(outpage)")
+                                ("^html?$" "." "gvfs-open %o")))
+
   (setq TeX-parse-self t)
   (setq TeX-printer-list '(("Default" "%(o?)dvips -f %s | lpr" "lpq")
                            ("Pdf" "%(o?)dvips -f %s | lpr -PVirtual_Printer" nil)
@@ -127,5 +151,11 @@
                                      (output-dvi "Evince")
                                      (output-pdf "Evince")
                                      (output-html "xdg-open")))
-  
+
+#+end_src
+
+* Load-after: la fin
+#+name: end-of-load-after
+#+begin_src emacs-lisp
+    )
 #+end_src

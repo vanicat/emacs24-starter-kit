@@ -132,6 +132,21 @@
   (global-set-key "\C-cl" 'org-store-link)
 #+end_src
 
+** Link to imap gnus
+#+name: link-to-all-mail
+#+begin_src emacs-lisp
+  (defun my-org-link-to-gmail-all-messages ()
+    (interactive)
+    (when (org-in-regexp org-bracket-link-regexp 1)
+      (let ((link-pos (cons (match-beginning 1) (match-end 1)))
+            (link (org-link-unescape (org-match-string-no-properties 1))))
+        (when (string-match "^gnus:\\(.*\\)#\\(.*\\)$" link)
+          (save-excursion
+            (goto-char (car link-pos))
+            (delete-region (car link-pos) (cdr link-pos))
+            (insert (org-link-escape (concat "gnus:nnimap+gmail:[Gmail]/Tous les messages#" (match-string 2 link)))))))))
+#+end_src
+
 ** Voyage dans le temps dans l'agenda
     :PROPERTIES:
     :ID:       21c708ba-8ed1-41df-bff9-e24264136ae1

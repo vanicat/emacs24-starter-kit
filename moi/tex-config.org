@@ -127,6 +127,25 @@
   (add-hook 'before-save-hook #'LaTeX-update-PDF-ModDate)
 #+end_src
 
+* ID in pdf
+#+name: id-in-pdf
+#+begin_src emacs-lisp
+  (defun my-TeX-LaTeX-sentinel-advice (process name)
+    (with-current-buffer TeX-command-buffer
+      (let ((pdf-name (TeX-master-file "pdf"))
+            (tex-md5sum (upcase (md5 TeX-command-buffer))))
+        (when (and (file-exists-p pdf-name) (file-writable-p pdf-name))
+          (with-temp-buffer
+            (insert-file-contents-literally pdf-name t nil nil t)
+            (goto-char (point-min))
+            (when (search-forward-regexp "^/ID \\[<\\([[:alnum:]]+\\)> <\\([[:alnum:]]+>\\)]" nil t)
+              (replace-match tex-md5sum t t nil 1)
+              (replace-match tex-md5sum t t nil 2))
+            (basic-save-buffer))))))
+
+  (advice-add 'TeX-LaTeX-sentinel :after #'my-TeX-LaTeX-sentinel-advice)
+#+end_src
+
 * Le reste
   :PROPERTIES:
   :ID:       17134eb5-6bc8-4c58-b836-e7812c407746

@@ -363,6 +363,12 @@ Penser à reclasser les deux add-hook
   (push '("\\._comment\\(_pending\\)?$" . markdown-mode) auto-mode-alist)
   (push '("\\.mdwn$" . markdown-mode) auto-mode-alist)
 #+end_src
+
+** git-annex
+#+name: git-annex-dont-commit
+#+begin_src emacs-lisp
+  (setq git-annex-commit ())
+#+end_src
 * Qui suis-je
 :PROPERTIES:
 :ID:       823c7df7-e19e-4906-9937-4047451411d6

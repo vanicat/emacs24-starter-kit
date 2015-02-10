@@ -94,6 +94,39 @@
     (add-hook 'latex-mode-hook #'define-latex-outline)
   #+end_src
 
+* mod-time in latex
+#+name: mod-time
+#+begin_src emacs-lisp
+  (defun LaTeX-update-PDF-ModDate ()
+    (interactive)
+    (ignore-errors 
+      (when (eq major-mode 'latex-mode)
+        (save-excursion
+          (goto-char (point-min))
+          (when (search-forward-regexp "\\\\hypersetup{" nil t)
+            (backward-char)
+            (let ((beg (point))
+                  (end (make-marker)))
+              (forward-list)
+              (set-marker end (point))
+              (goto-char beg)
+              (when (search-forward-regexp "ModDate={D:\\([^}]+\\)}" end t)
+                (replace-match (format-time-string "%Y%m%d%H%M%S%z")
+                               t t nil 1))))))))
+  (defun LaTeX-add-PDF-timestamp ()
+    (interactive)
+    (insert "\\hypersetup{pdfinfo={
+      CreationDate={D:")
+    (insert (format-time-string "%Y%m%d%H%M%S%z"))
+    (insert "},
+      ModDate={")
+    (insert (format-time-string "%Y%m%d%H%M%S%z"))
+    (insert "}
+  }}"))
+
+  (add-hook 'before-save-hook #'LaTeX-update-PDF-ModDate)
+#+end_src
+
 * Le reste
   :PROPERTIES:
   :ID:       17134eb5-6bc8-4c58-b836-e7812c407746

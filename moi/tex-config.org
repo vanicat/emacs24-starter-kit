@@ -138,7 +138,7 @@
           (with-temp-buffer
             (insert-file-contents-literally pdf-name t nil nil t)
             (goto-char (point-min))
-            (when (search-forward-regexp "^/ID \\[<\\([[:alnum:]]+\\)> <\\([[:alnum:]]+>\\)]" nil t)
+            (when (search-forward-regexp "^/ID \\[<\\([[:alnum:]]+\\)> <\\([[:alnum:]]+\\)>]" nil t)
               (replace-match tex-md5sum t t nil 1)
               (replace-match tex-md5sum t t nil 2))
             (basic-save-buffer))))))

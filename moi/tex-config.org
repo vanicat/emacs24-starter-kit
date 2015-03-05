@@ -119,7 +119,7 @@
       CreationDate={D:")
     (insert (format-time-string "%Y%m%d%H%M%S%z"))
     (insert "},
-      ModDate={")
+      ModDate={D:")
     (insert (format-time-string "%Y%m%d%H%M%S%z"))
     (insert "}
   }}"))

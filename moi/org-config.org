@@ -262,9 +262,10 @@
   (require 'ical-for-org)
 #+end_src
 ** org babel
-    :PROPERTIES:
-    :ID:       2c687ffb-3e38-4586-82de-903e0a9e9cf4
-    :END:
+:PROPERTIES:
+:ID:       2c687ffb-3e38-4586-82de-903e0a9e9cf4
+:END:
+*** The languages
 #+begin_src emacs-lisp
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -275,7 +276,7 @@
      (gnuplot . t)
      (haskell . nil)
      (latex . t)
-     (ledger . t)         ;this is the important one for this tutorial
+     (ledger . t)
      (ocaml . nil)
      (octave . t)
      (python . t)
@@ -284,9 +285,17 @@
      (sh . t)
      (sql . nil)
      (sqlite . t)))
-
+#+end_src
+*** An advice to automatically display images
+#+begin_src emacs-lisp
   (advice-add 'org-babel-execute-maybe :after #'org-display-inline-images)
 #+end_src
+*** library of babel
+#+name: lob
+#+begin_src emacs-lisp
+  (setq org-babel-lob-files "/home/moi/travail/cours/my-lob.org")
+#+end_src
+
 ** mouvement dans org
     :PROPERTIES:
     :ID:       0a0e33df-e9f4-43c1-aee5-c9de88fe665c

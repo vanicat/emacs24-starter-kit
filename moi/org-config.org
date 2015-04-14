@@ -293,7 +293,9 @@
 *** library of babel
 #+name: lob
 #+begin_src emacs-lisp
-  (setq org-babel-lob-files "/home/moi/travail/cours/my-lob.org")
+  (let ((my-lob "/home/moi/travail/cours/my-lob.org"))
+    (when (file-exists-p my-lob)
+      (org-babel-lob-ingest my-lob)))
 #+end_src
 
 ** mouvement dans org

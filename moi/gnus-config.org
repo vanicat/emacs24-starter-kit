@@ -300,12 +300,15 @@
    #+name: loop-search
    #+begin_src emacs-lisp
      (setq gnus-keep-same-level t)
-     
+
      (defadvice gnus-group-search-forward (after my-gnus-group-search-forward (&optional backward all level first-too) activate)
-       (unless (or backward ad-return-value (boundp 'my-no-recurse) (not level))
+       (unless (or backward (boundp 'my-no-recurse) (not level))
          (let ((my-no-recurse))
-           (goto-char (point-min))
-           (setq ad-return-value (gnus-group-search-forward backward all (1+ level) t)))))
+           (unless (and ad-return-value
+                        (= level (or (get-text-property (point) 'gnus-level)
+                                     gnus-level-default-subscribed)))
+             (goto-char (point-min))
+             (setq ad-return-value (gnus-group-search-forward backward all (1+ level) t))))))
    #+end_src
 
 (defadvice gnus-group-search-forward (after gnus-group-search-forward (&optional backward all level first-too) activate)

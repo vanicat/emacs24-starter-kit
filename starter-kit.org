@@ -199,6 +199,7 @@ generally useful please submit it to the starter kit core!
 - [[file:starter-kit-perl.org][perl]]
 - [[file:starter-kit-python.org][python]]
 - [[file:starter-kit-ruby.org][ruby]]
+- [[file:starter-kit-scala.org][scala]]
 
 ** Emacs Lisp Package Archive
    :PROPERTIES:
@@ -257,6 +258,7 @@ interested in the actual code implementing the starter kit.
   #+name: starter-kit-load-on-startup
   #+begin_src emacs-lisp
     (require 'cl)
+    (require 'cl-lib)
     (require 'saveplace)
     (require 'ffap)
     (require 'uniquify)
@@ -284,7 +286,7 @@ interested in the actual code implementing the starter kit.
         (setq package-archives
               '(("gnu"         . "http://elpa.gnu.org/packages/")
                 ("org"         . "http://orgmode.org/elpa/")
-                ("melpa"       . "http://melpa.milkbox.net/packages/")
+                ("melpa"       . "http://melpa.org/packages/")
                 ("marmalade"   . "http://marmalade-repo.org/packages/")))
         (package-initialize)
         
@@ -406,7 +408,7 @@ project is not in elpa.
 After we've loaded all the Starter Kit defaults, lets load the User's stuff.
 #+name: starter-kit-load-files
 #+begin_src emacs-lisp
-  (flet ((sk-load (base)
+  (cl-flet ((sk-load (base)
            (let* ((path          (expand-file-name base starter-kit-dir))
                   (literate      (concat path ".org"))
                   (encrypted-org (concat path ".org.gpg"))

@@ -762,9 +762,9 @@ Penser à reclasser les deux add-hook
 ** yas
 #+name: yas-config
 #+begin_src emacs-lisp
-  (setq yas/trigger-key "<C-tab>")
+  (setq yas-trigger-key "<C-tab>")
   (eval-after-load 'yasnippet
-    '(yas/load-directory "~/.emacs.d/snippets/"))
+    '(yas-load-directory "~/.emacs.d/snippets/"))
 #+end_src
 
 * inconnus:

@@ -170,10 +170,10 @@
    #+end_src
 ** org-contact config
    #+begin_src emacs-lisp
-     (defun set-yas/fallback-behavior ()
-       (setq yas/fallback-behavior '(apply completion-at-point)))
+     (defun set-yas-fallback-behavior ()
+       (setq yas-fallback-behavior '(apply completion-at-point)))
      
-     (add-hook 'message-mode-hook 'set-yas/fallback-behavior)
+     (add-hook 'message-mode-hook 'set-yas-fallback-behavior)
    #+end_src
 ** Before sending
    #+begin_src emacs-lisp

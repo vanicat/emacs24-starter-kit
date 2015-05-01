@@ -195,12 +195,6 @@ Penser à reclasser les deux add-hook
      (global-set-key [end] 'home-end-end)
    #+end_src
 * Petites configs
-** Add melpa
-#+name: melpa
-#+begin_src emacs-lisp
-  (add-to-list 'package-archives
-    '("melpa" . "http://melpa.milkbox.net/packages/") t)
-#+end_src
 ** dabbrev
 #+begin_src emacs-lisp
   (with-eval-after-load 'dabbrev

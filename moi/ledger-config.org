@@ -17,12 +17,11 @@
 * Face
   #+name: ledger-face
   #+begin_src emacs-lisp
-    (eval-after-load 'ledger-fonts
-      '(progn
-        (set-face-attribute 'ledger-font-xact-highlight-face nil
-         :background "gray20")
-        (set-face-attribute 'ledger-occur-xact-face nil
-         :background "gray10")))
+    (with-eval-after-load 'ledger-fonts
+      (set-face-attribute 'ledger-font-xact-highlight-face nil
+                          :background "gray20")
+      (set-face-attribute 'ledger-occur-xact-face nil
+                          :background "gray10"))
   #+end_src
 
 * Error handling
@@ -31,10 +30,9 @@
     (setq ledger-compilation-error-regexp-alist
           '("^While parsing file \"\\(.*\\)\", line \\([0-9]+\\):" 1 2))
 
-    (eval-after-load 'compile
-      '(progn
-        (push (list* 'ledger ledger-compilation-error-regexp-alist) compilation-error-regexp-alist-alist)
-        (push 'ledger compilation-error-regexp-alist)))
+    (with-eval-after-load 'compile
+      (push (list* 'ledger ledger-compilation-error-regexp-alist) compilation-error-regexp-alist-alist)
+      (push 'ledger compilation-error-regexp-alist))
   #+end_src
 
 * Align
@@ -46,8 +44,8 @@
 * Sorting
   #+name: sort-ledger
   #+begin_src emacs-lisp
-    (eval-after-load 'ledger
-      '(defun ledger-sort ()
+    (with-eval-after-load 'ledger
+      (defun ledger-sort ()
         (interactive)
         (save-excursion
           (goto-char (point-min))
@@ -58,7 +56,7 @@
                   (concat "^[0-9/.=-]+\\(\\s-+\\*\\)?\\(\\s-+(.*?)\\)?\\s-+"
                           "\\(.+?\\)\\(\t\\|\n\\| [ \t]\\)") nil t)
                  (goto-char (match-beginning 0))
-                 (goto-char (point-max))))
+               (goto-char (point-max))))
            (lambda () (forward-paragraph))
            (lambda ()
              (looking-at "^\\([0-9/]+\\)[ \\*]+\\(.*\\)$")

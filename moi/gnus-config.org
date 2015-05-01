@@ -71,8 +71,8 @@
 ** Searching
    #+name: searching
    #+begin_src emacs-lisp
-     (eval-after-load 'nnir
-       '(add-to-list 'nnir-imap-search-arguments '("gmail" . "X-GM-RAW")))
+     (with-eval-after-load 'nnir
+       (add-to-list 'nnir-imap-search-arguments '("gmail" . "X-GM-RAW")))
    #+end_src
 * Composing
 ** Posting style
@@ -324,14 +324,13 @@
    #+end_src
 * The colors
   #+begin_src emacs-lisp
-    (cond (window-system
-           (eval-after-load "gnus-artsdq"
-             '(progn
-               (set-face-foreground 'gnus-header-name-face "MediumTurquoise")
-               (set-face-foreground 'gnus-header-from-face "DarkTurquoise")
-               (set-face-foreground 'gnus-header-subject-face "Turquoise")
-               (set-face-foreground 'gnus-header-newsgroups-face "Turquoise")
-               (set-face-foreground 'gnus-header-content-face "Turquoise")))
+    (when window-system
+      (with-eval-after-load "gnus-artsdq"
+        (set-face-foreground 'gnus-header-name-face "MediumTurquoise")
+        (set-face-foreground 'gnus-header-from-face "DarkTurquoise")
+        (set-face-foreground 'gnus-header-subject-face "Turquoise")
+        (set-face-foreground 'gnus-header-newsgroups-face "Turquoise")
+        (set-face-foreground 'gnus-header-content-face "Turquoise"))
     ;;;        (set-face-foreground 'gnus-cite-face-1 "Yellow")
     ;;;        (set-face-foreground 'gnus-cite-face-2 "Yellow")
     ;;;        (set-face-foreground 'gnus-cite-face-3 "Yellow")
@@ -342,42 +341,38 @@
     ;;;        (set-face-foreground 'gnus-cite-face-8 "Yellow")
     ;;;        (set-face-foreground 'gnus-cite-face-10 "Yellow"))
     ;;;        (set-face-foreground 'gnus-cite-face-9 "Yellow")
-    
-           (eval-after-load "gnus-group"
-             '(progn
-               (set-face-foreground 'gnus-group-news-1-empty-face "DarkTurquoise")))
-    
-           (eval-after-load "gnus-sum"
-             '(progn
-               (set-face-foreground 'gnus-summary-high-read-face "DarkTurquoise")
-               (set-face-foreground 'gnus-summary-low-read-face "DarkTurquoise")
-               (set-face-foreground 'gnus-summary-normal-read-face "DarkTurquoise")
-               (set-face-foreground 'gnus-summary-normal-ticked-face "Green")))
-    
-           (eval-after-load "message"
-             '(progn
-               (set-face-foreground 'message-header-name-face "MediumTurquoise")
-               (set-face-foreground 'message-header-newsgroups-face "Turquoise")
-               (set-face-foreground 'message-header-other-face "MediumTurquoise")
-               (set-face-foreground 'message-header-cc-face "DarkTurquoise")
-               (set-face-foreground 'message-header-subject-face "Turquoise")
-               (set-face-foreground 'message-header-to-face "DarkTurquoise")
-               (set-face-foreground 'message-header-xheader-face "MediumTurquoise")
-               (set-face-foreground 'message-separator-face "Cyan")
-               (set-face-foreground 'message-cited-text-face "DarkTurquoise")))))
+
+      (with-eval-after-load "gnus-group"
+        (set-face-foreground 'gnus-group-news-1-empty-face "DarkTurquoise"))
+      
+      (with-eval-after-load "gnus-sum"
+        (set-face-foreground 'gnus-summary-high-read-face "DarkTurquoise")
+        (set-face-foreground 'gnus-summary-low-read-face "DarkTurquoise")
+        (set-face-foreground 'gnus-summary-normal-read-face "DarkTurquoise")
+        (set-face-foreground 'gnus-summary-normal-ticked-face "Green"))
+      
+      (with-eval-after-load "message"
+        (set-face-foreground 'message-header-name-face "MediumTurquoise")
+        (set-face-foreground 'message-header-newsgroups-face "Turquoise")
+        (set-face-foreground 'message-header-other-face "MediumTurquoise")
+        (set-face-foreground 'message-header-cc-face "DarkTurquoise")
+        (set-face-foreground 'message-header-subject-face "Turquoise")
+        (set-face-foreground 'message-header-to-face "DarkTurquoise")
+        (set-face-foreground 'message-header-xheader-face "MediumTurquoise")
+        (set-face-foreground 'message-separator-face "Cyan")
+        (set-face-foreground 'message-cited-text-face "DarkTurquoise")))
   #+end_src
 
 * Reading messages
 ** Summaries confs
    #+begin_src emacs-lisp
-     (eval-after-load "gnus-sum"
-       '(progn
-          (define-key gnus-summary-mode-map
-            "!" 'gnus-summary-put-mark-as-ticked-next)
-          (define-key gnus-summary-mode-map
-            "E" 'gnus-summary-put-mark-as-expirable-next)
-          (define-key gnus-summary-mode-map
-            "c" 'gnus-summary-catchup-and-goto-next-group)))
+     (with-eval-after-load "gnus-sum"
+       (define-key gnus-summary-mode-map
+         "!" 'gnus-summary-put-mark-as-ticked-next)
+       (define-key gnus-summary-mode-map
+         "E" 'gnus-summary-put-mark-as-expirable-next)
+       (define-key gnus-summary-mode-map
+         "c" 'gnus-summary-catchup-and-goto-next-group))
    #+end_src
 ** Mime
    #+begin_src emacs-lisp

@@ -114,12 +114,11 @@
          ("novembre" . 11) ("decembre" . 12)))
 
 
-     (eval-after-load 'parse-time
-       '(progn
-         (setq parse-time-weekdays (nconc parse-time-weekdays
-                                          parse-time-weekdays-french))
-         (setq parse-time-months (nconc parse-time-months
-                                        parse-time-months-french))))
+     (with-eval-after-load 'parse-time
+       (setq parse-time-weekdays (nconc parse-time-weekdays
+                                        parse-time-weekdays-french))
+       (setq parse-time-months (nconc parse-time-months
+                                      parse-time-months-french)))
    #+end_src
 
 ** remember with org-mode/contrib/lisp/
@@ -153,10 +152,9 @@
     :ID:       21c708ba-8ed1-41df-bff9-e24264136ae1
     :END:
 #+begin_src emacs-lisp
-  (eval-after-load 'org-agenda
-    '(progn
-      (define-key org-agenda-mode-map (kbd "M-<right>") 'org-agenda-later)
-      (define-key org-agenda-mode-map (kbd "M-<left>") 'org-agenda-earlier)))
+  (with-eval-after-load 'org-agenda
+    (define-key org-agenda-mode-map (kbd "M-<right>") 'org-agenda-later)
+    (define-key org-agenda-mode-map (kbd "M-<left>") 'org-agenda-earlier))
 #+end_src
 
 ** Pour latex
@@ -171,84 +169,82 @@
     :ID:       15ebdea3-f289-46ed-a8a3-8ca1b1c1091b
     :END:
 #+begin_src emacs-lisp
-  (eval-after-load 'org-exp-blocks
-    '(progn
-      (defun org-export-blocks-format-theorem (body &rest headers)
-        "Format theorem BODY as a theorem and return it formatted for export.
+  (with-eval-after-load 'org-exp-blocks
+    (defun org-export-blocks-format-theorem (body &rest headers)
+      "Format theorem BODY as a theorem and return it formatted for export.
   Currently, this only does something for HTML export, for all
   other backends, it converts the comment into an EXAMPLE segment."
-        (let ((theorem-style (if headers (car headers) "theorem"))
-              (title (if (cdr headers) (mapconcat 'identity (cdr headers) " "))))
-          (cond
-            (htmlp ;; We are exporting to HTML
-             (concat "#+BEGIN_HTML\n"
-                     "<div class=\"org-"
-                     theorem-style
-                     "\">\n"
-                     "<b>" (upcase-initials theorem-style) "</b>"
-                     (if (and title (> (length title) 0)) (concat ": " title "</br>\n") "</br>\n")
-                     "<p>\n"
-                     "#+END_HTML\n"
-                     body
-                     (if (string-match "\n$" body) "" "\n")
-                     "#+BEGIN_HTML\n"
-                     "</p>\n"
-                     "</div>\n"
-                     "#+END_HTML\n"))
-            (latexp ;;we are exporting to latex
-             (concat "#+BEGIN_LATEX\n"
-                     "\\begin{" theorem-style "}"
-                     (if (and title (> (length title) 0)) (concat "[" title "]\n") "\n")
-                     "#+END_LATEX\n"
-                     body
+      (let ((theorem-style (if headers (car headers) "theorem"))
+            (title (if (cdr headers) (mapconcat 'identity (cdr headers) " "))))
+        (cond
+         (htmlp ;; We are exporting to HTML
+          (concat "#+BEGIN_HTML\n"
+                  "<div class=\"org-"
+                  theorem-style
+                  "\">\n"
+                  "<b>" (upcase-initials theorem-style) "</b>"
+                  (if (and title (> (length title) 0)) (concat ": " title "</br>\n") "</br>\n")
+                  "<p>\n"
+                  "#+END_HTML\n"
+                  body
+                  (if (string-match "\n$" body) "" "\n")
+                  "#+BEGIN_HTML\n"
+                  "</p>\n"
+                  "</div>\n"
+                  "#+END_HTML\n"))
+         (latexp ;;we are exporting to latex
+          (concat "#+BEGIN_LATEX\n"
+                  "\\begin{" theorem-style "}"
+                  (if (and title (> (length title) 0)) (concat "[" title "]\n") "\n")
+                  "#+END_LATEX\n"
+                  body
 
-                     (if (string-match "\n$" body) "" "\n")
-                     "#+BEGIN_LATEX\n"
-                     "\\end{" theorem-style "}\n"
-                     "#+END_LATEX\n"))
-            (t ;; This is not HTML nor latex, so just export the body
-             (concat "\n"
-                     (upcase-initials theorem-style)
-                     (if title (concat ": " title "\n\n") "\n\n")
-                     body
-                     (if (string-match "\n\\'" body) "\n\n" "\n"))))))
+                  (if (string-match "\n$" body) "" "\n")
+                  "#+BEGIN_LATEX\n"
+                  "\\end{" theorem-style "}\n"
+                  "#+END_LATEX\n"))
+         (t ;; This is not HTML nor latex, so just export the body
+          (concat "\n"
+                  (upcase-initials theorem-style)
+                  (if title (concat ": " title "\n\n") "\n\n")
+                  body
+                  (if (string-match "\n\\'" body) "\n\n" "\n"))))))
 
-      (org-export-blocks-add-block '(theorem org-export-blocks-format-theorem t))))
+    (org-export-blocks-add-block '(theorem org-export-blocks-format-theorem t)))
 #+end_src
 
 *** Une classe
     #+name: org-latex-class
     #+begin_src emacs-lisp
-      (eval-after-load 'ox-latex
-        '(progn
-          (add-to-list 'org-latex-classes
-           '("ledger"
-             "\\documentclass[a4paper]{article}
+      (with-eval-after-load 'ox-latex
+        (add-to-list 'org-latex-classes
+                     '("ledger"
+                       "\\documentclass[a4paper]{article}
                          \\usepackage{myhead}
                          \\usepackage{hyperref}
                          \\header{Les comptes}
                          [NO-DEFAULT-PACKAGES]
                          [PACKAGES]
                          [EXTRA]"
-             ("\\section{%s}" . "\\section*{%s}")
-             ("\\subsection{%s}" . "\\subsection*{%s}")
-             ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-             ("\\paragraph{%s}" . "\\paragraph*{%s}")
-             ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-          (add-to-list 'org-latex-classes
-           '("simple"
-             "\\documentclass[a4paper]{article}
+                       ("\\section{%s}" . "\\section*{%s}")
+                       ("\\subsection{%s}" . "\\subsection*{%s}")
+                       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                       ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                       ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+        (add-to-list 'org-latex-classes
+                     '("simple"
+                       "\\documentclass[a4paper]{article}
               \\usepackage{myhead}
               \\usepackage{hyperref}
               \\renewcommand{\\maketitle}{}
               [NO-DEFAULT-PACKAGES]
               [PACKAGES]
               [EXTRA]"
-             ("\\section{%s}" . "\\section*{%s}")
-             ("\\subsection{%s}" . "\\subsection*{%s}")
-             ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-             ("\\paragraph{%s}" . "\\paragraph*{%s}")
-             ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))))
+                       ("\\section{%s}" . "\\section*{%s}")
+                       ("\\subsection{%s}" . "\\subsection*{%s}")
+                       ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                       ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                       ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
     #+end_src
 
 ** Pour l'agenda: la fête des mères et quelques autres fêtes.
@@ -599,10 +595,9 @@
 
 ** For yasnipet
 #+name: org-for-yas
-#+begin_src none
-  (eval-after-load 'org
-    '(progn
-       (define-key org-mode-map (kbd "<C-tab>") #'yas/expand)))
+#+begin_src emacs-lisp
+  (with-eval-after-load 'org
+    (define-key org-mode-map (kbd "<C-tab>") #'yas-expand))
 #+end_src
 
 * from custom

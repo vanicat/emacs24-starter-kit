@@ -63,8 +63,8 @@
 
   (set-face-attribute 'bold () :foreground "gray95" :weight 'extra-bold)
 
-  (eval-after-load 'highlight-current-line
-    '(set-face-attribute 'highlight-current-line-face () :background "grey30"))
+  (with-eval-after-load 'highlight-current-line
+    (set-face-attribute 'highlight-current-line-face () :background "grey30"))
 
   (set-face-attribute 'show-ws-tab () :background "gray14")
 #+end_src

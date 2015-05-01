@@ -126,8 +126,8 @@ Penser à reclasser les deux add-hook
   (global-set-key "(" 'pair-or-self-insert-command)
   (global-set-key "[" 'pair-or-self-insert-command)
   (global-set-key "{" 'pair-or-self-insert-command)
-  (eval-after-load 'latex
-    '(define-key LaTeX-mode-map "$" 'pair-or-self-insert-command))
+  (with-eval-after-load 'latex
+    (define-key LaTeX-mode-map "$" 'pair-or-self-insert-command))
 #+end_src
 
 * raccourcies globaux
@@ -207,8 +207,8 @@ Penser à reclasser les deux add-hook
 #+end_src
 ** dabbrev
 #+begin_src emacs-lisp
-  (eval-after-load 'dabbrev
-    '(let ((fst (member 'try-expand-dabbrev hippie-expand-try-functions-list)))
+  (with-eval-after-load 'dabbrev
+    (let ((fst (member 'try-expand-dabbrev hippie-expand-try-functions-list)))
       (setcar fst 'try-expand-dabbrev-visible)
       (setcdr fst (cons 'try-expand-dabbrev-all-buffers (cdr fst)))))
 #+end_src
@@ -416,12 +416,11 @@ Penser à reclasser les deux add-hook
 
 * Tramp
 #+begin_src emacs-lisp
-  (eval-after-load 'tramp
-    '(progn
-       (add-to-list 'tramp-default-proxies-alist
-                    '(nil "\\`root\\'" "/ssh:%h:"))
-       (add-to-list 'tramp-default-proxies-alist
-                    (list (regexp-quote (system-name)) nil nil))))
+  (with-eval-after-load 'tramp
+    (add-to-list 'tramp-default-proxies-alist
+                 '(nil "\\`root\\'" "/ssh:%h:"))
+    (add-to-list 'tramp-default-proxies-alist
+                 (list (regexp-quote (system-name)) nil nil)))
 #+end_src
 * configurations des modes
 ** config ruby et rails
@@ -650,24 +649,23 @@ Penser à reclasser les deux add-hook
 ** apt-util
 
 #+begin_src emacs-lisp-comment
-  (eval-after-load 'apt-utils
-    '(progn
-      (require 'thingatpt)
+  (with-eval-after-load 'apt-utils
+    (require 'thingatpt)
 
-      (defun apt-utils-choose-package ()
-        "Choose a Debian package name."
-        (let ((package
-               (and (eq major-mode 'apt-utils-mode)
-                    (cadr (member 'apt-package
-                                  (text-properties-at (point))))))
-              (PC-word-delimiters "-"))
-          (when (not (stringp package))
-            (setq package (word-at-point)))
-          (completing-read (if package
-                               (format "Choose Debian package (%s): " package)
-                               "Choose Debian package: ")
-                           'apt-utils-choose-package-completion
-                           nil t package)))
+    (defun apt-utils-choose-package ()
+      "Choose a Debian package name."
+      (let ((package
+             (and (eq major-mode 'apt-utils-mode)
+                  (cadr (member 'apt-package
+                                (text-properties-at (point))))))
+            (PC-word-delimiters "-"))
+        (when (not (stringp package))
+          (setq package (word-at-point)))
+        (completing-read (if package
+                             (format "Choose Debian package (%s): " package)
+                           "Choose Debian package: ")
+                         'apt-utils-choose-package-completion
+                         nil t package)))
 
       ;; (defun apt-utils-add-package-links ()
       ;;   "Add hyperlinks to related Debian packages."
@@ -758,14 +756,14 @@ Penser à reclasser les deux add-hook
       ;;                                 (end-of-line)
       ;;                                 (point))
       ;;                               `(,apt-utils-face-property apt-utils-field-contents-face)))))))
-      ))
+      )
 #+end_src
 ** yas
 #+name: yas-config
 #+begin_src emacs-lisp
   (setq yas-trigger-key "<C-tab>")
-  (eval-after-load 'yasnippet
-    '(yas-load-directory "~/.emacs.d/snippets/"))
+  (with-eval-after-load 'yasnippet
+    (yas-load-directory "~/.emacs.d/snippets/"))
 #+end_src
 
 * inconnus:

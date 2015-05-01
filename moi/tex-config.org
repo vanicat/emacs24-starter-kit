@@ -48,19 +48,18 @@
    :ID:       eff1feee-a9bd-4b89-951c-3f2132e4ef3f
    :END:
 #+begin_src emacs-lisp
-  (eval-after-load 'latex
-    '(progn
-      (TeX-add-style-hook
-       "latex"
-       (lambda ()
-         (TeX-add-symbols
-          '("newtheorem*" TeX-arg-define-environment
-            [ TeX-arg-environment "Numbered like" ]
-            t [ TeX-arg-counter "Within counter" ]))))
+  (with-eval-after-load 'latex
+    (TeX-add-style-hook
+     "latex"
+     (lambda ()
+       (TeX-add-symbols
+        '("newtheorem*" TeX-arg-define-environment
+          [ TeX-arg-environment "Numbered like" ]
+          t [ TeX-arg-counter "Within counter" ]))))
 
-      (push '("\\\\newtheorem\\*{\\(\\(?:[a-zA-Z]\\|\\cj\\)+\\)}"
-              1 LaTeX-auto-environment)
-       LaTeX-auto-regexp-list)))
+    (push '("\\\\newtheorem\\*{\\(\\(?:[a-zA-Z]\\|\\cj\\)+\\)}"
+            1 LaTeX-auto-environment)
+          LaTeX-auto-regexp-list))
 #+end_src
 * Outline minor mode
   #+name: outline-for-tex

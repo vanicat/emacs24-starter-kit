@@ -164,7 +164,7 @@
     #+end_src
 ** Conveniant message composing
    #+begin_src emacs-lisp
-     (add-hook 'message-mode-hook 'auto-fill-mode-on)
+     (add-hook 'message-mode-hook 'turn-on-auto-fill)
      (add-hook 'message-mode-hook 'turn-on-flyspell)
      (add-hook 'message-mode-hook 'ispell-guess-dictionary)
    #+end_src

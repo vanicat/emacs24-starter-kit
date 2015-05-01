@@ -11,14 +11,14 @@
    :ID:       c7219d91-75da-49e4-ab56-5d903f2cd00f
    :END:
 #+begin_src emacs-lisp
-    (defun my-LaTeX-mode-hook ()
-     ;  (require 'bib-cite)
-      (auto-fill-mode-on)
-      (abbrev-mode 1)
-      (latex-math-mode))
-  
-    (add-hook 'LaTeX-mode-hook 'my-LaTeX-mode-hook)
-    (add-hook 'latex-mode-hook 'my-LaTeX-mode-hook)
+  (defun my-LaTeX-mode-hook ()
+   ;  (require 'bib-cite)
+    (turn-on-auto-fill)
+    (abbrev-mode 1)
+    (latex-math-mode))
+
+  (add-hook 'LaTeX-mode-hook 'my-LaTeX-mode-hook)
+  (add-hook 'latex-mode-hook 'my-LaTeX-mode-hook)
 #+end_src
 
 * Indent environment list
@@ -157,7 +157,7 @@
   :ID:       17134eb5-6bc8-4c58-b836-e7812c407746
   :END:
 #+begin_src emacs-lisp
-  (add-hook 'tex-mode-hook 'auto-fill-mode-on)
+  (add-hook 'tex-mode-hook 'turn-on-auto-fill)
 
   (setq TeX-macro-private (list "~/texmf/tex/latex/myhead/"))
   (setq TeX-auto-private (list "~/texmf/auto/"))

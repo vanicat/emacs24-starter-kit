@@ -490,7 +490,7 @@
   #+end_src
 
 * Completion
-  #+begin_src emacs-lisp-nop
+  #+begin_src emacs-lisp :tangle no
     (setq gnus-completing-read-function 'gnus-ido-completing-read)
   #+end_src
 * Integration with org

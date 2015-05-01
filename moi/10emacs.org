@@ -21,7 +21,7 @@
 :PROPERTIES:
 :ID:       89bfd095-c7f5-455b-b726-40d3bb011102
 :END:
-#+begin_src emacs-lisp-comment
+#+begin_src emacs-lisp :tangle no
   (require 'edit-server)
   (setq edit-server-new-frame nil)
 
@@ -101,7 +101,7 @@ Penser à reclasser les deux add-hook
 #+end_src
 * Paire de parenthèse
 #+name: paire-de-parenthese
-#+begin_src emacs-lisp-comment
+#+begin_src emacs-lisp :tangle no
   (defvar pair-or-self-insert-alist
     '((?\( ?\)) (?\[ ?\]) (?\{ ?\}) (?\< ?\>) (?\" ?\") (?\' ?\') (?\` ?\') (?\« ?\») (?\$ ?\$)))
 
@@ -648,7 +648,7 @@ Penser à reclasser les deux add-hook
 #+end_src
 ** apt-util
 
-#+begin_src emacs-lisp-comment
+#+begin_src emacs-lisp :tangle no
   (with-eval-after-load 'apt-utils
     (require 'thingatpt)
 

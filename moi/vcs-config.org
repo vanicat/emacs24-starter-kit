@@ -23,7 +23,7 @@
 
 *** git in English
 #+name: git-english
-#+begin_src fundamental
+#+begin_src emacs-lisp :tangle no
   (defadvice magit-start-process (around lang-en_US activate)
     "Set LANG to en_US."
     (let ((process-environment process-environment))

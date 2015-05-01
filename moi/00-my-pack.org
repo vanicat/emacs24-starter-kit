@@ -1,12 +1,9 @@
 * load my package
 #+begin_src emacs-lisp
-   (defvar my-starter-kit-packages
-    (list 'ruby-electric 'flycheck 'flycheck-ledger 'nxml 'paredit 'helm 'yasnippet)
-    "Libraries that should be installed.")
-  
-  (dolist (package my-starter-kit-packages)
-    (condition-case x
-        (unless (package-installed-p package)
-          (package-install package))
-      (error ())))
+  (starter-kit-install-if-needed 'flycheck)
+  (starter-kit-install-if-needed 'flycheck-ledger)
+  (starter-kit-install-if-needed 'nxml)
+  (starter-kit-install-if-needed 'paredit)
+  (starter-kit-install-if-needed 'helm)
+  (starter-kit-install-if-needed 'yasnippet)
 #+end_src

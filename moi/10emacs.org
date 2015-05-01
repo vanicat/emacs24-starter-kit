@@ -30,7 +30,7 @@
     (error nil))
 #+end_src
 * Really launch the server
-#+begin_src emacs-lisp-comment
+#+begin_src emacs-lisp
   (let ((delete-by-moving-to-trash nil))
     (server-force-delete)
     (server-start))

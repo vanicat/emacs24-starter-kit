@@ -84,6 +84,7 @@ Penser à reclasser les deux add-hook
   (set-face-attribute 'default nil :height mydefault-font-height)
   (set-face-attribute 'default nil :foundry "bitstream")
   (set-face-attribute 'default nil :family "Bitstream Vera Sans Mono")
+  (set-face-attribute 'cursor nil :background "LightGrey")
 
   (setq visible-bell 't)
 

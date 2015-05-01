@@ -1,0 +1,5 @@
+* Cursor color
+#+name: cursor-color
+#+begin_src emacs-lisp
+  (set-cursor-color "light gray")
+#+end_src

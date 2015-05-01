@@ -20,6 +20,13 @@
     (add-hook 'LaTeX-mode-hook 'my-LaTeX-mode-hook)
     (add-hook 'latex-mode-hook 'my-LaTeX-mode-hook)
 #+end_src
+
+* Indent environment list
+#+name: dont-indent-tikk
+#+begin_src emacs-lisp
+  (push '("tikzpicture") LaTeX-indent-environment-list)
+#+end_src
+
 * Ecriture des maths
   :PROPERTIES:
   :ID:       636f5ff5-899c-446c-b383-2177f195cc61

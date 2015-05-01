@@ -137,9 +137,6 @@ Penser à reclasser les deux add-hook
 #+begin_src emacs-lisp
   (define-key input-decode-map (kbd "C-à") [?\C-c])
 
-  (global-set-key [SunFA_Circum] 'nop)
-  (global-set-key [SunFA_Diaeresis] 'nop)
-
   ;;      Pave fleches du haut
   (global-set-key [S-home] 'beginning-of-buffer)
   (global-set-key [S-end] 'end-of-buffer)
@@ -177,7 +174,6 @@ Penser à reclasser les deux add-hook
   (define-key key-translation-map "\C-x8^n" "ⁿ")
   (define-key key-translation-map "\C-x8I" "∩")
   (define-key key-translation-map "\C-x8U" "∪")
-
 #+end_src
 
 ** lagn

@@ -204,6 +204,12 @@ Penser à reclasser les deux add-hook
   (add-to-list 'package-archives
     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 #+end_src
+** For javascool
+#+name: javascool-auto-load
+#+begin_src emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.jvs\\'" . java-mode))
+#+end_src
+
 ** dabbrev
 #+begin_src emacs-lisp
   (eval-after-load 'dabbrev

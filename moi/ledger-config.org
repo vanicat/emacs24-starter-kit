@@ -11,7 +11,7 @@
   :ID:       c93b0251-76a5-4da9-8bd4-adf27e84f200
   :END:
   #+begin_src emacs-lisp
-    (add-to-list 'auto-mode-alist '("\\.ledger$" . ledger-mode))
+    (add-to-list 'auto-mode-alist '("\\.ledger\\'" . ledger-mode))
   #+end_src
 
 * Face

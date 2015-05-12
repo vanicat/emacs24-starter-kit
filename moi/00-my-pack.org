@@ -12,4 +12,5 @@
   (starter-kit-install-if-needed 'paredit)
   (starter-kit-install-if-needed 'helm)
   (starter-kit-install-if-needed 'yasnippet)
+  (starter-kit-install-if-needed 'auctex)
 #+end_src

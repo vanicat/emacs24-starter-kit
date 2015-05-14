@@ -36,7 +36,8 @@
              (nntp "gmane"
                    (nntp-address "news.gmane.org"))
              (nntp "dino"
-                   (nntp-address "gw1.dino.ens-lyon.org"))))
+                   (nntp-address "gw1.dino.ens-lyon.org")
+                   (nntp-port-number 1119))))
      ;; (nnimap "localhost"
      ;;         (nnimap-stream shell)
      ;;         (nnir-search-engine imap))

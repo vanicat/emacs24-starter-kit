@@ -37,7 +37,9 @@
                   (nnimap-stream ssl)
                   (nnir-search-engine imap))
                  (nntp "gmane"
-                  (nntp-address "news.gmane.org")))))
+                       (nntp-address "news.gmane.org"))
+                 (nntp "dino"
+                       (nntp-address "gw1.dino.ens-lyon.org")))))
      ;; (nnimap "localhost"
      ;;         (nnimap-stream shell)
      ;;         (nnir-search-engine imap))

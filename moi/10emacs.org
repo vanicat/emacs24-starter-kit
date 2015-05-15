@@ -871,6 +871,17 @@ Penser à reclasser les deux add-hook
 #+begin_src emacs-lisp
   (advice-add #'helm-candidate-buffer :filter-return #'my-set-buffer-case-table)
 #+end_src
+** Help herm-find-file
+#+name: ffap-not-root
+#+begin_src emacs-lisp
+  (defun my-ffap-file-at-point-filter (result)
+    (if (string= result "/")
+        ()
+      result))
+
+  (advice-add 'ffap-file-at-point :filter-return #'my-ffap-file-at-point-filter)
+#+end_src
+
 * Remember note
 #+name: remember-note
 #+begin_src emacs-lisp

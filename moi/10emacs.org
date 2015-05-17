@@ -771,13 +771,6 @@ Penser à reclasser les deux add-hook
   (with-eval-after-load 'yasnippet
     (yas-load-directory "~/.emacs.d/snippets/"))
 #+end_src
-** stack exchange
-#+name: sx
-#+begin_src emacs-lisp
-  (eval-after-load 'sx
-    `(org-babel-load-file (expand-file-name "libs/sx-config.org" ,(file-name-directory load-file-name))))
-
-#+end_src
 ** dino
 #+begin_src emacs-lisp
   (autoload 'dino "dino" "" 't)

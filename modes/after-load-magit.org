@@ -1,27 +1,14 @@
-* vcs
-** git/magit
+* git/magit
 :PROPERTIES:
 :ID:       2945a736-1523-4cd8-8b7c-a58fed61f7f8
 :END:
-#+name: magit-and-git-config
-#+begin_src emacs-lisp
-  (global-set-key [?\C-x ?g] 'magit-status)
-  (global-set-key [?\C-x ?L] 'magit-file-log)
-
-  (autoload 'git-status "git" "" t)
-  (autoload 'git-blame-mode "git-blame"
-  (autoload 'magit-status "magit" "" t)
-    "Minor mode for incremental blame for Git." t)
-#+end_src
-
-*** git-wip
+** git-wip
 #+name: git-wip
 #+begin_src emacs-lisp
-  (require 'magit)
   (global-magit-wip-save-mode)
 #+end_src
 
-*** git in English
+** git in English
 #+name: git-english
 #+begin_src emacs-lisp :tangle no
   (defadvice magit-start-process (around lang-en_US activate)
@@ -37,7 +24,7 @@
       ad-do-it))
 #+end_src
 
-*** git annex
+** git annex
 #+name: git-annex
 #+begin_src emacs-lisp
   (require 'git-annex)
@@ -48,15 +35,7 @@
     (define-key dired-mode-map [@ g] 'magit-annex-get-dired))
 #+end_src
 
-** vc
-#+name: emacs-vc-config
-#+begin_src emacs-lisp
-  (with-eval-after-load "vc-hooks"
-    (define-key vc-prefix-map "=" 'ediff-revision))
-  (add-to-list 'vc-handled-backends 'GIT)
-#+end_src
-
-** vcsh by tramp
+* vcsh by tramp
 #+name: vsh-by-tramp
 #+begin_src emacs-lisp
   (with-eval-after-load 'tramp

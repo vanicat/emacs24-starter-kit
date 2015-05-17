@@ -354,11 +354,28 @@ Penser à reclasser les deux add-hook
   (push '("\\.mdwn$" . markdown-mode) auto-mode-alist)
 #+end_src
 
-** git-annex
+** git and git annex
+
+*** Global key for magit
+#+name: magit-and-git-config
+#+begin_src emacs-lisp
+  (global-set-key [?\C-x ?g] 'magit-status)
+  (global-set-key [?\C-x ?L] 'magit-file-log)
+#+end_src
+
+*** Do not commit automaticaly with git-annex
 #+name: git-annex-dont-commit
 #+begin_src emacs-lisp
   (setq git-annex-commit ())
 #+end_src
+
+*** Use ediff in vc
+#+name: emacs-vc-config
+#+begin_src emacs-lisp
+  (with-eval-after-load "vc-hooks"
+    (define-key vc-prefix-map "=" 'ediff-revision))
+#+end_src
+
 * Qui suis-je
 :PROPERTIES:
 :ID:       823c7df7-e19e-4906-9937-4047451411d6

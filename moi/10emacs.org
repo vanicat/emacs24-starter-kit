@@ -800,6 +800,12 @@ Penser à reclasser les deux add-hook
 #+begin_src emacs-lisp
   (add-to-list 'auto-mode-alist '("\\.ledger$" . ledger-mode))
 #+end_src
+** Elisp
+  #+begin_src emacs-lisp
+    (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+    (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+  #+end_src
+
 * inconnus:
 :PROPERTIES:
 :ID:       55d5e2b7-e3df-4fc9-8334-bb2f911b4fc2

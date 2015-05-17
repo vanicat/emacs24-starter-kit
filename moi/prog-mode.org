@@ -1,7 +1,0 @@
-* Elisp
-  #+begin_src emacs-lisp
-    (require 'paredit)
-
-    (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
-    (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
-  #+end_src

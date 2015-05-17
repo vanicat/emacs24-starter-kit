@@ -1,8 +1,0 @@
-#+TITLE: Config pour TeX/LaTeX
-#+OPTIONS: toc:nil num:nil ^:nil
-* Wait for load
-#+name: wait-for-latex
-#+begin_src emacs-lisp
-  (eval-after-load 'latex
-    `(org-babel-load-file (expand-file-name "libs/latex-config.org" ,(file-name-directory load-file-name)) t))
-#+end_src

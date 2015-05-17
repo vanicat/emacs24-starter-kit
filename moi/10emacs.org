@@ -761,7 +761,10 @@ Penser à reclasser les deux add-hook
     `(org-babel-load-file (expand-file-name "libs/sx-config.org" ,(file-name-directory load-file-name))))
 
 #+end_src
-
+** dino
+#+begin_src emacs-lisp
+  (autoload 'dino "dino" "" 't)
+#+end_src
 * inconnus:
 :PROPERTIES:
 :ID:       55d5e2b7-e3df-4fc9-8334-bb2f911b4fc2

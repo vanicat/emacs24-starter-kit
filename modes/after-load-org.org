@@ -52,7 +52,7 @@
 ** Yasnippet
 #+name: yasnipett-org
 #+begin_src emacs-lisp
-;  (add-hook 'org-mode-hook 'yas-minor-mode)
+  (add-hook 'org-mode-hook 'yas-minor-mode)
 #+end_src
 
 ** Exportons vers ical
@@ -120,17 +120,6 @@
        (setq parse-time-months (nconc parse-time-months
                                       parse-time-months-french)))
    #+end_src
-
-** remember with org-mode/contrib/lisp/
-    :PROPERTIES:
-    :ID:       548e4ba3-f6b2-4ff8-849e-6c764be375e7
-    :END:
-#+begin_src emacs-lisp
-  (setq org-default-notes-file "/home/moi/org/notes.org")
-  (global-set-key "\C-cr" 'org-capture)
-  (global-set-key "\C-ca" 'org-agenda)
-  (global-set-key "\C-cl" 'org-store-link)
-#+end_src
 
 ** Link to imap gnus
 #+name: link-to-all-mail
@@ -629,9 +618,4 @@
   (setq org-return-follows-link t)
   (setq org-time-stamp-custom-formats '("<%a %d/%m/%y>" . "<%a %d/%m/%y %H:%M>"))
   (setq org-todo-keywords '((sequence "TODO" "NEXT(n)" "WAIT(w!)" "PROGRESS(p)" "|" "ABANDON(a!)" "DONE(d!)")))
-#+end_src
-
-* It's done
-#+begin_src emacs-lisp
-  (provide 'org-config)
 #+end_src

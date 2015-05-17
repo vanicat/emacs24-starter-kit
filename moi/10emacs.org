@@ -782,6 +782,17 @@ Penser à reclasser les deux add-hook
 #+begin_src emacs-lisp
   (autoload 'dino "dino" "" 't)
 #+end_src
+** remember with org-mode/contrib/lisp/
+    :PROPERTIES:
+    :ID:       548e4ba3-f6b2-4ff8-849e-6c764be375e7
+    :END:
+#+begin_src emacs-lisp
+  (setq org-default-notes-file "/home/moi/org/notes.org")
+  (global-set-key "\C-cr" 'org-capture)
+  (global-set-key "\C-ca" 'org-agenda)
+  (global-set-key "\C-cl" 'org-store-link)
+#+end_src
+
 * inconnus:
 :PROPERTIES:
 :ID:       55d5e2b7-e3df-4fc9-8334-bb2f911b4fc2

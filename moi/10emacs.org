@@ -785,7 +785,21 @@ Penser à reclasser les deux add-hook
   (global-set-key "\C-ca" 'org-agenda)
   (global-set-key "\C-cl" 'org-store-link)
 #+end_src
+** ledger
+*** Finding the mode
+#+name: ledger-is-there
+#+begin_src emacs-lisp
+  (add-to-list 'load-path "/home/moi/prog/ledger/ledger/lisp/")
 
+  (autoload 'ledger-mode "ledger-mode")
+#+end_src
+*** Auto mode
+:PROPERTIES:
+:ID:       c93b0251-76a5-4da9-8bd4-adf27e84f200
+:END:
+#+begin_src emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.ledger$" . ledger-mode))
+#+end_src
 * inconnus:
 :PROPERTIES:
 :ID:       55d5e2b7-e3df-4fc9-8334-bb2f911b4fc2

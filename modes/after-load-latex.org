@@ -25,7 +25,7 @@
 #+name: complete
 #+begin_src emacs-lisp
   (setq TeX-complete-expert-commands t)
-  (setq TeX-electric-math t)
+  (setq TeX-electric-math '("$" . "$"))
 #+end_src
 
 * Ecriture des maths

@@ -126,8 +126,6 @@ Penser à reclasser les deux add-hook
   (global-set-key "(" 'pair-or-self-insert-command)
   (global-set-key "[" 'pair-or-self-insert-command)
   (global-set-key "{" 'pair-or-self-insert-command)
-  (with-eval-after-load 'latex
-    (define-key LaTeX-mode-map "$" 'pair-or-self-insert-command))
 #+end_src
 
 * raccourcies globaux

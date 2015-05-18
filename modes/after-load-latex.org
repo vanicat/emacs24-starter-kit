@@ -39,7 +39,7 @@
 
     (ad-activate 'LaTeX-math-left)
 
-    (setq LaTeX-math-abbrev-prefix "\"")
+    (customize-set-value 'LaTeX-math-abbrev-prefix "\"")
     (setq LaTeX-math-list '((?' "prime" nil nil)
                             (?= "neq" nil nil)
                             (?/ "frac" nil nil)

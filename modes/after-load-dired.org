@@ -1,7 +1,12 @@
 * How to view some stuff from dired
   #+begin_src emacs-lisp
     (setq dired-guess-shell-alist-user (quote ((".pdf$" "evince * &") (".ps$" "evince * &" "gv * &" "lpr") (".mp3$" "see * &"))))
-    (setq dired-view-command-alist (quote (("[.]mp3\\'" . "totem %s") ("[.]\\(ps\\|ps_pages\\|eps\\)\\(.gz\\)?\\'" . "gv -spartan -color -watch %s") ("[.]pdf\\'" . "evince %s") ("[.]\\(jpe?g\\|gif\\|png\\)\\'" . "eog %s") ("[.]dvi\\'" . "xdvi -sidemargin 0.5 -topmargin 1 %s") ("[.]gnumeric\\'" . "gnumeric %s"))))
+    (setq dired-view-command-alist
+          '(("[.]mp3\\'" . "xdg-open %s")
+            ("[.]pdf\\'" . "xdg-open %s")
+            ("[.]\\(jpe?g\\|gif\\|png\\)\\'" . "xdg-open %s")
+            ("[.]dvi\\'" . "xdg-open -sidemargin 0.5 -topmargin 1 %s")
+            ("[.]gnumeric\\'" . "xdg-open %s")))
   #+end_src
 * Create new dir on fly
   #+begin_src emacs-lisp

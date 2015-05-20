@@ -1,25 +1,33 @@
 #+TITLE: Config pour TeX/LaTeX
 #+OPTIONS: toc:nil num:nil ^:nil
-* Wait for load
-#+name: wait-for-latex
-#+begin_src emacs-lisp
-  (with-eval-after-load 'tex
-#+end_src
 
 * The latex hook
    :PROPERTIES:
    :ID:       c7219d91-75da-49e4-ab56-5d903f2cd00f
    :END:
 #+begin_src emacs-lisp
-    (defun my-LaTeX-mode-hook ()
-     ;  (require 'bib-cite)
-      (auto-fill-mode-on)
-      (abbrev-mode 1)
-      (latex-math-mode))
-  
-    (add-hook 'LaTeX-mode-hook 'my-LaTeX-mode-hook)
-    (add-hook 'latex-mode-hook 'my-LaTeX-mode-hook)
+  (defun my-LaTeX-mode-hook ()
+   ;  (require 'bib-cite)
+    (abbrev-mode 1)
+    (latex-math-mode))
+
+  (add-hook 'LaTeX-mode-hook 'my-LaTeX-mode-hook)
+  (add-hook 'latex-mode-hook 'my-LaTeX-mode-hook)
 #+end_src
+
+* Indent environment list
+#+name: dont-indent-tikk
+#+begin_src emacs-lisp
+  (push '("tikzpicture") LaTeX-indent-environment-list)
+#+end_src
+
+* Complete
+#+name: complete
+#+begin_src emacs-lisp
+  (setq TeX-complete-expert-commands t)
+  (setq TeX-electric-math '("$" . "$"))
+#+end_src
+
 * Ecriture des maths
   :PROPERTIES:
   :ID:       636f5ff5-899c-446c-b383-2177f195cc61
@@ -31,7 +39,7 @@
 
     (ad-activate 'LaTeX-math-left)
 
-    (setq LaTeX-math-abbrev-prefix "\"")
+    (customize-set-value 'LaTeX-math-abbrev-prefix "\"")
     (setq LaTeX-math-list '((?' "prime" nil nil)
                             (?= "neq" nil nil)
                             (?/ "frac" nil nil)
@@ -48,26 +56,25 @@
    :ID:       eff1feee-a9bd-4b89-951c-3f2132e4ef3f
    :END:
 #+begin_src emacs-lisp
-  (eval-after-load 'latex
-    '(progn
-      (TeX-add-style-hook
-       "latex"
-       (lambda ()
-         (TeX-add-symbols
-          '("newtheorem*" TeX-arg-define-environment
-            [ TeX-arg-environment "Numbered like" ]
-            t [ TeX-arg-counter "Within counter" ]))))
+  (with-eval-after-load 'latex
+    (TeX-add-style-hook
+     "latex"
+     (lambda ()
+       (TeX-add-symbols
+        '("newtheorem*" TeX-arg-define-environment
+          [ TeX-arg-environment "Numbered like" ]
+          t [ TeX-arg-counter "Within counter" ]))))
 
-      (push '("\\\\newtheorem\\*{\\(\\(?:[a-zA-Z]\\|\\cj\\)+\\)}"
-              1 LaTeX-auto-environment)
-       LaTeX-auto-regexp-list)))
+    (push '("\\\\newtheorem\\*{\\(\\(?:[a-zA-Z]\\|\\cj\\)+\\)}"
+            1 LaTeX-auto-environment)
+          LaTeX-auto-regexp-list))
 #+end_src
 * Outline minor mode
   #+name: outline-for-tex
   #+begin_src emacs-lisp
     (defvar my-latex-outline-regexp 
       "\\\\\\(sub\\)*section\\| *\\\\begin\\>\\| *\\\\end\\>")
-    
+
     (defun my-tex-outline-level ()
       "compute the level of a outline for ruby"
       (save-match-data
@@ -79,10 +86,10 @@
                      8)
                   3)
               2))
-                  
+
           ((looking-at "\\( *\\)")
            (+ 4 (length (match-string 1)))))))
-    
+
     (defun define-latex-outline ()
       (interactive)
       (make-local-variable 'outline-regexp)
@@ -90,7 +97,7 @@
       (make-local-variable 'outline-level)
       (setq outline-level #'my-tex-outline-level)
       (outline-minor-mode))
-    
+
     (add-hook 'latex-mode-hook #'define-latex-outline)
   #+end_src
 
@@ -151,11 +158,6 @@
   :ID:       17134eb5-6bc8-4c58-b836-e7812c407746
   :END:
 #+begin_src emacs-lisp
-  (add-hook 'tex-mode-hook 'auto-fill-mode-on)
-
-  (setq TeX-macro-private (list "~/texmf/tex/latex/myhead/"))
-  (setq TeX-auto-private (list "~/texmf/auto/"))
-
   (add-hook 'text-mode-hook 'turn-on-flyspell)
 
   (setq TeX-PDF-mode t)
@@ -169,8 +171,7 @@
   (setq TeX-math-close-double-dollar t)
   (setq TeX-command-list
         (append TeX-command-list
-                '(("pythontex" "pythontex %s" TeX-run-command nil t :help "run pythontex")
-  )))
+                '(("pythontex" "pythontex %s" TeX-run-command nil t :help "run pythontex"))))
   (setq TeX-output-view-style '(("^dvi$"
                                  ("^landscape$" "^pstricks$\\|^pst-\\|^psfrag$")
                                  "%(o?)dvips -t landscape %d -o && evince %f")
@@ -204,10 +205,4 @@
                                      (output-pdf "Evince")
                                      (output-html "xdg-open")))
 
-#+end_src
-
-* Load-after: la fin
-#+name: end-of-load-after
-#+begin_src emacs-lisp
-    )
 #+end_src

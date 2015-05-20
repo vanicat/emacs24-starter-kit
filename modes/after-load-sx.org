@@ -1,0 +1,7 @@
+* Bind up and down
+#+name: bind-ud-and-down-for-sx
+#+begin_src emacs-lisp
+  (with-eval-after-load 'sx-question-mode
+    (define-key sx-question-mode-map (kbd "<down>") ())
+    (define-key sx-question-mode-map (kbd "<up>") ()))
+#+end_src

@@ -193,6 +193,18 @@ Penser à reclasser les deux add-hook
      (global-set-key [end] 'home-end-end)
    #+end_src
 * Petites configs
+** Add melpa
+#+name: melpa
+#+begin_src emacs-lisp
+  (add-to-list 'package-archives
+    '("melpa" . "http://melpa.milkbox.net/packages/") t)
+#+end_src
+** For javascool
+#+name: javascool-auto-load
+#+begin_src emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.jvs\\'" . java-mode))
+#+end_src
+
 ** dabbrev
 #+begin_src emacs-lisp
   (with-eval-after-load 'dabbrev
@@ -348,8 +360,8 @@ Penser à reclasser les deux add-hook
 ** Set some auto-mode for ikiwiki alist
 #+name: ikiwiki-automode
 #+begin_src emacs-lisp
-  (push '("\\._comment\\(_pending\\)?$" . markdown-mode) auto-mode-alist)
-  (push '("\\.mdwn$" . markdown-mode) auto-mode-alist)
+  (push '("\\._comment\\(_pending\\)?\\'" . markdown-mode) auto-mode-alist)
+  (push '("\\.mdwn\\'" . markdown-mode) auto-mode-alist)
 #+end_src
 
 ** git and git annex
@@ -475,7 +487,7 @@ Penser à reclasser les deux add-hook
   ;; (yas/load-directory "~/.myconfig/emacs.d/yasnippets/yasnippets-ruby/")
   ;; (yas/load-directory "~/.myconfig/emacs.d/yasnippets/yasnippets-rails/")
 
-  (push '(".*\\.html.erb" . rhtml-mode) auto-mode-alist)
+  (push '(".*\\.html.erb\\'" . rhtml-mode) auto-mode-alist)
 
   (with-eval-after-load 'outline
     (progn
@@ -535,9 +547,7 @@ Penser à reclasser les deux add-hook
                 (move-to-column orig-column)))))))
 
   (autoload 'xmms2-c-mode "cc-mode")
-  (setq auto-mode-alist
-        (cons '(".*xmms2.*/.*\\.[ch]$" . xmms2-c-mode)
-              auto-mode-alist))
+  (push '(".*xmms2.*/.*\\.[ch]\\'" . xmms2-c-mode) auto-mode-alist)
 #+end_src
 
 ** Configurations ocaml

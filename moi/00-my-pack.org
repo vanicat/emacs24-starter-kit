@@ -4,6 +4,12 @@
   (add-to-list 'package-archives
     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 #+end_src
+* Add package directory
+#+name: pk-directory
+#+begin_src emacs-lisp
+  (add-to-list 'package-directory-list "/home/moi/.emacs.d/src/")
+#+end_src
+
 * load my package
 #+begin_src emacs-lisp
   (starter-kit-install-if-needed 'flycheck)

@@ -386,6 +386,14 @@ Penser à reclasser les deux add-hook
     (define-key vc-prefix-map "=" 'ediff-revision))
 #+end_src
 
+** pdf-tools
+#+name: pdf-tools-config
+#+begin_src emacs-lisp
+  (require 'pdf-tools)
+
+  (when (file-executable-p pdf-info-epdfinfo-program)
+    (pdf-tools-install () () t))
+#+end_src
 * Qui suis-je
 :PROPERTIES:
 :ID:       823c7df7-e19e-4906-9937-4047451411d6

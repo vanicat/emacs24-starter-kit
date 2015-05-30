@@ -589,6 +589,14 @@
     (define-key org-mode-map (kbd "<C-tab>") #'yas-expand))
 #+end_src
 
+** For odt
+#+name: for-odt
+#+begin_src emacs-lisp
+  (setq org-latex-to-mathml-convert-command "~/bin/math-to-web %o %I")
+  (setq org-latex-to-mathml-jar-file "\"\"")
+#+end_src
+
+
 * from custom
   :PROPERTIES:
   :ID:       75dfd292-47cb-4284-82d9-fdb440701600

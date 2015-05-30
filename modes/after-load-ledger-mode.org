@@ -101,7 +101,7 @@
       (ledger-schedule-upcoming)
       (pop-to-buffer "*Ledger Schedule*"))
 
-      #+end_src
+  #+end_src
 
 * Auto conversion QIF
   :PROPERTIES:

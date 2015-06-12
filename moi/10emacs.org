@@ -956,9 +956,8 @@ Penser à reclasser les deux add-hook
 * Remember note
 #+name: remember-note
 #+begin_src emacs-lisp
-  (remember-notes)
+  ;(remember-notes)
 #+end_src
-
 * after load
 #+name: after-load
 #+begin_src emacs-lisp

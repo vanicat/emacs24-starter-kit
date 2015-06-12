@@ -35,6 +35,15 @@
                    '("~/org/sante.org")))
    #+end_src
 
+** Le repertoire de l'agenda
+#+name: agenda-directory
+#+begin_src emacs-lisp
+  (defun myorg-cd-to-org (&rest args)
+    (cd "~/org/"))
+
+  (advice-add 'org-agenda-list :after 'myorg-cd-to-org)
+#+end_src
+
 ** Affichage
 #+name: startup
 #+begin_src emacs-lisp

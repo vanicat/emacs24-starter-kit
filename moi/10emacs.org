@@ -963,3 +963,28 @@ Penser à reclasser les deux add-hook
 #+begin_src emacs-lisp
   (starter-kit-load "after-load")
 #+end_src
+* Some function...
+#+name: weight-org-add
+#+begin_src emacs-lisp
+  (defun my-org-add-poids (poids)
+    (interactive "npoids: ")
+    (with-current-buffer (find-file-noselect "/home/moi/org/sante.org")
+      (save-excursion
+        (goto-char (point-min))
+        (search-forward "#+name: poids")
+        (goto-char (org-table-end))
+        (forward-char -1)
+        (org-table-goto-column 1)
+        (org-table-next-row)
+        (org-table-goto-column 2)
+        (org-insert-time-stamp (current-time) nil t)
+        (org-table-goto-column 3)
+        (insert (format "%.1f" poids))
+        (org-table-recalculate)
+        (forward-line -3)
+        (org-table-recalculate)
+        (search-forward "#+name: courbe-de-poids")
+        (let ((org-confirm-babel-evaluate nil))
+          (org-babel-execute-src-block))
+        (org-redisplay-inline-images))))
+#+end_src

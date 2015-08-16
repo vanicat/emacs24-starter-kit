@@ -366,6 +366,24 @@ Penser à reclasser les deux add-hook
 
 ** git and git annex
 
+*** Lets find magit
+#+name: magit-library
+#+begin_src emacs-lisp
+  (when (file-directory-p "~/.emacs.d/src/magit/lisp/")
+    (add-to-list 'load-path "~/.emacs.d/src/magit/lisp/"))
+
+  (if (file-readable-p "~/.emacs.d/src/magit/lisp/magit-autoloads.el")
+      (load-file "~/.emacs.d/src/magit/lisp/magit-autoloads.el")
+    (autoload 'magit-status "magit" "\
+  Show the status of the current Git repository in a buffer.
+  With a prefix argument prompt for a repository to be shown.
+  With two prefix arguments prompt for an arbitrary directory.
+  If that directory isn't the root of an existing repository
+  then offer to initialize it as a new repository.
+
+  \(fn &optional DIRECTORY)" t nil))
+#+end_src
+
 *** Global key for magit
 #+name: magit-and-git-config
 #+begin_src emacs-lisp

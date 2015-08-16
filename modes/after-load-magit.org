@@ -5,7 +5,9 @@
 ** git-wip
 #+name: git-wip
 #+begin_src emacs-lisp
-  (global-magit-wip-save-mode)
+  (if (functionp #'global-magit-wip-save-mode)
+      (global-magit-wip-save-mode)
+    (magit-wip-after-save-mode))
 #+end_src
 
 ** git in English

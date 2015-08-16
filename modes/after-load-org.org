@@ -457,6 +457,47 @@
                  if (not (member max '("\n" "")))
                  do (insert " " name ": " note "/" max)))))
 #+end_src
+** Pour les livrets
+#+name: livret
+#+begin_src emacs-lisp
+  (defun trimestre-to-org ()
+    (cond
+     ((looking-at "\tTrim\\(.\\)\t\"\\(..?\\)./\\(..\\)\"\t\\(..?,..\\)\t\"\\([^\"]+\\)\"\n")
+      (prog1
+          (match-substitute-replacement "trimestre \\1 *\\4/20* \\5")
+        (goto-char (match-end 0))))
+     ((looking-at "\tTrim\\(.\\)\t*\n")
+      (prog1
+          (match-substitute-replacement "trimestre \\1 non inscrit")
+        (goto-char (match-end 0))))
+     ((looking-at "\tTrim\\(.\\)\t\t\\([^\t]*\\)\t\"?\\([^\"]+\\)\"?\n")
+      (prog1
+          (match-substitute-replacement "trimestre \\1 \\2, \\3")
+        (goto-char (match-end 0))))))
+
+  (defun livret-to-org ()
+    (interactive)
+    (let (nom trim1 trim2 trim3 année pos)
+      (while (setq trim1 (trimestre-to-org))
+        (setq trim2 (trimestre-to-org))
+        (setq trim3 (trimestre-to-org))
+
+        (search-forward-regexp "\"\\([^\"]+\\)\"\tAnnée\t\\(?:\"\\(.?.?\\).?/\\(.?.?\\)\"\\)?\t\\([^\t]+\\)\t?\n")
+        (setq nom (match-substitute-replacement "\\1"))
+        (setq année (match-substitute-replacement "Année: *\\4/20*"))
+        (setq pos (point))
+        (goto-char (point-max))
+        (insert "- " nom "\n")
+        (insert "  - " trim1 "\n")
+        (when trim2
+          (insert "  - " trim2 "\n"))
+        (when trim3
+          (insert "  - " trim3 "\n"))
+        (when année
+          (insert "  - " année "\n"))
+        (goto-char pos))))
+#+end_src
+
 ** Calculer des moyennes...
    #+name: moyenne-in-org
    #+begin_src emacs-lisp

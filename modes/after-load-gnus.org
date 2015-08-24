@@ -5,7 +5,7 @@
                                          ("nnrss" t)
                                          ("spam" t)))
     (setq gnus-registry-max-entries 5000)
-    
+
     (gnus-registry-initialize)
   #+end_src
 
@@ -231,7 +231,7 @@
 
 ** Mark some article as not readed on entering group
    #+name: unread-old-article
-   #+begin_src emacs-lisp
+   #+begin_src emacs-lisp-nop
      (defvar mygnus-auto-mark-unread-group-list (list "nnimap+gmail:INBOX"))
      (defvar mygnus-auto-mark-unread-ignore-mark (list gnus-dormant-mark gnus-ticked-mark gnus-expirable-mark gnus-unread-mark))
      
@@ -385,12 +385,12 @@
    #+end_src
 ** Summary: thread
    #+begin_src emacs-lisp
-     (setq gnus-summary-line-format "%U%R%z%(%[%4L: %-20,20f%]%)%B %s\n"
+     (setq gnus-summary-line-format "%U%R%z%(%[%o%4L: %-20,20f%]%)%B %s\n"
            ;; C'est le %B qui est important ici, et il n'est géré qu'avec ognus.
            gnus-summary-same-subject "")
-     
+
      (setq gnus-summary-make-false-root 'empty)
-     
+
      (if 't                                  ; •
          (setq gnus-sum-thread-tree-false-root "·"
                gnus-sum-thread-tree-root "––» "
@@ -405,7 +405,7 @@
                gnus-sum-thread-tree-indent " "
                gnus-sum-thread-tree-leaf-with-other "+-> "
                gnus-sum-thread-tree-single-leaf "\\-> "))
-     
+
    #+end_src
 ** Word wrapping
    #+begin_src emacs-lisp

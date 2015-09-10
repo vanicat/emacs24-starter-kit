@@ -1,6 +1,6 @@
-* Add melpa
+* Don't add melpa
 #+name: melpa
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp-nop
   (add-to-list 'package-archives
     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 #+end_src

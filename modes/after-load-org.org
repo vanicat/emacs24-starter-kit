@@ -16,7 +16,7 @@
                        when (file-readable-p org) collect org)))
      (defconst org-agenda-incoming-cours "~/org/cours.org")
 
-     (defconst org-agenda-files-floss '("~/org/prgm.org" "~/org/ksp-dc15.org"))
+     (defconst org-agenda-files-floss '("~/org/prgm.org"))
      (defconst org-agenda-incoming-floss "~/org/prgm.org")
 
      (defconst org-agenda-files-personel (list "~/org/personel.org"

@@ -20,4 +20,5 @@
   (starter-kit-install-if-needed 'yasnippet)
   (starter-kit-install-if-needed 'auctex)
   (starter-kit-install-if-needed 'pdf-tools)
+  (starter-kit-install-if-needed 'adaptive-wrap)
 #+end_src

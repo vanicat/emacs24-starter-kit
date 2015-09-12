@@ -307,6 +307,14 @@ Penser à reclasser les deux add-hook
         ()))
 #+end_src
 
+*** wrap lines
+#+name: adaptive-wrap
+#+begin_src emacs-lisp
+  (add-hook 'visual-line-mode-hook
+    (lambda ()
+      (adaptive-wrap-prefix-mode +1)))
+#+end_src
+
 *** Quelques autres
 :PROPERTIES:
 :ID:       6923c5de-ce77-4c41-b54b-a27bf21b6c78

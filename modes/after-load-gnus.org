@@ -42,7 +42,15 @@
      ;;         (nnimap-stream shell)
      ;;         (nnir-search-engine imap))
    #+end_src
-
+** For buggy server
+#+name: close-dino
+#+begin_src emacs-lisp
+  (setq my-timer-group-close
+        (run-with-idle-timer 60 t (lambda ()
+                                    (condition-case ()
+                                        (gnus-server-close-server "nntp:dino")
+                                      ((error ()))))))
+#+end_src
 ** Refer to article
 #+begin_src emacs-lisp
   (setq gnus-refer-article-method

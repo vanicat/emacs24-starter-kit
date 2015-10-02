@@ -19,3 +19,6 @@
 [submodule "src/dino"]
 	path = src/dino
 	url = user-data@lot-of-stuff.info:git-repos/dino.git
+[submodule "src/arduino-mode"]
+	path = src/arduino-mode
+	url = git@github.com:bookest/arduino-mode.git

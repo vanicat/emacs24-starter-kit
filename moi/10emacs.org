@@ -193,6 +193,22 @@ Penser à reclasser les deux add-hook
      (global-set-key [end] 'home-end-end)
    #+end_src
 * Petites configs
+** For arduino
+#+name: arduino-mode
+#+begin_src emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.ino\\'" . arduino-mode))
+
+  (autoload 'arduino-mode "arduino-mode" "\
+  Major mode for editing Arduino code.
+
+  The hook `c-mode-common-hook' is run with no args at mode
+  initialization, then `arduino-mode-hook'.
+
+  Key bindings:
+  \\{arduino-mode-map}
+
+  \(fn)" t nil)
+#+end_src
 ** For javascool
 #+name: javascool-auto-load
 #+begin_src emacs-lisp

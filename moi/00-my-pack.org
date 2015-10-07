@@ -1,4 +1,4 @@
-* Add melpa
+* Don't add melpa
 #+name: melpa
 #+begin_src emacs-lisp-nop
   (add-to-list 'package-archives
@@ -21,4 +21,5 @@
   (starter-kit-install-if-needed 'auctex)
   (starter-kit-install-if-needed 'pdf-tools)
   (starter-kit-install-if-needed 'pkg-info)
+  (starter-kit-install-if-needed 'adaptive-wrap)
 #+end_src

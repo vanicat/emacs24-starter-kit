@@ -42,7 +42,15 @@
      ;;         (nnimap-stream shell)
      ;;         (nnir-search-engine imap))
    #+end_src
-
+** For buggy server
+#+name: close-dino
+#+begin_src emacs-lisp
+  (setq my-timer-group-close
+        (run-with-idle-timer 60 t (lambda ()
+                                    (condition-case ()
+                                        (gnus-server-close-server "nntp:dino")
+                                      ((error ()))))))
+#+end_src
 ** Refer to article
 #+begin_src emacs-lisp
   (setq gnus-refer-article-method
@@ -385,9 +393,23 @@
    #+end_src
 ** Summary: thread
    #+begin_src emacs-lisp
-     (setq gnus-summary-line-format "%U%R%z%(%[%o%4L: %-20,20f%]%)%B %s\n"
+     (setq gnus-summary-line-format "%U%R%z%(%[%&user-date;%4L: %-20,20f%]%)%B %s\n"
            ;; C'est le %B qui est important ici, et il n'est géré qu'avec ognus.
            gnus-summary-same-subject "")
+
+     (setq gnus-user-date-format-alist
+           '(((gnus-seconds-today)
+              . "à     %H:%M")
+             ((+ 86400
+                 (gnus-seconds-today))
+              . "Hier, %H:%M")
+             (604800 . "%a  %H:%M")
+             ((gnus-seconds-month)
+              . "%a %d")
+             ((gnus-seconds-year)
+              . "%a %d %b")
+             (t . "%d %b %Y"))
+           )
 
      (setq gnus-summary-make-false-root 'empty)
 

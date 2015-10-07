@@ -514,7 +514,7 @@
                        for coef in coefs
                        for tot in tots
                        for v in values
-                       when (and v (not (eq v 'NA)))
+                       when (and v (numberp v))
                        sum (* coef v)
                        )))
          (if (= tot-coef 0)

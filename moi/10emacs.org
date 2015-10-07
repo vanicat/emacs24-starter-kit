@@ -658,13 +658,19 @@ Penser à reclasser les deux add-hook
 #+begin_src emacs-lisp
   (defun erc-freenode ()
     (interactive)
-    (erc :server "irc.freenode.net" :full-name "Rémi Vanicat"
-:nick "__DL__" :full-name "Rémi Vanicat"))
+    (erc :server "irc.freenode.net" :full-name "Rémi Vanicat" :nick "__DL__" :full-name "Rémi Vanicat"))
 
   (defun erc-debian ()
     (interactive)
-    (erc :server "irc.oftc.net" :full-name "Rémi Vanicat"
-:nick "__DL__" :full-name "Rémi Vanicat"))
+    (erc :server "irc.oftc.net" :full-name "Rémi Vanicat" :nick "__DL__" :full-name "Rémi Vanicat"))
+
+  (defun erc-debconf ()
+    (interactive)
+    (erc :server "irc.oftc.net" :full-name "Rémi Vanicat" :nick "__DL__laptop" :full-name "Rémi Vanicat")
+    (erc-join-channel "#debconf")
+    (erc-join-channel "#debconf-heidelberg")
+    (erc-join-channel "#debconf-berlinlondon")
+    (erc-join-channel "#debconf-amsterdam"))
 
   (defun erc-otaku ()
     (interactive)

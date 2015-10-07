@@ -1,6 +1,6 @@
 * Add melpa
 #+name: melpa
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp-nop
   (add-to-list 'package-archives
     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 #+end_src
@@ -20,4 +20,5 @@
   (starter-kit-install-if-needed 'yasnippet)
   (starter-kit-install-if-needed 'auctex)
   (starter-kit-install-if-needed 'pdf-tools)
+  (starter-kit-install-if-needed 'pkg-info)
 #+end_src

@@ -70,8 +70,8 @@
      (setq message-send-mail-function 'smtpmail-send-it)
      (setq smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil)))
      (setq smtpmail-auth-credentials '(("smtp.gmail.com" 587 "remi.vanicat@gmail.com" nil)))
-     (setq smtpmail-default-smtp-server "smtp.dsl.ovh.net")
-     (setq smtpmail-smtp-server "smtp.dsl.ovh.net")
+     (setq smtpmail-default-smtp-server "smtp.free.fr")
+     (setq smtpmail-smtp-server "smtp.free.fr")
      (setq smtpmail-smtp-service 587)
      ;;;(setq smtpmail-local-domain "free.fr")
    #+end_src

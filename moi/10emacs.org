@@ -101,6 +101,11 @@ Penser à reclasser les deux add-hook
 #+end_src
 * Paire de parenthèse
 #+name: paire-de-parenthese
+#+begin_src emacs-lisp
+  (electric-pair-mode)
+#+end_src
+
+
 #+begin_src emacs-lisp :tangle no
   (defvar pair-or-self-insert-alist
     '((?\( ?\)) (?\[ ?\]) (?\{ ?\}) (?\< ?\>) (?\" ?\") (?\' ?\') (?\` ?\') (?\« ?\») (?\$ ?\$)))

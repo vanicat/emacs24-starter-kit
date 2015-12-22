@@ -91,7 +91,6 @@ ido-mode is like magic pixie dust!
   (set-default 'indicate-empty-lines t)
   (set-default 'imenu-auto-rescan t)
 
-  (add-hook 'text-mode-hook 'turn-on-auto-fill)
   (eval-after-load "ispell"
     '(when (executable-find ispell-program-name)
        (add-hook 'text-mode-hook 'turn-on-flyspell)))

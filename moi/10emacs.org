@@ -101,6 +101,11 @@ Penser à reclasser les deux add-hook
 #+end_src
 * Paire de parenthèse
 #+name: paire-de-parenthese
+#+begin_src emacs-lisp
+  (electric-pair-mode)
+#+end_src
+
+
 #+begin_src emacs-lisp :tangle no
   (defvar pair-or-self-insert-alist
     '((?\( ?\)) (?\[ ?\]) (?\{ ?\}) (?\< ?\>) (?\" ?\") (?\' ?\') (?\` ?\') (?\« ?\») (?\$ ?\$)))
@@ -489,7 +494,9 @@ Penser à reclasser les deux add-hook
     (add-to-list 'tramp-default-proxies-alist
                  '(nil "\\`root\\'" "/ssh:%h:"))
     (add-to-list 'tramp-default-proxies-alist
-                 (list (regexp-quote (system-name)) nil nil)))
+                 (list (regexp-quote (system-name)) nil nil))
+    (add-to-list 'tramp-default-proxies-alist
+                 (list "openwrt\\(.lot-of-stuff.info\\)?" "\\`root\\'" nil)))
 #+end_src
 * configurations des modes
 ** config ruby et rails

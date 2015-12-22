@@ -209,6 +209,15 @@ Penser à reclasser les deux add-hook
 
   \(fn)" t nil)
 #+end_src
+** For processing
+#+name: processing
+#+begin_src emacs-lisp
+  (defun processing-run-programm ()
+    (interactive)
+    (save-some-buffers)
+    (compile (format "processing-java --sketch=\"%s\" --run" default-directory)) t)
+#+end_src
+
 ** For javascool
 #+name: javascool-auto-load
 #+begin_src emacs-lisp

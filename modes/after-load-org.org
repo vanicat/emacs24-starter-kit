@@ -163,6 +163,7 @@
     :END:
 #+begin_src emacs-lisp
   (setq org-export-latex-inputenc-alist '(("utf8" . "utf8x")))
+  (setq org-latex-inputenc-alist '(("utf8" . "utf8x")))
 #+end_src
 *** Des théoremes latex et html
     :PROPERTIES:

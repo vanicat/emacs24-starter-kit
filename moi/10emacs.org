@@ -221,6 +221,9 @@ Penser à reclasser les deux add-hook
     (interactive)
     (save-some-buffers)
     (compile (format "processing-java --sketch=\"%s\" --run" default-directory)) t)
+
+  (with-eval-after-load 'arduino-mode
+    (define-key arduino-mode-map (kbd "C-c C-c") #'processing-run-programm))
 #+end_src
 
 ** For javascool

@@ -127,7 +127,7 @@ it's possible aspell isn't in your path
 - This didn't work at first, possibly because cocoAspell was
   building its dictionary.  Now it seems to work fine.
 #+begin_src emacs-lisp :tangle no
-  (setq ispell-program-name "aspell"
+  (setq ispell-program-name "hunspell"
         ispell-dictionary "english"
         ispell-dictionary-alist
         (let ((default '("[A-Za-z]" "[^A-Za-z]" "[']" nil

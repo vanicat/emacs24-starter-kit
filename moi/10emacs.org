@@ -456,12 +456,12 @@ Penser à reclasser les deux add-hook
 :ID:       ebf5cf4a-9f07-44a7-8854-e21c5bd07fd3
 :END:
 #+begin_src emacs-lisp
-  (setq ispell-program-name "aspell")
+  (setq ispell-program-name "hunspell")
 
   (require 'ispell)
   (setq ispell-highlight-face 'underline)
 
-  (ispell-change-dictionary "francais-lrg" 't)
+  (ispell-change-dictionary "fr_FR" 't)
 
   (autoload 'guess-lang-buffer "guess-lang" "" 't)
   (autoload 'guess-lang-message "guess-lang" "" 't)

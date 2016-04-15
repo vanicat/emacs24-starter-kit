@@ -168,7 +168,6 @@
   (setq TeX-auto-x-regexp-list 'LaTeX-auto-regexp-list)
   (setq TeX-byte-compile t)
   (setq TeX-electric-sub-and-superscript t)
-  (setq TeX-math-close-double-dollar t)
   (setq TeX-command-list
         (append TeX-command-list
                 '(("pythontex" "pythontex %s" TeX-run-command nil t :help "run pythontex"))))

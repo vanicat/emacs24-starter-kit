@@ -12,6 +12,8 @@ Determine whether required packages are installed. If not, use ELPA to
 install them. Other dependencies are provided by Emacs 24.
 #+begin_src emacs-lisp
   (starter-kit-install-if-needed 'magit)
+  (global-set-key (kbd "C-x g") 'magit-status)
+  (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
 #+end_src
 
 ** Color Themes
@@ -127,7 +129,7 @@ it's possible aspell isn't in your path
 - This didn't work at first, possibly because cocoAspell was
   building its dictionary.  Now it seems to work fine.
 #+begin_src emacs-lisp :tangle no
-  (setq ispell-program-name "aspell"
+  (setq ispell-program-name "hunspell"
         ispell-dictionary "english"
         ispell-dictionary-alist
         (let ((default '("[A-Za-z]" "[^A-Za-z]" "[']" nil
@@ -162,14 +164,9 @@ let them live in the =backups/= directory inside of the starter kit.
 ** Cosmetics
 
 #+begin_src emacs-lisp
-  ;; (eval-after-load 'diff-mode
-  ;;   '(progn
-  ;;      (set-face-foreground 'diff-added "green4")
-  ;;      (set-face-foreground 'diff-removed "red3")))
-  
-  ;; (eval-after-load 'magit
-  ;;   '(progn
-  ;;     (set-face-foreground 'magit-diff-add "green3")
-  ;;     (set-face-foreground 'magit-diff-del "red3")))
+(eval-after-load 'diff-mode
+  '(progn
+     (set-face-foreground 'diff-added "green4")
+     (set-face-foreground 'diff-removed "red3")))
 #+end_src
 

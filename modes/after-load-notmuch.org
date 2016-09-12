@@ -1,0 +1,29 @@
+* Some bindings
+#+name: bindings
+#+begin_src emacs-lisp
+  (eval-after-load 'notmuch-show
+    '(define-key notmuch-show-mode-map "'" 'notmuch-show-apply-tag-macro))
+
+  (define-key notmuch-search-mode-map "'" 'notmuch-search-apply-tag-macro)
+
+  (setq notmuch-tag-macro-alist
+    (list
+     '("t" "+trash" "-inbox")))
+
+  (defun notmuch-show-apply-tag-macro (key)
+    (interactive "k")
+    (let ((macro (assoc key notmuch-tag-macro-alist)))
+      (apply 'notmuch-show-tag-message (cdr macro))))
+
+  (defun notmuch-search-apply-tag-macro (key)
+    (interactive "k")
+    (let ((macro (assoc key notmuch-tag-macro-alist)))
+      ;; to do: region
+      (unless macro
+        (user-error "unknown key"))
+      (when macro
+        (if mark-active
+            (notmuch-search-tag (cdr macro) (region-beginning) (region-end))
+          (notmuch-search-tag (cdr macro))))))
+
+#+end_src

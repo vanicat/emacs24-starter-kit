@@ -315,7 +315,7 @@
     :ID:       0a0e33df-e9f4-43c1-aee5-c9de88fe665c
     :END:
 #+begin_src emacs-lisp
-  (defadvice org-beginning-of-line (around org-beginning-of-line-home-end)
+  (defun org-beginning-of-line-home-end (oldfun &optional arg)
     (let* ((keys (recent-keys))
            (len (length keys))
            (key1 (if (> len 0) (elt keys (- len 1)) nil))
@@ -327,11 +327,11 @@
             (key-equal-1 (push-mark home-end-marker)
                          (move-to-window-line 0))
             (t (setq home-end-marker (copy-marker (point)))
-               ad-do-it))))
+               (apply oldfun arg)))))
 
-  (ad-activate 'org-beginning-of-line)
+  (advice-add 'org-beginning-of-line :around #'org-beginning-of-line-home-end)
 
-  (defadvice org-end-of-line (around org-end-of-line-home-end)
+  (defun org-end-of-line-home-end (oldfun &optional arg)
     (let* ((keys (recent-keys))
            (len (length keys))
            (key1 (if (> len 0) (elt keys (- len 1)) nil))
@@ -344,9 +344,9 @@
                          (move-to-window-line -1)
                          ad-do-it)
             (t (setq home-end-marker (copy-marker (point)))
-               ad-do-it))))
+               (apply oldfun arg)))))
 
-  (ad-activate 'org-end-of-line)
+  (advice-add 'org-end-of-line :around #'org-end-of-line-home-end)
 #+end_src
 ** Rentrer des notes
     :PROPERTIES:

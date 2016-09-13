@@ -8,7 +8,10 @@
 
   (setq notmuch-tag-macro-alist
     (list
-     '("t" "+trash" "-inbox")))
+     '("t" "+trash" "-inbox")
+     '("r" "-unread")
+     '("s" "+spam")
+     (list* "a" notmuch-archive-tags)))
 
   (defun notmuch-show-apply-tag-macro (key)
     (interactive "k")
@@ -25,5 +28,4 @@
         (if mark-active
             (notmuch-search-tag (cdr macro) (region-beginning) (region-end))
           (notmuch-search-tag (cdr macro))))))
-
 #+end_src

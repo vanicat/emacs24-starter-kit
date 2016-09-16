@@ -188,8 +188,15 @@
                                 ("^dvi$" "^legalpaper$" "%(o?)xdvi %dS -paper legal %d")
                                 ("^dvi$" "^executivepaper$" "%(o?)xdvi %dS -paper 7.25x10.5in %d")
                                 ("^dvi$" "." "%(o?)xdvi %dS %d")
-                                ("^pdf$" "." "evince -remote %s -raise %o %(outpage)")
+                                ("^pdf$" "." "okular -remote %s -raise %o %(outpage)")
                                 ("^html?$" "." "gvfs-open %o")))
+
+  (setq  TeX-view-program-selection
+         '(((output-dvi style-pstricks)
+            "dvips and gv")
+           (output-dvi "Okular")
+           (output-pdf "Okular")
+           (output-html "xdg-open")))
 
   (setq TeX-parse-self t)
   (setq TeX-printer-list '(("Default" "%(o?)dvips -f %s | lpr" "lpq")

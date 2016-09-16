@@ -1013,6 +1013,11 @@ Penser à reclasser les deux add-hook
 
   (advice-add 'ffap-guesser :filter-return #'my-ffap-file-at-point-filter)
 #+end_src
+** woman for helm
+#+name: woman-for-helm
+#+begin_src emacs-lisp
+  (setq helm-man-or-woman-function 'woman)
+#+end_src
 
 * Remember note
 #+name: remember-note

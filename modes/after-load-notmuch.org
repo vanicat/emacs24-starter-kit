@@ -61,11 +61,11 @@
 
   (defun my-notmuch-browse-or-show ()
     (interactive)
-    ()
     (if (or
          (thing-at-point 'url t)
-         (string-match-p "^[^/]*[[:alpha:]]\\{2,4\\}\\(/.*\\)$"
-                         (thing-at-point 'filename t)))
+         (and (thing-at-point 'filename t)
+              (string-match-p "^[^/]*[[:alpha:]]\\{2,4\\}\\(/.*\\)$"
+                              (thing-at-point 'filename t))))
         (call-interactively #'browse-url-at-point)
       (notmuch-show-toggle-message)))
 

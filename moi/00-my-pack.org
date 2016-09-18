@@ -4,6 +4,15 @@
   (add-to-list 'package-archives
     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 #+end_src
+* Use https everywhere
+#+name: https
+#+begin_src emacs-lisp
+  (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                           ;; ("marmalade" . "https://marmalade-repo.org/packages/")
+                           ))
+
+#+end_src
+
 * Add package directory
 #+name: pk-directory
 #+begin_src emacs-lisp

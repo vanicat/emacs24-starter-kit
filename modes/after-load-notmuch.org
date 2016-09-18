@@ -1,4 +1,4 @@
-* Some bindings
+* Some bindings for tags
 #+name: bindings
 #+begin_src emacs-lisp
   (eval-after-load 'notmuch-show
@@ -28,4 +28,51 @@
         (if mark-active
             (notmuch-search-tag (cdr macro) (region-beginning) (region-end))
           (notmuch-search-tag (cdr macro))))))
+#+end_src
+* Some binding for other things
+#+name: update
+#+begin_src emacs-lisp
+  (defvar muchsync-default-server ""
+    "default server to sync with")
+
+  (defun muchsync (&optional server)
+    "run mychsync
+
+  if SERVER is not nil, use that as the server
+  otherwise use the value of `muchsync-default-server'"
+    (interactive)
+    (shell-command (format
+                    "muchsync %s &" muchsync-default-server) "*muchsync*" "*muchsync*")
+    (with-current-buffer "*muchsync*"
+      (view-mode)
+      (setq view-exit-action #'bury-buffer)))
+
+  (setq muchsync-default-server "suvrin.lot-of-stuff.info")
+
+  (define-key notmuch-search-mode-map "g"
+    'notmuch-poll-and-refresh-this-buffer)
+  (define-key notmuch-hello-mode-map "g"
+    'notmuch-poll-and-refresh-this-buffer)
+
+  (define-key notmuch-search-mode-map "G"
+    'muchsync)
+  (define-key notmuch-hello-mode-map "G"
+    'muchsync)
+
+  (defun my-notmuch-browse-or-show ()
+    (interactive)
+    ()
+    (if (or
+         (thing-at-point 'url t)
+         (string-match-p "^[^/]*[[:alpha:]]\\{2,4\\}\\(/.*\\)$"
+                         (thing-at-point 'filename t)))
+        (call-interactively #'browse-url-at-point)
+      (notmuch-show-toggle-message)))
+
+  (define-key notmuch-show-mode-map (kbd "RET") 'my-notmuch-browse-or-show)
+#+end_src
+* Other config
+#+name: prompt
+#+begin_src emacs-lisp
+  (setq notmuch-always-prompt-for-sender t)
 #+end_src

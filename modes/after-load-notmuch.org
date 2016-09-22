@@ -6,12 +6,20 @@
 
   (define-key notmuch-search-mode-map "'" 'notmuch-search-apply-tag-macro)
 
+  (defun my-notmuch-tag-delayed ()
+    (let ((date (org-read-date)))
+      (unless (string-match "^\\(....\\-..\\-..\\).*" date)
+        (error "internal error: org-mode-read-date"))
+      (setq date (match-string 1 date))
+      (format "w%s" date)))
+
   (setq notmuch-tag-macro-alist
     (list
      '("t" "+trash" "-inbox")
      '("r" "-unread")
      '("s" "+spam")
      '("f" "+flagged")
+     '("w" my-notmuch-tag-delayed)
      (list* "a" notmuch-archive-tags)))
 
   (defun notmuch-show-apply-tag-macro (key)

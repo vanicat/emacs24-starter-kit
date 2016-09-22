@@ -25,9 +25,12 @@
       (unless macro
         (user-error "unknown key"))
       (when macro
-        (if mark-active
-            (notmuch-search-tag (cdr macro) (region-beginning) (region-end))
-          (notmuch-search-tag (cdr macro))))))
+        (let ((tag (cdr macro)))
+          (if (functionp tag)
+              (setq macro (apply tag)))
+          (if mark-active
+              (notmuch-search-tag tag (region-beginning) (region-end))
+            (notmuch-search-tag tag))))))
 #+end_src
 * Some binding for other things
 #+name: update

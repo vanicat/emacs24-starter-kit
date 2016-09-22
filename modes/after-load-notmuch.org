@@ -11,7 +11,7 @@
       (unless (string-match "^\\(....\\-..\\-..\\).*" date)
         (error "internal error: org-mode-read-date"))
       (setq date (match-string 1 date))
-      (format "w%s" date)))
+      (list (format "+w%s" date) "+waiting" "-inbox")))
 
   (setq notmuch-tag-macro-alist
     (list
@@ -35,8 +35,8 @@
         (user-error "unknown key"))
       (when macro
         (let ((tag (cdr macro)))
-          (if (functionp tag)
-              (setq macro (apply tag)))
+          (if (functionp (car tag))
+              (setq tag (apply (car tag) (cdr tag))))
           (if mark-active
               (notmuch-search-tag tag (region-beginning) (region-end))
             (notmuch-search-tag tag))))))

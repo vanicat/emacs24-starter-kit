@@ -19,7 +19,7 @@
       (apply 'notmuch-show-tag-message (cdr macro))))
 
   (defun notmuch-search-apply-tag-macro (key)
-    (interactive "k")
+    (interactive "ktag key: ")
     (let ((macro (assoc key notmuch-tag-macro-alist)))
       ;; to do: region
       (unless macro

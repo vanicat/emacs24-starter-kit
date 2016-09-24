@@ -24,22 +24,25 @@
 
   (defun notmuch-show-apply-tag-macro (key)
     (interactive "k")
-    (let ((macro (assoc key notmuch-tag-macro-alist)))
-      (apply 'notmuch-show-tag-message (cdr macro))))
+    (let ((tag (my-notmuch-get-tag-macro key)))
+      (apply 'notmuch-show-tag-message tag)))
 
   (defun notmuch-search-apply-tag-macro (key)
     (interactive "ktag key: ")
+    (let ((tag (my-notmuch-get-tag-macro key)))
+      (if mark-active
+          (notmuch-search-tag tag (region-beginning) (region-end))
+        (notmuch-search-tag tag))))
+
+  (defun my-notmuch-get-tag-macro (key)
     (let ((macro (assoc key notmuch-tag-macro-alist)))
-      ;; to do: region
       (unless macro
         (user-error "unknown key"))
       (when macro
         (let ((tag (cdr macro)))
           (if (functionp (car tag))
               (setq tag (apply (car tag) (cdr tag))))
-          (if mark-active
-              (notmuch-search-tag tag (region-beginning) (region-end))
-            (notmuch-search-tag tag))))))
+          tag))))
 #+end_src
 * Some binding for other things
 #+name: update

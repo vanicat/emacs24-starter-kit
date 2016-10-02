@@ -208,7 +208,7 @@
   (setq TeX-view-program-list nil)
   (setq TeX-view-program-selection '(((output-dvi style-pstricks) "dvips and gv")
                                      (output-dvi "Evince")
-                                     (output-pdf "Evince")
+                                     (output-pdf "Okular")
                                      (output-html "xdg-open")))
 
 #+end_src

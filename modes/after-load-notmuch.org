@@ -8,10 +8,13 @@
 
   (defun my-notmuch-tag-delayed ()
     (let ((date (org-read-date)))
-      (unless (string-match "^\\(....\\-..\\-..\\).*" date)
+      (unless (string-match "^\\(....\\-..\\-..\\) ?\\(..:..\\)?" date)
         (error "internal error: org-mode-read-date"))
+      (setq time (replace-regexp-in-string ":" "-" (match-string 2 date)))
       (setq date (match-string 1 date))
-      (list (format "+w%s" date) "+waiting" "-inbox")))
+      (if time
+          (list (format "+w%s-%s" date time) "+waiting" "-inbox")
+        (list (format "+w%s" date) "+waiting" "-inbox"))))
 
   (setq notmuch-tag-macro-alist
     (list

@@ -10,10 +10,11 @@
     (let ((date (org-read-date)))
       (unless (string-match "^\\(....\\-..\\-..\\) ?\\(..:..\\)?" date)
         (error "internal error: org-mode-read-date"))
-      (setq time (replace-regexp-in-string ":" "-" (match-string 2 date)))
+      (setq time (match-string 2 date))
       (setq date (match-string 1 date))
       (if time
-          (list (format "+w%s-%s" date time) "+waiting" "-inbox")
+          (list (format "+w%s-%s" date (replace-regexp-in-string ":" "-" time))
+                "+waiting" "-inbox")
         (list (format "+w%s" date) "+waiting" "-inbox"))))
 
   (setq notmuch-tag-macro-alist

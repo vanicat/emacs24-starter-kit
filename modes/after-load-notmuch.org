@@ -1,6 +1,8 @@
 * Some bindings for tags
 #+name: bindings
 #+begin_src emacs-lisp
+  (setq notmuch-archive-tags (list "-inbox" "-again"))
+
   (eval-after-load 'notmuch-show
     '(define-key notmuch-show-mode-map "'" 'notmuch-show-apply-tag-macro))
 
@@ -12,10 +14,10 @@
         (error "internal error: org-mode-read-date"))
       (setq time (match-string 2 date))
       (setq date (match-string 1 date))
-      (if time
-          (list (format "+w%s-%s" date (replace-regexp-in-string ":" "-" time))
-                "+waiting" "-inbox")
-        (list (format "+w%s" date) "+waiting" "-inbox"))))
+      (list (if time
+                (format "+w%s-%s" date (replace-regexp-in-string ":" "-" time))
+              (format "+w%s" date))
+            "+waiting" "-inbox" "-again")))
 
   (setq notmuch-tag-macro-alist
     (list

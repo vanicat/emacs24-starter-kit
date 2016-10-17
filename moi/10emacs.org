@@ -35,6 +35,52 @@
     (server-force-delete)
     (server-start))
 #+end_src
+* isearch ignore accentuated letter
+#+name: isearc-accent
+#+begin_src emacs-lisp
+  (defvar my-isearch-case-table
+    (let ((eqv-list '("aAàÀáÁâÂãÃäÄåÅ"
+                      "cCçÇ"
+                      "eEèÈéÉêÊëË"
+                      "iIìÌíÍîÎïÏ"
+                      "nNñÑ"
+                      "oOòÒóÓôÔõÕöÖøØ"
+                      "uUùÙúÚûÛüÜ"
+                      "yYýÝÿ"))
+          (table (make-char-table 'case-table))
+          (parent (standard-case-table))
+          (canon (make-char-table 'case-table)))
+      (set-char-table-parent table parent)
+      (set-char-table-parent canon (char-table-extra-slot parent 1))
+      (mapcar (lambda (s)
+                (mapcar (lambda (c) (aset canon c (aref s 0))) s))
+              eqv-list)
+      (set-char-table-extra-slot table 1 canon)
+      (set-char-table-extra-slot table 2 nil)
+      table)
+    "a case table for ignoring accentuated letter")
+
+  (defun my-set-isearch-case-table ()
+    (interactive)
+    (set-case-table my-isearch-case-table))
+
+  (add-hook 'text-mode-hook 'my-set-isearch-case-table)
+
+  ; this does nothing, and this doing nothing make baby cry.
+  (defun my-isearch-case-table-advice (oldfun &rest args)
+    (with-case-table my-isearch-case-table
+      (apply oldfun args)))
+
+  (defun my-set-buffer-case-table (&optional buffer)
+    (interactive)
+    (when buffer
+      (with-current-buffer buffer
+        (set-case-table my-isearch-case-table)))
+    buffer)
+
+  (advice-add 'isearch-mode :around #'my-isearch-case-table-advice)
+  (advice-add 'isearch-forward-regexp :around #'my-isearch-case-table-advice)
+#+end_src
 * HELM
 ** loading, and configuring helm
 #+name: helm-load
@@ -103,7 +149,6 @@
 #+begin_src emacs-lisp
   (setq helm-man-or-woman-function 'woman)
 #+end_src
-
 * Lisons nos fichiers infos
 :PROPERTIES:
 :ID:       8863eaa9-3ef6-472c-8e1f-9f58b2cd7af9
@@ -976,52 +1021,6 @@ Penser à reclasser les deux add-hook
 
     (global-set-key [f4] 'woman-or-man)
   #+end_src
-* isearch ignore accentuated letter
-#+name: isearc-accent
-#+begin_src emacs-lisp
-  (defvar my-isearch-case-table
-    (let ((eqv-list '("aAàÀáÁâÂãÃäÄåÅ"
-                      "cCçÇ"
-                      "eEèÈéÉêÊëË"
-                      "iIìÌíÍîÎïÏ"
-                      "nNñÑ"
-                      "oOòÒóÓôÔõÕöÖøØ"
-                      "uUùÙúÚûÛüÜ"
-                      "yYýÝÿ"))
-          (table (make-char-table 'case-table))
-          (parent (standard-case-table))
-          (canon (make-char-table 'case-table)))
-      (set-char-table-parent table parent)
-      (set-char-table-parent canon (char-table-extra-slot parent 1))
-      (mapcar (lambda (s)
-                (mapcar (lambda (c) (aset canon c (aref s 0))) s))
-              eqv-list)
-      (set-char-table-extra-slot table 1 canon)
-      (set-char-table-extra-slot table 2 nil)
-      table)
-    "a case table for ignoring accentuated letter")
-
-  (defun my-set-isearch-case-table ()
-    (interactive)
-    (set-case-table my-isearch-case-table))
-
-  (add-hook 'text-mode-hook 'my-set-isearch-case-table)
-
-  ; this does nothing, and this doing nothing make baby cry.
-  (defun my-isearch-case-table-advice (oldfun &rest args)
-    (with-case-table my-isearch-case-table
-      (apply oldfun args)))
-
-  (defun my-set-buffer-case-table (&optional buffer)
-    (interactive)
-    (when buffer
-      (with-current-buffer buffer
-        (set-case-table my-isearch-case-table)))
-    buffer)
-
-  (advice-add 'isearch-mode :around #'my-isearch-case-table-advice)
-  (advice-add 'isearch-forward-regexp :around #'my-isearch-case-table-advice)
-#+end_src
 
 * Remember note
 #+name: remember-note

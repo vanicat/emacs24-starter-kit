@@ -113,4 +113,5 @@
 #+name: prompt
 #+begin_src emacs-lisp
   (setq notmuch-always-prompt-for-sender t)
+  (setq notmuch-search-oldest-first ())
 #+end_src

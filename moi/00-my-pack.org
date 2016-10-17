@@ -22,7 +22,7 @@
 * load my package
 #+begin_src emacs-lisp
   (starter-kit-install-if-needed 'flycheck)
-  (starter-kit-install-if-needed 'flycheck-ledger)
+  ;(starter-kit-install-if-needed 'flycheck-ledger)
   (starter-kit-install-if-needed 'nxml)
   (starter-kit-install-if-needed 'paredit)
   (starter-kit-install-if-needed 'helm)

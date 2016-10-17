@@ -918,7 +918,8 @@ Penser à reclasser les deux add-hook
   (with-eval-after-load 'yasnippet
     (define-key yas-minor-mode-map (kbd "<tab>") nil)
     (define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-expand)
-    (yas-load-directory "~/.emacs.d/snippets/"))
+    ;;  (yas-load-directory "~/.emacs.d/snippets/")
+    )
 #+end_src
 ** dino
 #+begin_src emacs-lisp

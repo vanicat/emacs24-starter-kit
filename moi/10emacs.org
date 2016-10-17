@@ -961,6 +961,7 @@ Penser à reclasser les deux add-hook
 #+name: yas-config
 #+begin_src emacs-lisp
   (with-eval-after-load 'yasnippet
+    (load-library "yasnippet")
     (define-key yas-minor-mode-map (kbd "<tab>") nil)
     (define-key yas-minor-mode-map (kbd "<C-tab>") 'yas-expand)
     ;;  (yas-load-directory "~/.emacs.d/snippets/")

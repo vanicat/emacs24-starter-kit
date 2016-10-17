@@ -541,7 +541,10 @@ Penser à reclasser les deux add-hook
   (require 'ispell)
   (setq ispell-highlight-face 'underline)
 
-  (ispell-change-dictionary "fr_FR" 't)
+  (condition-case err
+      (ispell-change-dictionary "fr_FR" 't)
+    (error (message "Warning: no fr_FR dictionary!"))
+    )
 
   (autoload 'guess-lang-buffer "guess-lang" "" 't)
   (autoload 'guess-lang-message "guess-lang" "" 't)

@@ -32,7 +32,6 @@
   (setq minibuffer-complete-cycle nil)
   (setq nndiary-reminders (quote ((5 . minute) (1 . hour) (5 . hour) (0 . day) (1 . day) (5 . day) (12 . day) (19 . day) (1 . month) (2 . month) (3 . month) (1 . year))))
   (setq nndiary-week-starts-on-monday t)
-  (setq notmuch-saved-searches (quote (("list-spam" . "review1.pl"))))
   (setq nxhtml-auto-mode-alist (quote (("\\.x?html?\\'" . nxhtml-mumamo) ("\\.x?htmlf?\\'" . nxhtml-mumamo) ("\\.php\\'" . nxhtml-mumamo) ("\\.phtml\\'" . nxhtml-mumamo) ("\\.jsp\\'" . jsp-nxhtml-mumamo) ("\\.asp\\'" . asp-nxhtml-mumamo) ("\\.djhtml\\'" . django-nxhtml-mumamo) ("\\.rhtml\\'" . eruby-nxhtml-mumamo) ("\\.html.erb\\'" . eruby-nxhtml-mumamo) ("\\.phps\\'" . smarty-nxhtml-mumamo) ("\\.epl\\'" . embperl-nxhtml-mumamo) (".lzx\\'" . laszlo-nxml-mumamo) ("\\.js\\'" . javascript-mode) ("\\.css\\'" . css-mode))))
   (setq nxhtml-global-minor-mode t)
   (setq pgg-cache-passphrase nil)

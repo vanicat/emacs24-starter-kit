@@ -1,5 +1,5 @@
 #contributor : Jimmy Wu <frozenthrone88@gmail.com>
 #group : meta
-#name : <meta name="..." content="..." />
+#name : <meta charset="UTF-8">
 # --
-<meta name="${1:generator}" content="${2:content}" />
+<meta charset="UTF-8">

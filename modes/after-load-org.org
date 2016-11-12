@@ -527,11 +527,16 @@
        (let ((fun (intern (format "my-%s" op))))
          `(defun ,fun (&rest vecs)
             (require 'calc-vec)
-            (calc-eval ,(format "v%s($)" op) ()
-                       (apply #'calcFunc-vec
-                              (mapcar #'(lambda (x)
-                                          (math-read-number (number-to-string x)))
-                                      (remove-if-not #'numberp vecs)))))))
+            (let ((vecs (if (listp (car vecs))
+                           (car vecs)
+                         vecs)))
+              (calc-eval ,(format "v%s($)" op) ()
+                         (apply #'calcFunc-vec
+                                (mapcar #'(lambda (x)
+                                            (condition-case nil
+                                                (math-read-number (number-to-string x))
+                                              (error nil)))
+                                        (remove-if-not #'numberp vecs))))))))
 
      (defconst NA 'NA)
 

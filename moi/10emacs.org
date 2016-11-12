@@ -629,7 +629,7 @@ Penser à reclasser les deux add-hook
   (autoload 'rhtml-mode "rhtml-mode" "" t)
 
   (with-eval-after-load 'ruby-mode
-    (require 'ruby-electric)
+    (require 'ruby-electric nil t)
 
     (autoload 'autotest "autotest" "rez" t)
 

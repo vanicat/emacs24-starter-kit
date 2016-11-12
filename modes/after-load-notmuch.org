@@ -56,6 +56,8 @@
   (defvar muchsync-default-server ""
     "default server to sync with")
 
+  (defvar muchsync-process)
+
   (defun muchsync (&optional server)
     "run mychsync
 
@@ -69,9 +71,12 @@
           (erase-buffer)
           (display-buffer buf)
           (setq buffer-read-only t)
-
+          (when (and (boundp 'muchsync-process)
+                     (process-live-p muchsync-process))
+            (user-error "muchsync is already running"))
           (let ((proc (start-process "*muchsync*" "*muchsync*"
                                      "muchsync" muchsync-default-server)))
+            (setq muchsync-process proc)
             (set-process-filter proc 'comint-output-filter)
             (require 'shell) (shell-mode)
             (view-mode)

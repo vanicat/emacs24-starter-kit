@@ -82,10 +82,10 @@
             (setq view-exit-action #'bury-buffer)
 
             ;; If *notmuch-hello* exists, refresh it after getting the mails
-            (when (get-buffer "*notmuch-hello*")
-              (set-process-sentinel proc
-                                    (lambda (process change)
-                                      (save-current-buffer
+            (set-process-sentinel proc
+                                  (lambda (process change)
+                                    (when (get-buffer "*notmuch-hello*")
+                                      (save-window-excursion
                                         (with-current-buffer "*notmuch-hello*"
                                           (notmuch-refresh-this-buffer)))))))))))
 

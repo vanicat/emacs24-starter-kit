@@ -64,16 +64,15 @@
   if SERVER is not nil, use that as the server
   otherwise use the value of `muchsync-default-server'"
     (interactive)
+    (when (and (boundp 'muchsync-process)
+               (process-live-p muchsync-process))
+      (user-error "muchsync is already running"))
     (let ((buf (get-buffer-create "*muchsync*")))
-
       (with-current-buffer buf
         (let ((inhibit-read-only t))
           (erase-buffer)
           (display-buffer buf)
           (setq buffer-read-only t)
-          (when (and (boundp 'muchsync-process)
-                     (process-live-p muchsync-process))
-            (user-error "muchsync is already running"))
           (let ((proc (start-process "*muchsync*" "*muchsync*"
                                      "muchsync" muchsync-default-server)))
             (setq muchsync-process proc)

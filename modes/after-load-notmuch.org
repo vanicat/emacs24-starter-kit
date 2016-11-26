@@ -58,6 +58,13 @@
 
   (defvar muchsync-process)
 
+  (define-minor-mode muchsync--modeline-mode
+      "Notify mode-line that muchsync is running."
+    :global t
+    :lighter " [muchsync]"
+    (unless muchsync--modeline-mode
+      (let ((visible-bell t)) (ding))))
+
   (defun muchsync (&optional server)
     "run mychsync
 
@@ -76,6 +83,7 @@
           (let ((proc (start-process "*muchsync*" "*muchsync*"
                                      "muchsync" muchsync-default-server)))
             (setq muchsync-process proc)
+            (muchsync--modeline-mode 1)
             (set-process-filter proc 'comint-output-filter)
             (require 'shell) (shell-mode)
             (view-mode)
@@ -87,7 +95,8 @@
                                     (when (get-buffer "*notmuch-hello*")
                                       (save-window-excursion
                                         (with-current-buffer "*notmuch-hello*"
-                                          (notmuch-refresh-this-buffer)))))))))))
+                                          (notmuch-refresh-this-buffer))))
+                                    (muchsync--modeline-mode -1))))))))
 
   (setq muchsync-default-server "suvrin.lot-of-stuff.info")
 

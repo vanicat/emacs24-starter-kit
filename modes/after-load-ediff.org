@@ -1,0 +1,4 @@
+* For orgmode
+#+begin_src emacs-lisp
+  (add-hook 'ediff-prepare-buffer-hook #'show-all)
+#+end_src

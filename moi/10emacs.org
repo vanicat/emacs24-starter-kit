@@ -11,6 +11,12 @@
     (push dir load-path))
 #+end_src
 
+* change directory
+#+name: cd
+#+begin_src emacs-lisp
+  (cd "~")
+#+end_src
+
 * gérons le dépassement de capacité
 #+begin_src emacs-lisp
   (setq max-lisp-eval-depth 3000)

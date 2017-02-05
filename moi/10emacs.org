@@ -1066,3 +1066,9 @@ Penser à reclasser les deux add-hook
           (org-babel-execute-src-block))
         (org-redisplay-inline-images))))
 #+end_src
+* Server
+#+name: server-start
+#+begin_src emacs-lisp
+  (require 'server)
+  (unless (server-running-p) (server-start))
+#+end_src

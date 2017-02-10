@@ -52,12 +52,15 @@
 ;;
 ;;; Code:
 
+; Put this before eval when compile for warning...
+(require 'mailabbrev)
+(declare-function 'article-narrow-to-head "gnus-art" ())
+
 (eval-when-compile
-  (require 'cl))
+  (require 'cl)
+  (require 'gnus-art))
 
 (require 'org)
-(require 'gnus-util)
-(require 'gnus-art)
 (require 'mail-utils)
 (require 'org-agenda)
 (require 'org-capture)
@@ -221,7 +224,7 @@ A regexp matching strings of whitespace, `,' and `;'.")
 (defun org-contacts-db-need-update-p ()
   "Determine whether `org-contacts-db' needs to be refreshed."
   (or (null org-contacts-last-update)
-      (org-find-if (lambda (file)
+      (cl-find-if (lambda (file)
 		     (or (time-less-p org-contacts-last-update
 				      (elt (file-attributes file) 5))))
 		   (org-contacts-files))
@@ -285,12 +288,12 @@ cell corresponding to the contact properties.
 		   (org-string-match-p name-match
 				       (first contact)))
 	      (and prop-match
-		   (org-find-if (lambda (prop)
+		   (cl-find-if (lambda (prop)
 				  (and (string= (car prop-match) (car prop))
 				       (org-string-match-p (cdr prop-match) (cdr prop))))
 				(caddr contact)))
 	      (and tags-match
-		   (org-find-if (lambda (tag)
+		   (cl-find-if (lambda (tag)
 				  (org-string-match-p tags-match tag))
 				(org-split-string
 				 (or (cdr (assoc-string "ALLTAGS" (caddr contact))) "") ":"))))
@@ -452,10 +455,10 @@ prefixes rather than just the beginning of the string."
 	  completions))
 
 (defun org-contacts-test-completion-prefix (string collection predicate)
-  ;; Prevents `org-find-if' from redefining `predicate' and going into
+  ;; Prevents `cl-find-if' from redefining `predicate' and going into
   ;; an infinite loop.
   (lexical-let ((predicate predicate))
-    (org-find-if (lambda (el)
+    (cl-find-if (lambda (el)
 		   (and (or (null predicate) (funcall predicate el))
 			(string= string el)))
 		 collection)))
@@ -516,8 +519,8 @@ A group FOO is composed of contacts with the tag FOO."
 (defun org-contacts-remove-ignored-property-values (ignore-list list)
   "Remove all ignore-list's elements from list and you can use
    regular expressions in the ignore list."
-    (org-remove-if (lambda (el)
-		     (org-find-if (lambda (x)
+    (cl-remove-if (lambda (el)
+		     (cl-find-if (lambda (x)
 				    (string-match-p x el))
 				  ignore-list))
 		   list))
@@ -607,7 +610,7 @@ A group FOO is composed of contacts with the tag FOO."
                ;; show the next heading
                (org-flag-heading nil)))))))
 
-(org-no-warnings (defvar date)) ;; unprefixed, from calendar.el
+(with-no-warnings (defvar date)) ;; unprefixed, from calendar.el
 (defun org-contacts-anniversaries (&optional field format)
   "Compute FIELD anniversary for each contact, returning FORMAT.
 Default FIELD value is \"BIRTHDAY\".

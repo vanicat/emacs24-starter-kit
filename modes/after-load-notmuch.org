@@ -1,3 +1,8 @@
+* org-contact
+#+begin_src emacs-lisp
+  (require 'org-contacts)
+  (setq org-contacts-files '("~/org/contacts.org"))
+#+end_src
 * Some bindings for tags
 #+name: bindings
 #+begin_src emacs-lisp

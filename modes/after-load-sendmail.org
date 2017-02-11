@@ -9,3 +9,25 @@
   (setq smtpmail-smtp-service 587)
   ;;;(setq smtpmail-local-domain "free.fr")
 #+end_src
+* Choose server using from
+#+name: choose server
+#+begin_src emacs-lisp
+  (defvar my-smtpmail-via-smtp-choose-server-alist
+    '(("remi.vanicat@gmail.com" "smtp.gmail.com" 587)
+      ("remi.vanicat@laposte.net" "smtp.laposte.net" 587))
+    "An alist for using different smtp server whe using different from")
+
+  (defun my-smtpmail-via-smtp-choose-server (oldfun recipient smtpmail-text-buffer
+                                                &optional ask-for-password)
+    (let* ((from (or (mail-envelope-from)
+                     (let ((from (mail-fetch-field "from")))
+                       (and from
+                            (cadr (mail-extract-address-components from))))
+                     (smtpmail-user-mail-address)))
+           (conf (assoc from my-smtpmail-via-smtp-choose-server-alist))
+           (smtpmail-smtp-server (if conf (cadr conf) smtpmail-smtp-server))
+           (smtpmail-smtp-service (if conf (caddr conf) smtpmail-smtp-service)))
+      (funcall oldfun recipient smtpmail-text-buffer ask-for-password)))
+
+  (advice-add 'smtpmail-via-smtp :around #'my-smtpmail-via-smtp-choose-server)
+#+end_src

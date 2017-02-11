@@ -28,7 +28,7 @@
     (list
      '("t" "+trash" "-inbox")
      '("r" "-unread")
-     '("s" "+spam")
+     '("s" "+spam" "-unread" "-inbox")
      '("f" "+flagged")
      '("w" my-notmuch-tag-delayed)
      (list* "a" notmuch-archive-tags)))

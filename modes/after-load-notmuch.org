@@ -34,7 +34,7 @@
      (list* "a" notmuch-archive-tags)))
 
   (defun notmuch-show-apply-tag-macro (key)
-    (interactive "k")
+    (interactive "ktag key: ")
     (let ((tag (my-notmuch-get-tag-macro key)))
       (apply 'notmuch-show-tag-message tag)))
 

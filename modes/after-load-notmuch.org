@@ -61,7 +61,7 @@
               (setq tag (apply (car tag) (cdr tag))))
           tag))))
 #+end_src
-* Some binding for other things
+* muchsync!
 #+name: update
 #+begin_src emacs-lisp
   (defvar muchsync-default-server ""
@@ -108,6 +108,10 @@
                                         (with-current-buffer "*notmuch-hello*"
                                           (notmuch-refresh-this-buffer))))
                                     (muchsync--modeline-mode -1))))))))
+#+end_src
+* Other bindings
+#+name: bindings
+#+begin_src emacs-lisp
 
   (setq muchsync-default-server "suvrin.lot-of-stuff.info")
 
@@ -133,6 +137,7 @@
 
   (define-key notmuch-show-mode-map (kbd "RET") 'my-notmuch-browse-or-show)
 #+end_src
+
 * Other config
 #+name: prompt
 #+begin_src emacs-lisp

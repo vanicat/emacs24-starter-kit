@@ -1,3 +1,9 @@
+* lexical-binding
+#+name: lexical-binding
+#+begin_src emacs-lisp
+  ;;; -*- lexical-binding: t -*-
+#+end_src
+
 * org-contact
 #+begin_src emacs-lisp
   (require 'org-contacts)

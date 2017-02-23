@@ -68,50 +68,83 @@
     "default server to sync with")
 
   (defvar muchsync-process)
+  (defvar muchsync--idle-timer ()
+    "Internal variable: The idle timer for muchsync
+
+  nil if there is no timer")
+
+  (defvar muchsync--idle-timer-again ())
+
+  (defvar muchsync-idle-delay ()
+    "Delay to wait when idle to sync
+
+  if nil, do not automaticaly sync
+  if not nil, the number of second when idle to lauch a new sync.")
 
   (define-minor-mode muchsync--modeline-mode
       "Notify mode-line that muchsync is running."
     :global t
-    :lighter " [muchsync]"
-    (unless muchsync--modeline-mode
-      (let ((visible-bell t)) (ding))))
+    :lighter " [muchsync]")
 
-  (defun muchsync (&optional server)
+  (defun muchsync (&optional server hide no-error)
     "run mychsync
 
   if SERVER is not nil, use that as the server
   otherwise use the value of `muchsync-default-server'"
     (interactive)
-    (when (and (boundp 'muchsync-process)
-               (process-live-p muchsync-process))
-      (user-error "muchsync is already running"))
-    (let ((buf (get-buffer-create "*muchsync*")))
-      (with-current-buffer buf
-        (let ((inhibit-read-only t))
-          (erase-buffer)
-          (display-buffer buf)
-          (setq buffer-read-only t)
-          (let ((proc (start-process "*muchsync*" "*muchsync*"
-                                     "muchsync" "--nonew" muchsync-default-server)))
-            (setq muchsync-process proc)
-            (muchsync--modeline-mode 1)
-            (set-process-filter proc 'comint-output-filter)
-            (require 'shell) (shell-mode)
-            (view-mode)
-            (setq view-exit-action #'bury-buffer)
+    (if (and (boundp 'muchsync-process)
+             (process-live-p muchsync-process))
+        (unless no-error
+          (user-error "muchsync is already running"))
+      (let ((buf (get-buffer-create "*muchsync*")))
+        (with-current-buffer buf
+          (let ((inhibit-read-only t))
+            (erase-buffer)
+            (unless hide
+              (display-buffer buf))
+            (setq buffer-read-only t)
+            (let ((proc (start-process "*muchsync*" "*muchsync*"
+                                       "muchsync" "--nonew" (or server muchsync-default-server))))
+              (setq muchsync-process proc)
+              (muchsync--modeline-mode 1)
+              (set-process-filter proc 'comint-output-filter)
+              (require 'shell) (shell-mode)
+              (view-mode)
+              (setq view-exit-action #'bury-buffer)
 
-            ;; If *notmuch-hello* exists, refresh it after getting the mails
-            (set-process-sentinel proc
-                                  (lambda (process change)
-                                    (when (get-buffer "*notmuch-hello*")
-                                      (save-window-excursion
-                                        (with-current-buffer "*notmuch-hello*"
-                                          (notmuch-refresh-this-buffer))))
-                                    (muchsync--modeline-mode -1))))))))
+              ;; If *notmuch-hello* exists, refresh it after getting the mails
+              (set-process-sentinel proc
+                                    (lambda (process change)
+                                      (when (get-buffer "*notmuch-hello*")
+                                        (save-window-excursion
+                                          (with-current-buffer "*notmuch-hello*"
+                                            (notmuch-refresh-this-buffer))))
+                                      (muchsync--modeline-mode -1)
+                                      (unless hide
+                                        (let ((visible-bell t)) (ding)))))))))))
+
+  (defun muchsync--idle-process ()
+    ;; disable any
+    (when muchsync--idle-timer-again
+      (cancel-timer muchsync--idle-timer-again)
+      (setq muchsync--idle-timer-again ()))
+    (muchsync () t t)
+    (setq muchsync--idle-timer-again
+          (run-with-idle-timer (time-add (current-idle-time) muchsync-idle-delay)
+                               nil
+                               #'muchsync--idle-process)))
+
+  (defun muchsync-run-when-idle ()
+    (interactive)
+    (when (and muchsync-idle-delay
+               (or (null muchsync--idle-timer)
+                   (not (timerp muchsync--idle-timer))))
+      (setq muchsync--idle-timer (run-with-idle-timer muchsync-idle-delay 't 'muchsync--idle-process))))
 #+end_src
 * Other bindings
 #+name: bindings
 #+begin_src emacs-lisp
+  (setq muchsync-idle-delay 60)
 
   (setq muchsync-default-server "suvrin.lot-of-stuff.info")
 

@@ -316,7 +316,7 @@
     :ID:       0a0e33df-e9f4-43c1-aee5-c9de88fe665c
     :END:
 #+begin_src emacs-lisp
-  (defun org-beginning-of-line-home-end (oldfun &optional arg)
+  (defun org-beginning-of-line-home-end (oldfun &rest arg)
     (let* ((keys (recent-keys))
            (len (length keys))
            (key1 (if (> len 0) (elt keys (- len 1)) nil))
@@ -332,7 +332,7 @@
 
   (advice-add 'org-beginning-of-line :around #'org-beginning-of-line-home-end)
 
-  (defun org-end-of-line-home-end (oldfun &optional arg)
+  (defun org-end-of-line-home-end (oldfun &rest arg)
     (let* ((keys (recent-keys))
            (len (length keys))
            (key1 (if (> len 0) (elt keys (- len 1)) nil))

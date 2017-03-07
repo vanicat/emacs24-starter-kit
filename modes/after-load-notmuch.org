@@ -104,7 +104,7 @@
               (display-buffer buf))
             (setq buffer-read-only t)
             (let ((proc (start-process "*muchsync*" "*muchsync*"
-                                       "muchsync" "--nonew" (or server muchsync-default-server))))
+                                       "muchsync" (or server muchsync-default-server) "--nonew")))
               (setq muchsync-process proc)
               (muchsync--modeline-mode 1)
               (set-process-filter proc 'comint-output-filter)

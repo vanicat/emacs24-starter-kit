@@ -130,7 +130,7 @@
       (setq muchsync--idle-timer-again ()))
     (muchsync () t t)
     (setq muchsync--idle-timer-again
-          (run-with-idle-timer (time-add (current-idle-time) muchsync-idle-delay)
+          (run-with-idle-timer (time-add (current-idle-time) (seconds-to-time muchsync-idle-delay))
                                nil
                                #'muchsync--idle-process)))
 

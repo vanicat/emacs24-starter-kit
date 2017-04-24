@@ -67,6 +67,9 @@
   (defvar muchsync-default-server ""
     "default server to sync with")
 
+  (defvar muchsync-show-process-buffer ()
+    "Show the process buffer if non nil")
+
   (defvar muchsync-process)
   (defvar muchsync--idle-timer ()
     "Internal variable: The idle timer for muchsync
@@ -100,7 +103,8 @@
         (with-current-buffer buf
           (let ((inhibit-read-only t))
             (erase-buffer)
-            (unless hide
+            (when (and muchsync-show-process-buffer
+                       (not hide))
               (display-buffer buf))
             (setq buffer-read-only t)
             (let ((proc (start-process "*muchsync*" "*muchsync*"

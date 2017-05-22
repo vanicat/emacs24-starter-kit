@@ -343,7 +343,7 @@
       (cond (key-equal-2 (goto-char (point-max)))
             (key-equal-1 (push-mark home-end-marker)
                          (move-to-window-line -1)
-                         ad-do-it)
+                         (apply oldfun arg))
             (t (setq home-end-marker (copy-marker (point)))
                (apply oldfun arg)))))
 

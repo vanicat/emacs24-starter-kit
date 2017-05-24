@@ -152,15 +152,12 @@
 
   (setq muchsync-default-server "suvrin.lot-of-stuff.info")
 
-  (define-key notmuch-search-mode-map "g"
-    'notmuch-poll-and-refresh-this-buffer)
-  (define-key notmuch-hello-mode-map "g"
-    'notmuch-poll-and-refresh-this-buffer)
+  (define-key notmuch-search-mode-map "g" 'notmuch-poll-and-refresh-this-buffer)
+  (define-key notmuch-hello-mode-map "g" 'notmuch-poll-and-refresh-this-buffer)
 
-  (define-key notmuch-search-mode-map "G"
-    'muchsync)
-  (define-key notmuch-hello-mode-map "G"
-    'muchsync)
+  (define-key notmuch-search-mode-map "G" 'muchsync)
+  (define-key notmuch-hello-mode-map "G" 'muchsync)
+
 
   (defun my-notmuch-browse-or-show ()
     (interactive)

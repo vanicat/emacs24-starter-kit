@@ -144,6 +144,10 @@
                (or (null muchsync--idle-timer)
                    (not (timerp muchsync--idle-timer))))
       (setq muchsync--idle-timer (run-with-idle-timer muchsync-idle-delay 't 'muchsync--idle-process))))
+
+  (defun muchsync-swich-to-buffer ()
+    (interactive)
+    (switch-to-buffer "*muchsync*"))
 #+end_src
 * Other bindings
 #+name: bindings
@@ -158,6 +162,8 @@
   (define-key notmuch-search-mode-map "G" 'muchsync)
   (define-key notmuch-hello-mode-map "G" 'muchsync)
 
+  (define-key notmuch-search-mode-map "$" 'muchsync-swich-to-buffer)
+  (define-key notmuch-hello-mode-map "$" 'muchsync-swich-to-buffer)
 
   (defun my-notmuch-browse-or-show ()
     (interactive)

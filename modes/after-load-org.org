@@ -459,6 +459,81 @@
                  if (not (member max '("\n" "")))
                  do (insert " " name ": " note "/" max)))))
 #+end_src
+** Convert from pronote
+#+name: convert-from-pronote
+#+begin_src emacs-lisp
+  (defun my-convert-to-dot (x)
+    (replace-regexp-in-string "," "." x))
+
+  (defun org-convert-from-pronote (start end trim)
+    (interactive "r
+  Mtrimestre: ")
+    (narrow-to-region start end)
+    (goto-char (point-min))
+    (while (search-forward-regexp "\"\\(.*?\\)\";\\(.*?\\);\\([^;]*\\)" () t)
+      (let ((nom (match-string-no-properties 1))
+            (moy (match-string-no-properties 2))
+            (moy-brut (match-string-no-properties 3))
+            (n 0))
+        (replace-match "** \\1\n")
+        (insert "- " trim "\n" "  - Moy: " moy "/20")
+        (while (not (looking-at "$"))
+          (setq n (1+ n))
+          (search-forward-regexp ";\\([^;\n]*\\)")
+          (replace-match (format "   Note %d: \\1" n))))))
+
+  (defun read-from-pronote-table (start end)
+    (save-restriction
+      (narrow-to-region start end)
+      (goto-char (point-min))
+      (insert "((")
+      (while (search-forward-regexp "\"?\\([^\t\n\"]*\\)\"?[\t\n]" () t)
+        (let ((start-of-line (looking-at-p "^")))
+          (replace-match "\"\\1\" ")
+          (when start-of-line
+            (insert ")\n("))))
+      (delete-char -1)
+      (insert ")")
+      (let ((res (read (buffer-substring-no-properties (point-min) (point-max)))))
+        (delete-region (point-min) (point-max))
+        res)))
+
+
+  (defun read-from-pronote-notes-appreciation (start end)
+    "lit les notes de pronotes, les notes avant"
+    (interactive "r")
+    (save-restriction
+      (narrow-to-region start end)
+      (goto-char (point-min))
+      (search-forward-regexp "Élève	Dev.	.*Appréciations")
+      (let* ((notes (read-from-pronote-table (point-min) (match-beginning 0)))
+             (appreciations (read-from-pronote-table (point-min) (point-max)))
+             (dates (pop notes))
+             (comment (pop notes))
+             (coef (pop notes))
+             line
+             name
+             com
+             cof
+             moy
+             moybrute
+             )
+        (while notes
+          (setq line (pop notes))
+          (setq name (pop line))
+          (setq moy (pop line))
+          (setq moybrute (pop line))
+          (insert "\n"
+                  "** " name "\n"
+                  "   - T3 :: (" moy "): " (car (last (assoc name appreciations))) "\n"
+                  "     ")
+          (setq com (cdr (cdr (cdr comment))))
+          (setq cof (cdr (cdr (cdr coef))))
+          (while line
+            (insert (pop line) "(" (pop com) ":" (pop cof) ")  "))))))
+
+#+end_src
+
 ** Pour les livrets
 #+name: livret
 #+begin_src emacs-lisp

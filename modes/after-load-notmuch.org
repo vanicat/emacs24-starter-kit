@@ -67,6 +67,9 @@
   (defvar muchsync-default-server ""
     "default server to sync with")
 
+  (defvar muchsync-show-process-buffer ()
+    "Show the process buffer if non nil")
+
   (defvar muchsync-process)
   (defvar muchsync--idle-timer ()
     "Internal variable: The idle timer for muchsync
@@ -100,7 +103,8 @@
         (with-current-buffer buf
           (let ((inhibit-read-only t))
             (erase-buffer)
-            (unless hide
+            (when (and muchsync-show-process-buffer
+                       (not hide))
               (display-buffer buf))
             (setq buffer-read-only t)
             (let ((proc (start-process "*muchsync*" "*muchsync*"
@@ -130,7 +134,7 @@
       (setq muchsync--idle-timer-again ()))
     (muchsync () t t)
     (setq muchsync--idle-timer-again
-          (run-with-idle-timer (time-add (current-idle-time) muchsync-idle-delay)
+          (run-with-idle-timer (time-add (current-idle-time) (seconds-to-time muchsync-idle-delay))
                                nil
                                #'muchsync--idle-process)))
 
@@ -140,6 +144,10 @@
                (or (null muchsync--idle-timer)
                    (not (timerp muchsync--idle-timer))))
       (setq muchsync--idle-timer (run-with-idle-timer muchsync-idle-delay 't 'muchsync--idle-process))))
+
+  (defun muchsync-swich-to-buffer ()
+    (interactive)
+    (switch-to-buffer "*muchsync*"))
 #+end_src
 * Other bindings
 #+name: bindings
@@ -148,15 +156,14 @@
 
   (setq muchsync-default-server "suvrin.lot-of-stuff.info")
 
-  (define-key notmuch-search-mode-map "g"
-    'notmuch-poll-and-refresh-this-buffer)
-  (define-key notmuch-hello-mode-map "g"
-    'notmuch-poll-and-refresh-this-buffer)
+  (define-key notmuch-search-mode-map "g" 'notmuch-poll-and-refresh-this-buffer)
+  (define-key notmuch-hello-mode-map "g" 'notmuch-poll-and-refresh-this-buffer)
 
-  (define-key notmuch-search-mode-map "G"
-    'muchsync)
-  (define-key notmuch-hello-mode-map "G"
-    'muchsync)
+  (define-key notmuch-search-mode-map "G" 'muchsync)
+  (define-key notmuch-hello-mode-map "G" 'muchsync)
+
+  (define-key notmuch-search-mode-map "$" 'muchsync-swich-to-buffer)
+  (define-key notmuch-hello-mode-map "$" 'muchsync-swich-to-buffer)
 
   (defun my-notmuch-browse-or-show ()
     (interactive)

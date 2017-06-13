@@ -88,12 +88,47 @@
 #+name: caldav-advice
 #+begin_src emacs-lisp
   (defun my-caldav-advice (oldfun)
-    (let ((org-babel-confirm-evaluate-answer-no t))
+    (let ((org-babel-confirm-evaluate-answer-no t)
+          (org-export-babel-evaluate nil))
       (apply oldfun ())))
 
   (advice-add 'org-caldav-sync :around #'my-caldav-advice)
 
   (autoload 'org-caldav-sync "org-caldav" nil t)
+
+  (defun org-caldav-async ()
+    "syncing org-caldav with async."
+    (interactive)
+    (require 'org-caldav)
+    (if org-caldav-calendars
+        (dolist (calendar org-caldav-calendars)
+          (dolist (file (or (plist-get calendar :files)) org-caldav-files)
+            (with-current-buffer (org-get-agenda-file-buffer file)
+              (org-icalendar-create-uid file t))))
+
+      (dolist (file org-caldav-files)
+        (with-current-buffer (org-get-agenda-file-buffer file)
+          (org-icalendar-create-uid file t))))
+
+    (save-some-buffers)
+    (org-release-buffers org-agenda-new-buffers)
+
+    (async-start
+     ;; Sync caldav
+     (lambda ()
+       (let ((org-caldav-delete-org-entries 'always)
+             (load-path (cl-list* "~/.emacs.d/src/"
+                                  "~/.emacs.d/src/org-caldav/"
+                                  load-path))
+             (debug-on-error t))
+         (require 'org-caldav)
+         (load "~/.emacs.d/modes/after-load-org.org")
+         (eiu      (uraet))
+         (load "~/.emacs.d/modes/after-load-org-caldav.org.el")
+         (org-caldav-sync)))
+
+     (lambda (result)
+       (message "Caldav sync finished with %s" result))))
 #+end_src
 
 ** Utilisons des dates européennes

@@ -15,7 +15,7 @@
           '("^While parsing file \"\\(.*\\)\", line \\([0-9]+\\):" 1 2))
 
     (with-eval-after-load 'compile
-      (push (list* 'ledger ledger-compilation-error-regexp-alist) compilation-error-regexp-alist-alist)
+      (push (cl-list* 'ledger ledger-compilation-error-regexp-alist) compilation-error-regexp-alist-alist)
       (push 'ledger compilation-error-regexp-alist))
   #+end_src
 

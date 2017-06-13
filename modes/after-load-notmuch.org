@@ -37,7 +37,7 @@
      '("s" "+spam" "-unread" "-inbox")
      '("f" "+flagged")
      '("w" my-notmuch-tag-delayed)
-     (list* "a" notmuch-archive-tags)))
+     (cl-list* "a" notmuch-archive-tags)))
 
   (defun notmuch-show-apply-tag-macro (key)
     (interactive "ktag key: ")

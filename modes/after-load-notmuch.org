@@ -34,6 +34,8 @@
     (list
      '("t" "+trash" "-inbox")
      '("r" "-unread")
+     '("u" "+unread")
+     '("i" "+inbox")
      '("s" "+spam" "-unread" "-inbox")
      '("f" "+flagged")
      '("w" my-notmuch-tag-delayed)

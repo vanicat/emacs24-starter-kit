@@ -1,0 +1,6 @@
+* Keys.
+#+name: key-bindings
+#+begin_src emacs-lisp
+  (define-key pdf-view-mode-map (kbd "<prior>") #'pdf-view-scroll-down-or-previous-page)
+  (define-key pdf-view-mode-map (kbd "<next>") #'pdf-view-scroll-up-or-next-page)
+#+end_src

@@ -5,8 +5,8 @@
   (setq smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil)))
   (setq smtpmail-auth-credentials '(("smtp.gmail.com" 587 "remi.vanicat@gmail.com" nil)))
   (setq smtpmail-default-smtp-server "smtp.free.fr")
-  (setq smtpmail-smtp-server "smtp.gmail.com")
-  (setq smtpmail-smtp-service 587)
+  ;; (setq smtpmail-smtp-server "smtp.gmail.com")
+  ;; (setq smtpmail-smtp-service 587)
   ;;;(setq smtpmail-local-domain "free.fr")
 #+end_src
 * Choose server using from
@@ -24,9 +24,11 @@
                        (and from
                             (cadr (mail-extract-address-components from))))
                      (smtpmail-user-mail-address)))
-           (conf (assoc from my-smtpmail-via-smtp-choose-server-alist))
-           (smtpmail-smtp-server (if conf (cadr conf) smtpmail-smtp-server))
-           (smtpmail-smtp-service (if conf (caddr conf) smtpmail-smtp-service)))
+           (conf (assoc-default (downcase from)
+                                my-smtpmail-via-smtp-choose-server-alist
+                                #'string-match-p))
+           (smtpmail-smtp-server (if conf (car conf) smtpmail-smtp-server))
+           (smtpmail-smtp-service (if conf (cadr conf) smtpmail-smtp-service)))
       (funcall oldfun recipient smtpmail-text-buffer ask-for-password)))
 
   (advice-add 'smtpmail-via-smtp :around #'my-smtpmail-via-smtp-choose-server)

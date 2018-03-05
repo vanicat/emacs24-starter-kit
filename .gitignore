@@ -61,3 +61,4 @@ session.*
 literate-starter-kit/
 literate-starter-kit.tar
 /var/pcache
+/.cask/

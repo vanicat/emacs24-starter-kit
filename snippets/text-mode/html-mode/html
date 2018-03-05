@@ -1,6 +1,12 @@
 #contributor : Jimmy Wu <frozenthrone88@gmail.com>
 #name : <html>...</html>
 # --
+<!DOCTYPE HTML>
 <html>
-  $0
+  <head>
+    $0
+  </head>
+  <body>
+
+  </body>
 </html>

@@ -187,3 +187,26 @@
   (setq notmuch-always-prompt-for-sender t)
   (setq notmuch-search-oldest-first ())
 #+end_src
+
+* Use kde for mime handling
+#+name: kde-for-mime
+#+begin_src emacs-lisp
+  (defun my-mailcap-mime-info (old string &optional request no-decode)
+    "my mailcap: use kde"
+    (if (or (and (stringp request) (string-empty-p request))
+            (null request))
+        "kde-open '%s'"
+      (funcall old string request no-decode)))
+
+  (advice-add 'mailcap-mime-info :around #'my-mailcap-mime-info)
+#+end_src
+
+* Cd before notmuch
+#+name: notmuch-arround-advice
+#+begin_src elisp
+  (defun my-notmuch-cd-advice (old &rest r)
+    (let ((default-directory "/home/moi/"))
+      (apply old r)))
+
+  (advice-add 'notmuch :around #'my-notmuch-cd-advice)
+#+end_src

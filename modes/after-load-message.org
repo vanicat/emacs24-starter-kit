@@ -1,0 +1,9 @@
+
+* Ligne de citation
+à Faire: changer en fonction de la language
+#+name: citation
+#+begin_src emacs-lisp
+  (setq message-citation-line-function #'message-insert-formatted-citation-line)
+  (setq message-citation-line-format "Le %d %B %Y, %N a écrit:
+  ")
+#+end_src

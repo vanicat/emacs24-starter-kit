@@ -162,12 +162,16 @@
          ("novembre" . 11) ("decembre" . 12)))
 
 
-     (with-eval-after-load 'parse-time
-       (setq parse-time-weekdays (nconc parse-time-weekdays
-                                        parse-time-weekdays-french))
-       (setq parse-time-months
-             (nconc  (--filter (not (string= "mar" (car it))) parse-time-months) ; mar is for mardi, not march
-                     parse-time-months-french)))
+     ;; (with-eval-after-load 'parse-time
+     ;;   (setq parse-time-weekdays (nconc parse-time-weekdays
+     ;;                                    parse-time-weekdays-french))
+     ;;   (setq parse-time-months
+     ;;         ;; problem with parsing. Probably should wrote a advice for org-mode-ask-date
+     ;;         ;; (--filter (not (string= "mar" (car it))) parse-time-months
+     ;;         (nconc  parse-time-months  ; mar is for mardi, not march
+     ;;                 parse-time-months-french))
+     ;;   (push '((4) parse-time-months) parse-time-rules)
+     ;;   )
    #+end_src
 
 ** Link to imap gnus
@@ -384,7 +388,8 @@
             (t (setq home-end-marker (copy-marker (point)))
                (apply oldfun arg)))))
 
-  (advice-add 'org-end-of-line :around #'org-end-of-line-home-end)
+  ;(advice-add 'org-end-of-line :around #'org-end-of-line-home-end)
+
 #+end_src
 ** Rentrer des notes
     :PROPERTIES:

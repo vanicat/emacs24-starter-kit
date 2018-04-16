@@ -146,14 +146,14 @@ general starter-kit updates without conflict.
      =starter-kit-python.org= either by directly copying the sections
      that look useful into your personal config, or simply by loading
      the entire file directly with the following.
-     #+begin_src emacs-lisp
+     #+begin_src emacs-lisp-exem
        (starter-kit-load "python")
      #+end_src
 
      Alternately you can load only one particular subsection of an
      included file, for example to load just the "pretty-summary"
      section of =starter-kit-gnus.org= run the following.
-     #+begin_src emacs-lisp
+     #+begin_src emacs-lisp-exem
        (starter-kit-load "gnus" "pretty-summary")
      #+end_src
      
@@ -162,7 +162,7 @@ general starter-kit updates without conflict.
      =starter-kit-misc-recommended.org= which are tagged =visual= add
      the following to your personal initialization.  Note: header id's
      take priority over tags.
-     #+begin_src emacs-lisp
+     #+begin_src emacs-lisp-exem
        (starter-kit-load "gnus" "visual")
      #+end_src
 
@@ -288,7 +288,7 @@ interested in the actual code implementing the starter kit.
             ("org"         . "http://orgmode.org/elpa/")
     ;        ("melpa"       . "http://melpa.org/packages/")
             ("marmalade"   . "http://marmalade-repo.org/packages/")))
-    (package-initialize)
+    ; (package-initialize)
 
     (defvar starter-kit-packages nil
       "Libraries that should be installed by default (currently none).")

@@ -1,0 +1,3 @@
+  #+begin_src emacs-lisp
+    (define-key helm-find-files-map (kbd "C-o") 'helm-ff-run-open-file-with-default-tool)
+  #+end_src

@@ -1,0 +1,4 @@
+* using ispell
+#+begin_src elisp
+  (setq ispell-dictionary-alist ispell-hunspell-dictionary-alist)
+#+end_src

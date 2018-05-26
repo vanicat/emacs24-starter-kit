@@ -1,0 +1,14 @@
+#+name: key
+#+begin_src elisp
+  (global-set-key "\C-ctc" 'langtool-check)
+  (global-set-key "\C-ctn" 'langtool-goto-next-error)
+  (global-set-key "\C-ctC" 'langtool-check-done)
+  (global-set-key "\C-ctl" 'langtool-switch-default-language)
+  (global-set-key "\C-ctt" 'langtool-show-message-at-point)
+  (global-set-key "\C-ctb" 'langtool-correct-buffer)
+#+end_src
+
+#+name: tool
+#+begin_src elisp
+  (setq langtool-language-tool-jar "/home/moi/Téléchargements/LangageTool/LanguageTool-4.0/languagetool-commandline.jar")
+#+end_src

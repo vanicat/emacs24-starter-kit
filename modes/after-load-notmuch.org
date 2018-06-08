@@ -32,14 +32,14 @@
 
   (setq notmuch-tag-macro-alist
     (list
-     '("t" "+trash" "-inbox")
+     '("t" "+trash" "-inbox" next)
      '("r" "-unread")
      '("u" "+unread")
      '("i" "+inbox")
-     '("s" "+spam" "-unread" "-inbox")
+     '("s" "+spam" "-unread" "-inbox" next)
      '("f" "+flagged")
      '("w" my-notmuch-tag-delayed)
-     (cl-list* "a" notmuch-archive-tags)))
+     `("a" ,@notmuch-archive-tags "-unread" next)))
 
   (defun notmuch-show-apply-tag-macro (key)
     (interactive "ktag key: ")
@@ -48,10 +48,16 @@
 
   (defun notmuch-search-apply-tag-macro (key)
     (interactive "ktag key: ")
-    (let ((tag (my-notmuch-get-tag-macro key)))
+    (let ((tag (my-notmuch-get-tag-macro key))
+          (next ()))
+      (when (member 'next tag)
+        (setq tag (remove 'next tag))
+        (setq next 't))
       (if mark-active
           (notmuch-search-tag tag (region-beginning) (region-end))
-        (notmuch-search-tag tag))))
+        (notmuch-search-tag tag))
+      (when next
+        (notmuch-search-next-thread))))
 
   (defun my-notmuch-get-tag-macro (key)
     (let ((macro (assoc key notmuch-tag-macro-alist)))

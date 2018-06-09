@@ -44,6 +44,7 @@
   (defun notmuch-show-apply-tag-macro (key)
     (interactive "ktag key: ")
     (let ((tag (my-notmuch-get-tag-macro key)))
+      (setq tag (remove 'next tag))
       (apply 'notmuch-show-tag-message tag)))
 
   (defun notmuch-search-apply-tag-macro (key)

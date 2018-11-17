@@ -251,3 +251,20 @@
      (defun insert-my-ledegr (file)
      )
    #+end_src
+* Next not cleared xact
+#+name: next-xact-uncleared
+#+begin_src emacs-lisp
+  (defun myledger-next-uncleared-xact ()
+    (interactive)
+    (ledger-navigate-next-xact)
+    (while (and (not (eobp))
+                (eq (ledger-transaction-state) 'cleared))
+      (ledger-navigate-next-xact)))
+
+  (defun myledger-prev-uncleared-xact ()
+    (interactive)
+    (ledger-navigate-prev-xact-or-directive)
+    (while (and (not (bobp))
+                (eq (ledger-transaction-state) 'cleared))
+      (ledger-navigate-prev-xact-or-directive)))
+#+end_src

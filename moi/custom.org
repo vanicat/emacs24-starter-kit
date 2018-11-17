@@ -64,6 +64,6 @@
 
   (with-eval-after-load 'highlight-current-line
     (set-face-attribute 'highlight-current-line-face () :background "grey30"))
+#+end_src
 
   (set-face-attribute 'show-ws-tab () :background "gray14")
-#+end_src

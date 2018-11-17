@@ -28,6 +28,7 @@
   (starter-kit-install-if-needed 'helm)
   (starter-kit-install-if-needed 'yasnippet)
   (starter-kit-install-if-needed 'auctex)
+  (require 'tex-site)
   (when (display-graphic-p)
     (starter-kit-install-if-needed 'pdf-tools))
   (starter-kit-install-if-needed 'pkg-info)

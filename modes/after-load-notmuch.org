@@ -43,17 +43,19 @@
 
   (defun notmuch-show-apply-tag-macro (key)
     (interactive "ktag key: ")
-    (let ((tag (my-notmuch-get-tag-macro key)))
+    (let* ((tag (my-notmuch-get-tag-macro key))
+           (next (member 'next tag)))
       (setq tag (remove 'next tag))
-      (apply 'notmuch-show-tag-message tag)))
+      (apply 'notmuch-show-tag-message tag)
+      (when next
+        (unless (notmuch-show-next-open-message)
+          (notmuch-show-next-thread t)))))
 
   (defun notmuch-search-apply-tag-macro (key)
     (interactive "ktag key: ")
-    (let ((tag (my-notmuch-get-tag-macro key))
-          (next ()))
-      (when (member 'next tag)
-        (setq tag (remove 'next tag))
-        (setq next 't))
+    (let* ((tag (my-notmuch-get-tag-macro key))
+           (next (member 'next tag)))
+      (setq tag (remove 'next tag))
       (if mark-active
           (notmuch-search-tag tag (region-beginning) (region-end))
         (notmuch-search-tag tag))

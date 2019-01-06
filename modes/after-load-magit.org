@@ -37,6 +37,15 @@
     (define-key dired-mode-map [@ g] 'magit-annex-get-dired))
 #+end_src
 
+** magit-repository-directories
+#+name: magit-repository-directories
+#+begin_src emacs-lisp
+  (setq magit-repository-directories
+        '(("~/.emacs.d/" . 0)
+          ("~/travail/" . 0)
+          ("~/lang/" . 4)))
+#+end_src
+
 * vcsh by tramp
 #+name: vsh-by-tramp
 #+begin_src emacs-lisp

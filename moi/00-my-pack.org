@@ -1,3 +1,5 @@
+* Add src
+
 * Don't add melpa
 #+name: melpa
 #+begin_src emacs-lisp-nop
@@ -19,18 +21,25 @@
   (add-to-list 'package-directory-list "/home/moi/.emacs.d/src/")
 #+end_src
 
+* My install
+#+begin_src emacs-lisp :tangle no
+  (defun my-install-if-needed (packet &optional feature)
+    (unless feature
+      (setq feature packet))
+    (unless (require feature () t)
+      (package-install packet)))
+#+end_src
 * load my package
-#+begin_src emacs-lisp
-  (starter-kit-install-if-needed 'flycheck)
-  ;(starter-kit-install-if-needed 'flycheck-ledger)
-  (starter-kit-install-if-needed 'nxml)
-  (starter-kit-install-if-needed 'paredit)
-  (starter-kit-install-if-needed 'helm)
-  (starter-kit-install-if-needed 'yasnippet)
-  (starter-kit-install-if-needed 'auctex)
-  (require 'tex-site)
+#+begin_src emacs-lisp :tangle no
+  (my-install-if-needed 'flycheck)
+  ;(my-install-if-needed 'flycheck-ledger)
+  (my-install-if-needed 'nxml 'nxml-mode)
+  (my-install-if-needed 'paredit)
+  (my-install-if-needed 'helm)
+  (my-install-if-needed 'yasnippet)
+  (my-install-if-needed 'auctex 'tex-site)
   (when (display-graphic-p)
-    (starter-kit-install-if-needed 'pdf-tools))
-  (starter-kit-install-if-needed 'pkg-info)
-  (starter-kit-install-if-needed 'adaptive-wrap)
+    (my-install-if-needed 'pdf-tools))
+  (my-install-if-needed 'pkg-info)
+  (my-install-if-needed 'adaptive-wrap)
 #+end_src

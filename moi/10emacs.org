@@ -9,6 +9,8 @@
   (defun add-load-path (dir)
     (interactive "D")
     (push dir load-path))
+
+    (add-load-path "~/.emacs.d/src")
 #+end_src
 
 * change directory
@@ -46,21 +48,21 @@
 #+begin_src emacs-lisp
   (defvar my-isearch-case-table
     (let ((eqv-list '("aAàÀáÁâÂãÃäÄåÅ"
-                      "cCçÇ"
-                      "eEèÈéÉêÊëË"
-                      "iIìÌíÍîÎïÏ"
-                      "nNñÑ"
-                      "oOòÒóÓôÔõÕöÖøØ"
-                      "uUùÙúÚûÛüÜ"
-                      "yYýÝÿ"))
-          (table (make-char-table 'case-table))
-          (parent (standard-case-table))
-          (canon (make-char-table 'case-table)))
+		      "cCçÇ"
+		      "eEèÈéÉêÊëË"
+		      "iIìÌíÍîÎïÏ"
+		      "nNñÑ"
+		      "oOòÒóÓôÔõÕöÖøØ"
+		      "uUùÙúÚûÛüÜ"
+		      "yYýÝÿ"))
+	  (table (make-char-table 'case-table))
+	  (parent (standard-case-table))
+	  (canon (make-char-table 'case-table)))
       (set-char-table-parent table parent)
       (set-char-table-parent canon (char-table-extra-slot parent 1))
       (mapcar (lambda (s)
-                (mapcar (lambda (c) (aset canon c (aref s 0))) s))
-              eqv-list)
+		(mapcar (lambda (c) (aset canon c (aref s 0))) s))
+	      eqv-list)
       (set-char-table-extra-slot table 1 canon)
       (set-char-table-extra-slot table 2 nil)
       table)
@@ -68,7 +70,8 @@
 
   (defun my-set-isearch-case-table ()
     (interactive)
-    (set-case-table my-isearch-case-table))
+    ;; (set-case-table my-isearch-case-table)
+    )
 
   (add-hook 'text-mode-hook 'my-set-isearch-case-table)
 
@@ -77,11 +80,16 @@
     (with-case-table my-isearch-case-table
       (apply oldfun args)))
 
+  (defun my-isearch-forward-regexp ()
+    (interactive)
+    (with-case-table my-isearch-case-table
+      (isearch-forward-regexp)))
+
   (defun my-set-buffer-case-table (&optional buffer)
     (interactive)
     (when buffer
       (with-current-buffer buffer
-        (set-case-table my-isearch-case-table)))
+	(set-case-table my-isearch-case-table)))
     buffer)
 
   (advice-add 'isearch-mode :around #'my-isearch-case-table-advice)
@@ -609,8 +617,6 @@ Penser à reclasser les deux add-hook
     (let ((dict (guess-lang-buffer)))
       (if dict
           (ispell-change-dictionary dict))))
-
-  (add-hook 'text-mode-hook #'ispell-guess-dictionary)
 #+end_src
 
 * Tramp
@@ -1035,11 +1041,6 @@ Penser à reclasser les deux add-hook
 #+name: remember-note
 #+begin_src emacs-lisp
   ;(remember-notes)
-#+end_src
-* after load
-#+name: after-load
-#+begin_src emacs-lisp
-  (starter-kit-load "after-load")
 #+end_src
 * Some function...
 #+name: weight-org-add

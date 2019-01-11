@@ -13,24 +13,27 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
-(when (getenv "ORG_HOME")
-  (let ((org-lisp-dir (expand-file-name "lisp" (getenv "ORG_HOME"))))
-    (when (file-directory-p org-lisp-dir)
-      (add-to-list 'load-path org-lisp-dir)
-      (require 'org))))
-
-;; load the starter kit from the `after-init-hook' so all packages are loaded
-(add-hook 'after-init-hook
- `(lambda ()
-    ;; remember this directory
-    (setq starter-kit-dir
-          ,(file-name-directory (or load-file-name (buffer-file-name))))
-    ;; only load org-mode later if we didn't load it just now
-    ,(unless (and (getenv "ORG_HOME")
-                  (file-directory-p (expand-file-name "lisp"
-                                                      (getenv "ORG_HOME"))))
-       '(require 'org))
-    ;; load up the starter kit
-    (org-babel-load-file (expand-file-name "starter-kit.org" starter-kit-dir))))
+(cl-flet ((sk-load (base)
+         (let* ((path          (expand-file-name base "~/.emacs.d/"))
+                (literate      (concat path ".org"))
+                (encrypted-org (concat path ".org.gpg"))
+                (plain         (concat path ".el"))
+                (encrypted-el  (concat path ".el.gpg")))
+           (cond
+            ((file-exists-p encrypted-org) (org-babel-load-file encrypted-org))
+            ((file-exists-p encrypted-el)  (load encrypted-el))
+            ((file-exists-p literate)      (org-babel-load-file literate))
+            ((file-exists-p plain)         (load plain)))))
+       (remove-extension (name)
+         (string-match "\\(.*?\\)\.\\(org\\(\\.el\\)?\\|el\\)\\(\\.gpg\\)?$" name)
+         (match-string 1 name)))
+  (let ((user-dir "~/.emacs.d/moi"))
+    (when (file-exists-p user-dir)
+      (add-to-list 'load-path user-dir)
+      (mapc #'sk-load
+            (remove-duplicates
+             (mapcar #'remove-extension
+                     (directory-files user-dir t ".*\.\\(org\\|el\\)\\(\\.gpg\\)?$"))
+             :test #'string=)))))
 
 ;;; init.el ends here

@@ -1,4 +1,4 @@
 * using ispell
-#+begin_src elisp
+#+begin_src emacs-lisp
   (setq ispell-dictionary-alist ispell-hunspell-dictionary-alist)
 #+end_src

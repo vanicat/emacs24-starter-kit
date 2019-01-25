@@ -1,4 +1,93 @@
-* using ispell
+* Temporary fix for an emacs/hunspell bug
+#+begin_src emacs-lisp
+  (defun ispell-find-hunspell-dictionaries ()
+    "Look for installed Hunspell dictionaries.
+  Will initialize `ispell-hunspell-dictionary-alist' and
+  `ispell-hunspell-dictionary-alist' after values found
+  and remove `ispell-dicts-name2locale-equivs-alist'
+  entries if a specific dictionary was found."
+    (let ((hunspell-found-dicts
+           (split-string
+            (with-temp-buffer
+              (ispell-call-process ispell-program-name
+                                   null-device
+                                   t
+                                   nil
+                                   "-D" null-device)
+              (buffer-string))
+            "[\n\r]+"
+            t))
+          hunspell-default-dict
+          hunspell-default-dict-entry)
+      (dolist (dict hunspell-found-dicts)
+        (let* ((full-name (file-name-nondirectory dict))
+               (basename  (file-name-sans-extension full-name))
+               (affix-file (concat dict ".aff")))
+          (if (string-match "\\.aff$" dict)
+              ;; Found default dictionary
+              (if hunspell-default-dict
+                  (error "ispell-fhd: Default dict already defined as %s.  Not using %s.\n"
+                         hunspell-default-dict dict)
+                (setq affix-file dict)
+                (setq hunspell-default-dict (list basename affix-file)))
+            (if (and (not (assoc basename ispell-hunspell-dict-paths-alist))
+                     (file-exists-p affix-file))
+                ;; Entry has an associated .aff file and no previous value.
+                (let ((affix-file (expand-file-name affix-file)))
+                  (ispell-print-if-debug
+                   "++ ispell-fhd: dict-entry:%s name:%s basename:%s affix-file:%s\n"
+                   dict full-name basename affix-file)
+                  (add-to-list 'ispell-hunspell-dict-paths-alist
+                               (list basename affix-file)))
+              (ispell-print-if-debug
+               "-- ispell-fhd: Skipping entry: %s\n" dict)))))
+      ;; Remove entry from aliases alist if explicit dict was found.
+      (let (newlist)
+        (dolist (dict ispell-dicts-name2locale-equivs-alist)
+          (if (assoc (car dict) ispell-hunspell-dict-paths-alist)
+              (ispell-print-if-debug
+               "-- ispell-fhd: Excluding %s alias.  Standalone dict found.\n"
+               (car dict))
+            (add-to-list 'newlist dict)))
+        (setq ispell-dicts-name2locale-equivs-alist newlist))
+      ;; Add known hunspell aliases
+      (dolist (dict-equiv ispell-dicts-name2locale-equivs-alist)
+        (let ((dict-equiv-key (car dict-equiv))
+              (dict-equiv-value (cadr dict-equiv))
+              (exclude-aliases (list   ;; Exclude TeX aliases
+                                "esperanto-tex"
+                                "francais7"
+                                "francais-tex"
+                                "norsk7-tex")))
+          (if (and (assoc dict-equiv-value ispell-hunspell-dict-paths-alist)
+                   (not (assoc dict-equiv-key ispell-hunspell-dict-paths-alist))
+                   (not (member dict-equiv-key exclude-aliases)))
+              (let ((affix-file (cadr (assoc dict-equiv-value
+                                             ispell-hunspell-dict-paths-alist))))
+                (ispell-print-if-debug "++ ispell-fhd: Adding alias %s -> %s.\n"
+                                       dict-equiv-key affix-file)
+                (add-to-list
+                 'ispell-hunspell-dict-paths-alist
+                 (list dict-equiv-key affix-file))))))
+      ;; Parse and set values for default dictionary.
+      (setq hunspell-default-dict (car hunspell-default-dict))
+      (setq hunspell-default-dict-entry
+            (ispell-parse-hunspell-affix-file hunspell-default-dict))
+      ;; Create an alist of found dicts with only names, except for default dict.
+      (setq ispell-hunspell-dictionary-alist
+            (list (append (list nil) (cdr hunspell-default-dict-entry))))
+      (dolist (dict (mapcar 'car ispell-hunspell-dict-paths-alist))
+        (if (string= dict hunspell-default-dict)
+            (add-to-list 'ispell-hunspell-dictionary-alist
+                         hunspell-default-dict-entry)
+          (add-to-list 'ispell-hunspell-dictionary-alist
+                       (list dict))))))
+
+  (ispell-find-hunspell-dictionaries)
+#+end_src
+
+* using hunspell
 #+begin_src emacs-lisp
   (setq ispell-dictionary-alist ispell-hunspell-dictionary-alist)
 #+end_src
+

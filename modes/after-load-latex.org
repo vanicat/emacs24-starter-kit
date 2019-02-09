@@ -50,6 +50,68 @@
                             (?^ "widehat" "" nil)))
 
   #+end_src
+
+* Ouverture de $
+#+name: math-open
+#+begin_src emacs-lisp
+  (defun my-insert-math-mode (&optional arg)
+    "Replace TeX-insert-dollar."
+    (interactive "P")
+    (keypress-multi-event
+     (list
+      (lambda ()
+        (cond
+         ((and arg (listp arg))
+          ;; C-u always inserts one
+          (insert "$")
+          (setq keypress-multi-event--state (1- keypress-multi-event--state)))
+         (arg
+          ;; Numerical arg inserts that many
+          (insert (make-string (prefix-numeric-value arg) ?\$))
+          (setq keypress-multi-event--state (1- keypress-multi-event--state)))
+         (mark-active
+          (let ((beg (min (point) (mark)))
+                (end (max (point) (mark))))
+            (goto-char end)
+            (insert "\\)")
+            (save-excursion
+              (goto-char beg)
+              (insert "\\("))
+            (set-mark beg)))
+         ((or (TeX-escaped-p) (TeX-verbatim-p))
+          ;; Point is escaped with `\' or is in a verbatim-like construct, so just
+          ;; insert one $.
+          (insert "$")
+          (setq keypress-multi-event--state (1- keypress-multi-event--state)))
+         ((looking-at-p "\\\\[])]")
+          (forward-char 2))
+         (t
+          (insert "\\(\\)")
+          (backward-char 2)))
+      (lambda ()
+        (if (looking-at "\\\\)")
+            (progn
+              (backward-char 2)
+              (if (re-search-forward "\\=\\\\(\\\\)")
+                  (replace-match "\\\\[\\\\]"))
+              (backward-char 2))
+          (let ((end (point)))
+            (re-search-backward "\\\\[[(]")
+            (cond
+             ;; \(...\) to \[...\]
+             ((re-search-forward "\\=\\\\(\\([^z-a]*\\)\\\\)" end t)
+              (replace-match "\\\\[\\1\\\\]")
+              (set-mark (match-beginning 0))
+              (setq keypress-multi-event--state (1- keypress-multi-event--state)))
+             ;; Strip \[...\] or $$...$$
+             ((re-search-forward "\\=\\\\\\[\\([^z-a]*\\)\\\\\\]" end t)
+              (replace-match "\\1")
+              (set-mark (match-beginning 0)))))))))))
+
+
+  (define-key LaTeX-mode-map (kbd "$") #'my-insert-math-mode)
+#+end_src
+
 * Parsing
 ** Détection des newtheorem*
    :PROPERTIES:

@@ -172,8 +172,8 @@ Doit être au début sinon, problème avec le before-save-hook
 
 Penser à reclasser les deux add-hook
 #+begin_src emacs-lisp
-  (when (require 'ethan-wspace () t)
-    (add-hook 'before-save-hook 'clean-whitespace-tentative))
+  ;; (when (require 'ethan-wspace () t)
+  ;;   (add-hook 'before-save-hook 'clean-whitespace-tentative))
 
   (add-hook 'before-save-hook 'time-stamp)
 #+end_src

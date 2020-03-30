@@ -3,3 +3,8 @@
 #+begin_src emacs-lisp
   (set-cursor-color "light gray")
 #+end_src
+* Dictionary
+#+begin_src emacs-lisp
+  (add-hook 'text-mode-hook #'ispell-guess-dictionary)
+#+end_src
+

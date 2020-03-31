@@ -50,6 +50,9 @@
      `("a" ,@notmuch-archive-tags "-unread" next)))
 
   (defun notmuch-show-apply-tag-macro (key)
+    "Shortcut to apply tag in notmuch-show mode.
+
+  KEY select tags from 'notmuch-tag-macro-alist’"
     (interactive "ktag key: ")
     (let* ((tag (my-notmuch-get-tag-macro key))
            (next (member 'next tag)))
@@ -60,6 +63,9 @@
           (notmuch-show-next-thread t)))))
 
   (defun notmuch-search-apply-tag-macro (key)
+    "Shortcut to apply tag in notmuch-search mode.
+
+  KEY select tags from 'notmuch-tag-macro-alist’"
     (interactive "ktag key: ")
     (let* ((tag (my-notmuch-get-tag-macro key))
            (next (member 'next tag)))
@@ -71,9 +77,13 @@
         (notmuch-search-next-thread))))
 
   (defun my-notmuch-get-tag-macro (key)
+    "Select tag corresponding to KEY.
+
+  KEY select tags from 'notmuch-tag-macro-alist’"
+
     (let ((macro (assoc key notmuch-tag-macro-alist)))
       (unless macro
-        (user-error "unknown key"))
+        (user-error "Unknown key"))
       (when macro
         (let ((tag (cdr macro)))
           (if (functionp (car tag))

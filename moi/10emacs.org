@@ -276,6 +276,7 @@ Penser à reclasser les deux add-hook
   (global-set-key [?\C-v] 'yank)
   (global-set-key [?\C-c ?b] 'bury-buffer)
 
+  (global-set-key [M-dead-circumflex] 'join-line)
 
   ;;      Diverses F*
 

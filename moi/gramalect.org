@@ -4,5 +4,6 @@
 #+begin_src emacs-lisp
   (setq flycheck-grammalecte-enabled-modes '(org-mode text-mode mail-mode latex-mode notmuch-message-mode))
 
-  (load-file "/home/moi/prog/gramalect/flycheck-grammalecte-0.9/flycheck-grammalecte.el")
+  (unless (require 'flycheck-grammalecte nil t)
+    (load-file "/home/moi/prog/gramalect/flycheck-grammalecte-0.9/flycheck-grammalecte.el"))
 #+end_src

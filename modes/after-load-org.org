@@ -428,6 +428,7 @@
     :init-value ()
     :lighter "note"
     :keymap 'note-for-org-mode-map
+    (require 'org-table)
     (if note-for-org-mode
         (org-narrow-to-subtree)
       (widen))

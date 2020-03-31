@@ -41,7 +41,7 @@
                      (directory-files user-dir t ".*\.\\(org\\|el\\)\\(\\.gpg\\)?$"))
              :test #'string=)))))
 
-(setq custom-file "~/.emacs/custom.el")
+(setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
 ;;; init.el ends here

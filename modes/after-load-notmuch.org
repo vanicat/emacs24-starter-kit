@@ -20,9 +20,10 @@
   (define-key notmuch-search-mode-map "'" 'notmuch-search-apply-tag-macro)
 
   (defun my-notmuch-tag-delayed ()
+    "Wait for futur mail."
     (let ((date (org-read-date)))
       (unless (string-match "^\\(....\\-..\\-..\\) ?\\(..:..\\)?" date)
-        (error "internal error: org-mode-read-date"))
+        (error "Internal error: org-mode-read-date"))
       (setq time (match-string 2 date))
       (setq date (match-string 1 date))
       (list (if time
@@ -30,19 +31,28 @@
               (format "+w%s" date))
             "+waiting" "-inbox" "-again")))
 
+  (defun my-notmuch-tag-demain ()
+    "Wait for futur mail."
+    (list (format-time-string "+w%Y-%m-%d" (time-add (current-time) (* 24 60 60)))
+            "+waiting" "-inbox" "-again" 'next))
+
   (setq notmuch-tag-macro-alist
     (list
      '("t" "+trash" "-inbox" "-unread" next)
      '("r" "-unread")
      '("u" "+unread")
      '("i" "+inbox")
-     '("d" "+trash" "-inbox" "-unread" next)
+     '("d" "+deleted" "-inbox" "-unread" next)
      '("s" "+spam" "-unread" "-inbox" next)
      '("f" "+flagged")
      '("w" my-notmuch-tag-delayed)
+     '("n" my-notmuch-tag-demain)
      `("a" ,@notmuch-archive-tags "-unread" next)))
 
   (defun notmuch-show-apply-tag-macro (key)
+    "Shortcut to apply tag in notmuch-show mode.
+
+  KEY select tags from 'notmuch-tag-macro-alist’"
     (interactive "ktag key: ")
     (let* ((tag (my-notmuch-get-tag-macro key))
            (next (member 'next tag)))
@@ -53,6 +63,9 @@
           (notmuch-show-next-thread t)))))
 
   (defun notmuch-search-apply-tag-macro (key)
+    "Shortcut to apply tag in notmuch-search mode.
+
+  KEY select tags from 'notmuch-tag-macro-alist’"
     (interactive "ktag key: ")
     (let* ((tag (my-notmuch-get-tag-macro key))
            (next (member 'next tag)))
@@ -64,9 +77,13 @@
         (notmuch-search-next-thread))))
 
   (defun my-notmuch-get-tag-macro (key)
+    "Select tag corresponding to KEY.
+
+  KEY select tags from 'notmuch-tag-macro-alist’"
+
     (let ((macro (assoc key notmuch-tag-macro-alist)))
       (unless macro
-        (user-error "unknown key"))
+        (user-error "Unknown key"))
       (when macro
         (let ((tag (cdr macro)))
           (if (functionp (car tag))
@@ -178,6 +195,9 @@
   (define-key notmuch-search-mode-map "$" 'muchsync-swich-to-buffer)
   (define-key notmuch-hello-mode-map "$" 'muchsync-swich-to-buffer)
 
+  (define-key notmuch-hello-mode-map "n" 'widget-forward)
+  (define-key notmuch-hello-mode-map "p" 'widget-backward)
+
   (defun my-notmuch-browse-or-show ()
     (interactive)
     (if (or
@@ -205,7 +225,7 @@
     "my mailcap: use kde"
     (if (or (and (stringp request) (string-empty-p request))
             (null request))
-        "kde-open '%s'"
+        "kde-open5 '%s'"
       (funcall old string request no-decode)))
 
   (advice-add 'mailcap-mime-info :around #'my-mailcap-mime-info)

@@ -20,9 +20,10 @@
   (define-key notmuch-search-mode-map "'" 'notmuch-search-apply-tag-macro)
 
   (defun my-notmuch-tag-delayed ()
+    "Wait for futur mail."
     (let ((date (org-read-date)))
       (unless (string-match "^\\(....\\-..\\-..\\) ?\\(..:..\\)?" date)
-        (error "internal error: org-mode-read-date"))
+        (error "Internal error: org-mode-read-date"))
       (setq time (match-string 2 date))
       (setq date (match-string 1 date))
       (list (if time

@@ -225,7 +225,7 @@
     "my mailcap: use kde"
     (if (or (and (stringp request) (string-empty-p request))
             (null request))
-        "kde-open '%s'"
+        "kde-open5 '%s'"
       (funcall old string request no-decode)))
 
   (advice-add 'mailcap-mime-info :around #'my-mailcap-mime-info)

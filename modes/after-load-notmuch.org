@@ -195,6 +195,9 @@
   (define-key notmuch-search-mode-map "$" 'muchsync-swich-to-buffer)
   (define-key notmuch-hello-mode-map "$" 'muchsync-swich-to-buffer)
 
+  (define-key notmuch-hello-mode-map "n" 'widget-forward)
+  (define-key notmuch-hello-mode-map "p" 'widget-backward)
+
   (defun my-notmuch-browse-or-show ()
     (interactive)
     (if (or

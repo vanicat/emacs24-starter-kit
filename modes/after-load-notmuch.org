@@ -90,6 +90,45 @@
               (setq tag (apply (car tag) (cdr tag))))
           tag))))
 #+end_src
+* Some bindings for filter
+#+name: bindings
+#+begin_src emacs-lisp
+  (define-key notmuch-search-mode-map "L" 'my-notmuch-search-filter)
+
+  (defvar my-notmuch-filter
+    (list
+     '("u" "tag:unread" "unread")
+     '("r" "NOT tag:unread" "read")
+     '("i" "tag:inbox" "inbox")
+     '("a" "NOT tag:inbox" "archive")
+     '("l" "tag:lycee OR tag:lyconn" "lycée")
+     '("f" "tag:flagged" "⋆")
+     '("w" "tag:waiting" "waiting")))
+
+  (defun key-filter-to-string ()
+    (loop
+     for yo in my-notmuch-filter
+     concat (format "%s: %s  " (car yo) (caddr yo))))
+
+  (defun my-notmuch-search-filter (key)
+    "Shortcut to apply tag in notmuch-search mode.
+
+  KEY select tags from 'notmuch-tag-macro-alist’"
+    (interactive "kfilter key: ")
+    (let* ((filter (my-notmuch-get-filter-macro key)))
+      (notmuch-search-filter filter)))
+
+  (defun my-notmuch-get-filter-macro (key)
+    "Select tag corresponding to KEY.
+
+  KEY select tags from 'notmuch-tag-macro-alist’"
+    (let ((macro (assoc key my-notmuch-filter)))
+      (unless macro
+        (user-error "Unknown key"))
+      (when macro
+        (let ((tag (cadr macro)))
+          tag))))
+#+end_src
 * muchsync!
 #+name: update
 #+begin_src emacs-lisp
